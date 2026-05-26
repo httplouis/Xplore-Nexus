@@ -1,0 +1,232 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --font-inter: 'Inter', system-ui, sans-serif;
+    --font-plus-jakarta: 'Plus Jakarta Sans', system-ui, sans-serif;
+  }
+
+  * {
+    @apply border-surface-border;
+  }
+
+  html {
+    scroll-behavior: smooth;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  body {
+    @apply bg-surface text-slate-100 font-sans;
+  }
+
+  ::selection {
+    @apply bg-brand-500/30 text-white;
+  }
+
+  /* Custom scrollbar */
+  ::-webkit-scrollbar {
+    width: 5px;
+    height: 5px;
+  }
+  ::-webkit-scrollbar-track {
+    @apply bg-surface;
+  }
+  ::-webkit-scrollbar-thumb {
+    @apply bg-surface-border rounded-full;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    @apply bg-brand-500/60;
+  }
+}
+
+@layer components {
+  /* Glass card */
+  .card-glass {
+    @apply bg-surface-card/60 backdrop-blur-sm border border-surface-border rounded-2xl;
+  }
+
+  /* Dashboard card */
+  .dash-card {
+    @apply bg-white border border-gray-100 rounded-xl shadow-sm;
+  }
+
+  /* Glowing pill badge */
+  .badge-glow {
+    @apply inline-flex items-center gap-1.5 px-3 py-1 rounded-full
+           text-xs font-semibold tracking-wide uppercase
+           bg-brand-500/10 border border-brand-500/30 text-brand-400;
+  }
+
+  /* Gradient text utility */
+  .text-gradient {
+    @apply bg-gradient-to-r from-brand-400 via-red-400 to-accent-500
+           bg-clip-text text-transparent;
+  }
+
+  /* Primary button */
+  .btn-primary {
+    @apply inline-flex items-center justify-center gap-2
+           px-6 py-3 rounded-xl font-semibold text-sm
+           bg-brand-500 hover:bg-brand-600 text-white
+           shadow-lg shadow-brand-500/25
+           transition-all duration-200 ease-out
+           hover:shadow-brand-600/40 hover:-translate-y-0.5
+           active:translate-y-0;
+  }
+
+  /* Ghost/outline button */
+  .btn-ghost {
+    @apply inline-flex items-center justify-center gap-2
+           px-6 py-3 rounded-xl font-semibold text-sm
+           bg-transparent border border-surface-border
+           text-slate-300 hover:text-white hover:border-brand-500/60
+           transition-all duration-200 ease-out;
+  }
+
+  /* Section padding */
+  .section-pad {
+    @apply py-24 px-4 sm:px-6 lg:px-8;
+  }
+
+  /* Max width container */
+  .container-xl {
+    @apply max-w-7xl mx-auto;
+  }
+
+  /* Divider glow */
+  .divider-glow {
+    @apply h-px w-full bg-gradient-to-r from-transparent via-surface-border to-transparent;
+  }
+
+  /* ── Dashboard app shell ─────────────────────────────── */
+
+  /* Sidebar nav item */
+  .nav-item {
+    @apply flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium
+           text-sidebar-text transition-all duration-150 cursor-pointer w-full;
+  }
+  .nav-item:hover {
+    @apply bg-sidebar-hover text-white;
+  }
+  .nav-item.active {
+    @apply bg-sidebar-active text-white;
+  }
+
+  /* KPI stat card (light) */
+  .kpi-card {
+    @apply bg-white border border-gray-100 rounded-xl p-5 shadow-sm
+           flex items-start justify-between gap-4;
+  }
+
+  /* Status badge */
+  .badge-live {
+    @apply inline-flex items-center gap-1 px-2 py-0.5 rounded-full
+           text-xs font-semibold bg-red-100 text-red-600;
+  }
+  .badge-upcoming {
+    @apply inline-flex items-center gap-1 px-2 py-0.5 rounded-full
+           text-xs font-semibold bg-green-100 text-green-700;
+  }
+  .badge-completed {
+    @apply inline-flex items-center gap-1 px-2 py-0.5 rounded-full
+           text-xs font-semibold bg-gray-100 text-gray-600;
+  }
+  .badge-online {
+    @apply inline-flex items-center gap-1 px-2 py-0.5 rounded-full
+           text-xs font-semibold bg-green-100 text-green-700;
+  }
+  .badge-onsite {
+    @apply inline-flex items-center gap-1 px-2 py-0.5 rounded-full
+           text-xs font-semibold bg-amber-100 text-amber-700;
+  }
+  .badge-host {
+    @apply inline-flex items-center gap-1 px-2 py-0.5 rounded-full
+           text-xs font-semibold bg-red-100 text-red-600 border border-red-200;
+  }
+  .badge-owner {
+    @apply inline-flex items-center gap-1 px-2 py-0.5 rounded-full
+           text-xs font-semibold bg-red-100 text-red-600 border border-red-200;
+  }
+  .badge-instructor {
+    @apply inline-flex items-center gap-1 px-2 py-0.5 rounded-full
+           text-xs font-semibold bg-red-100 text-red-600 border border-red-200;
+  }
+
+  /* Progress bar track */
+  .progress-track {
+    @apply w-full h-1.5 bg-gray-100 rounded-full overflow-hidden;
+  }
+  .progress-fill {
+    @apply h-full rounded-full transition-all duration-500;
+  }
+
+  /* App page header */
+  .page-header {
+    @apply flex items-center justify-between mb-6;
+  }
+  .page-title {
+    @apply text-2xl font-display font-bold text-gray-900;
+  }
+  .page-subtitle {
+    @apply text-sm text-gray-500 mt-0.5;
+  }
+
+  /* Form input field */
+  .input-field {
+    @apply w-full px-3 py-2.5 text-sm border border-gray-200 rounded-lg
+           focus:outline-none focus:ring-2 focus:ring-[#8B1A1A]/20 focus:border-[#8B1A1A]/40
+           bg-gray-50/50 text-gray-800 placeholder-gray-400 transition-all;
+  }
+}
+
+@layer utilities {
+  .border-gradient {
+    border: 1px solid transparent;
+    background-clip: padding-box;
+    position: relative;
+  }
+
+  .animate-delay-100 { animation-delay: 100ms; }
+  .animate-delay-200 { animation-delay: 200ms; }
+  .animate-delay-300 { animation-delay: 300ms; }
+  .animate-delay-500 { animation-delay: 500ms; }
+}
+
+/* ── Fade-in animation ──────────────────────────────────────── */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes slideInRight {
+  from { opacity: 0; transform: translateX(20px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.3s ease-out both;
+}
+
+.animate-fade-in-up {
+  animation: fadeInUp 0.4s ease-out both;
+}
+
+.animate-slide-in-right {
+  animation: slideInRight 0.3s ease-out both;
+}
+
+/* Modal overlay */
+.modal-overlay {
+  @apply fixed inset-0 bg-black/40 backdrop-blur-sm z-50 flex items-center justify-center p-4;
+}
+.modal-panel {
+  @apply bg-white rounded-2xl shadow-2xl w-full max-w-lg border border-gray-100;
+}

@@ -1,0 +1,369 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// User & Authentication
+// ─────────────────────────────────────────────────────────────────────────────
+
+model User {
+  id              String    @id @default(cuid())
+  email           String    @unique
+  password        String?   // nullable for OAuth
+  firstName       String
+  lastName        String
+  phone           String?
+  avatarInitials  String
+  bio             String?
+  department      String?
+  role            UserRole  @default(PARTICIPANT)
+  status          UserStatus @default(ACTIVE)
+  lastActive      DateTime  @default(now())
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+
+  // Relations
+  organizedEvents Event[]     @relation("Organizer")
+  registrations   Registration[]
+  trainingsEnrolled Training[] @relation("Students")
+  instructorTrainings Training[] @relation("Instructor")
+  hostedMeetings  Meeting[]  @relation("Host")
+  notifications   Notification[]
+  certificates    Certificate[]
+  feedbackResponses Feedback[]
+
+  @@index([email])
+  @@index([role])
+  @@index([status])
+}
+
+enum UserRole {
+  ADMIN
+  ORGANIZER
+  INSTRUCTOR
+  PARTICIPANT
+}
+
+enum UserStatus {
+  ACTIVE
+  INACTIVE
+  SUSPENDED
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Events & Registration
+// ─────────────────────────────────────────────────────────────────────────────
+
+model Event {
+  id                String      @id @default(cuid())
+  name              String
+  description       String      @db.Text
+  type              EventType
+  status            EventStatus @default(UPCOMING)
+  date              DateTime
+  endDate           DateTime
+  location          String      // URL for online, address for onsite
+  organizerId       String
+  organizer         User        @relation("Organizer", fields: [organizerId], references: [id], onDelete: Cascade)
+  maxParticipants   Int         @default(50)
+  participantCount  Int         @default(0)
+  tags              String[]    @default([])
+  
+  // Ticketing
+  isPaid            Boolean     @default(false)
+  ticketPrice       Float       @default(0)
+  joinCode          String      @unique
+  registrationCount Int         @default(0)
+  
+  // Media
+  thumbnailUrl      String?
+  bannerUrl         String?
+  
+  // Engagement
+  views             Int         @default(0)
+  
+  createdAt         DateTime    @default(now())
+  updatedAt         DateTime    @updatedAt
+
+  // Relations
+  registrations     Registration[]
+  feedback          Feedback[]
+  reports           EventReport[]
+
+  @@index([organizerId])
+  @@index([status])
+  @@index([type])
+}
+
+enum EventType {
+  ONLINE
+  ONSITE
+  HYBRID
+}
+
+enum EventStatus {
+  UPCOMING
+  ONGOING
+  COMPLETED
+  CANCELLED
+}
+
+model Registration {
+  id            String       @id @default(cuid())
+  eventId       String
+  event         Event        @relation(fields: [eventId], references: [id], onDelete: Cascade)
+  userId        String
+  user          User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+  ticketCode    String       @unique
+  status        RegistrationStatus @default(PENDING)
+  paymentRef    String?      // Payment gateway reference
+  paymentStatus PaymentStatus @default(PENDING)
+  amountPaid    Float?
+  checkedIn     Boolean      @default(false)
+  checkedInAt   DateTime?
+  createdAt     DateTime     @default(now())
+  updatedAt     DateTime     @updatedAt
+
+  @@unique([eventId, userId])
+  @@index([eventId])
+  @@index([userId])
+  @@index([status])
+}
+
+enum RegistrationStatus {
+  CONFIRMED
+  PENDING
+  CANCELLED
+}
+
+enum PaymentStatus {
+  PENDING
+  COMPLETED
+  FAILED
+  REFUNDED
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Training & Courses
+// ─────────────────────────────────────────────────────────────────────────────
+
+model Training {
+  id              String    @id @default(cuid())
+  title           String
+  description     String    @db.Text
+  category        TrainingCategory
+  hours           Int
+  modules         Int
+  instructorId    String
+  instructor      User      @relation("Instructor", fields: [instructorId], references: [id])
+  students        User[]    @relation("Students")
+  thumbnailUrl    String?
+  contentUrl      String?   // Link to training materials
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+
+  // Relations
+  enrollments     Enrollment[]
+  certificates    Certificate[] @relation("TrainingCertificates")
+
+  @@index([instructorId])
+  @@index([category])
+}
+
+enum TrainingCategory {
+  MARKETING
+  MANAGEMENT
+  ANALYTICS
+  LEADERSHIP
+  TECHNOLOGY
+  FINANCE
+  HR
+  COMMUNICATION
+}
+
+model Enrollment {
+  id            String    @id @default(cuid())
+  userId        String
+  user          User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  trainingId    String
+  training      Training  @relation(fields: [trainingId], references: [id], onDelete: Cascade)
+  progress      Int       @default(0) // 0-100
+  status        TrainingStatus @default(NOT_STARTED)
+  completedAt   DateTime?
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  @@unique([userId, trainingId])
+  @@index([userId])
+  @@index([trainingId])
+}
+
+enum TrainingStatus {
+  NOT_STARTED
+  IN_PROGRESS
+  COMPLETED
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Meetings
+// ─────────────────────────────────────────────────────────────────────────────
+
+model Meeting {
+  id              String    @id @default(cuid())
+  title           String
+  description     String    @db.Text
+  status          MeetingStatus @default(UPCOMING)
+  date            DateTime
+  duration        Int       // minutes
+  hostId          String
+  host            User      @relation("Host", fields: [hostId], references: [id], onDelete: Cascade)
+  maxParticipants Int       @default(100)
+  participantCount Int      @default(0)
+  meetingUrl      String?   // Jitsi or Zoom URL
+  meetingProvider String    @default("jitsi") // jitsi, zoom
+  zoomMeetingId   String?
+  recordingUrl    String?
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+
+  @@index([hostId])
+  @@index([status])
+}
+
+enum MeetingStatus {
+  LIVE
+  UPCOMING
+  COMPLETED
+  CANCELLED
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Certificates
+// ─────────────────────────────────────────────────────────────────────────────
+
+model Certificate {
+  id            String    @id @default(cuid())
+  userId        String
+  user          User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  trainingId    String?
+  training      Training? @relation("TrainingCertificates", fields: [trainingId], references: [id])
+  eventId       String?
+  event         Event?    @relation(fields: [eventId], references: [id])
+  title         String
+  description   String?
+  certificateNumber String @unique
+  issuedDate    DateTime  @default(now())
+  expiryDate    DateTime?
+  certificateUrl String?  // S3 or PDF storage
+  createdAt     DateTime  @default(now())
+
+  @@index([userId])
+  @@index([trainingId])
+  @@index([eventId])
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Payments
+// ─────────────────────────────────────────────────────────────────────────────
+
+model Payment {
+  id              String    @id @default(cuid())
+  registrationId  String    @unique
+  registration    Registration @relation(fields: [registrationId], references: [id], onDelete: Cascade)
+  amount          Float
+  currency        String    @default("PHP")
+  status          PaymentStatus
+  provider        String    // stripe, paymongo, gcash
+  providerRef     String?   // transaction ID from provider
+  paymentMethod   String?   // card, e-wallet, bank_transfer
+  metadata        Json?
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+
+  @@index([registrationId])
+  @@index([status])
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Notifications
+// ─────────────────────────────────────────────────────────────────────────────
+
+model Notification {
+  id            String    @id @default(cuid())
+  userId        String
+  user          User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  title         String
+  message       String
+  category      NotificationCategory
+  priority      String    @default("normal") // high, normal, low
+  isRead        Boolean   @default(false)
+  actionUrl     String?
+  createdAt     DateTime  @default(now())
+
+  @@index([userId])
+  @@index([isRead])
+}
+
+enum NotificationCategory {
+  EVENT
+  MEETING
+  TRAINING
+  SYSTEM
+  PAYMENT
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Feedback & Reviews
+// ─────────────────────────────────────────────────────────────────────────────
+
+model Feedback {
+  id            String    @id @default(cuid())
+  userId        String
+  user          User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  eventId       String?
+  event         Event?    @relation(fields: [eventId], references: [id])
+  rating        Int       // 1-5
+  comment       String?   @db.Text
+  createdAt     DateTime  @default(now())
+
+  @@index([userId])
+  @@index([eventId])
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Analytics & Reports
+// ─────────────────────────────────────────────────────────────────────────────
+
+model EventReport {
+  id              String    @id @default(cuid())
+  eventId         String
+  event           Event     @relation(fields: [eventId], references: [id], onDelete: Cascade)
+  totalRegistered Int       @default(0)
+  totalAttended   Int       @default(0)
+  totalRevenue    Float     @default(0)
+  averageRating   Float     @default(0)
+  engagementScore Int       @default(0)
+  generatedAt     DateTime  @default(now())
+
+  @@index([eventId])
+}
+
+model AnalyticsSnapshot {
+  id                    String    @id @default(cuid())
+  date                  DateTime  @default(now()) @db.Date
+  totalUsers            Int
+  totalEvents           Int
+  totalTrainings        Int
+  totalRevenue          Float
+  averageAttendance     Float
+  certificatesIssued    Int
+  systemHealth          Int       // 0-100
+  createdAt             DateTime  @default(now())
+
+  @@unique([date])
+}
