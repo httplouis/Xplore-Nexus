@@ -1,4 +1,6 @@
 import { NextResponse } from "next/server";
+import { prisma } from "@/lib/prisma";
+import { NotificationCategory } from "@prisma/client";
 import { generateCertificate } from "@/lib/certificate";
 
 function generateCertificateNumber(): string {
@@ -9,7 +11,6 @@ function generateCertificateNumber(): string {
 }
 
 // POST /api/certificates/issue
-// Issue a certificate - stores in localStorage
 export async function POST(request: Request) {
   try {
     const {
@@ -31,10 +32,8 @@ export async function POST(request: Request) {
       );
     }
 
-    // Get user from localStorage
-    const users = JSON.parse(localStorage.getItem("xplore_users") || "[]");
-    const user = users.find((u: any) => u.id === userId);
-
+    // Get user from DB
+    const user = await prisma.user.findUnique({ where: { id: userId } });
     if (!user) {
       return NextResponse.json({ error: "User not found" }, { status: 404 });
     }
@@ -42,7 +41,7 @@ export async function POST(request: Request) {
     const certificateNumber = generateCertificateNumber();
     const issuedDate = new Date();
 
-    // Generate PDF (in browser/server)
+    // Generate PDF
     let pdfBase64 = "";
     try {
       const pdfBuffer = await generateCertificate({
@@ -56,41 +55,31 @@ export async function POST(request: Request) {
       pdfBase64 = pdfBuffer.toString("base64");
     } catch (pdfError) {
       console.warn("PDF generation warning:", pdfError);
-      // Continue even if PDF fails
     }
 
-    // Save certificate record
-    const certificate = {
-      id: `cert-${Date.now()}`,
-      userId,
-      trainingId: trainingId || undefined,
-      eventId: eventId || undefined,
-      title: certificateTitle,
-      certificateNumber,
-      issuedDate: issuedDate.toISOString(),
-    };
-
-    const certificates = JSON.parse(
-      localStorage.getItem("xplore_certificates") || "[]"
-    );
-    certificates.push(certificate);
-    localStorage.setItem("xplore_certificates", JSON.stringify(certificates));
-
-    // Create notification
-    const notifications = JSON.parse(
-      localStorage.getItem("xplore_notifications") || "[]"
-    );
-    notifications.push({
-      id: `notif-${Date.now()}`,
-      userId,
-      title: "Certificate Issued",
-      message: `You've earned a certificate for ${certificateTitle}`,
-      category: "SYSTEM",
-      priority: "high",
-      isRead: false,
-      createdAt: new Date().toISOString(),
+    // Save certificate record in DB
+    const certificate = await prisma.certificate.create({
+      data: {
+        userId,
+        trainingId: trainingId || null,
+        eventId: eventId || null,
+        title: certificateTitle,
+        certificateNumber,
+        issuedDate,
+      },
     });
-    localStorage.setItem("xplore_notifications", JSON.stringify(notifications));
+
+    // Create notification in DB
+    await prisma.notification.create({
+      data: {
+        userId,
+        title: "Certificate Issued",
+        message: `You've earned a certificate for ${certificateTitle}`,
+        category: NotificationCategory.SYSTEM,
+        priority: "high",
+        isRead: false,
+      },
+    });
 
     return NextResponse.json({
       success: true,
@@ -122,12 +111,12 @@ export async function GET(request: Request) {
       );
     }
 
-    const certificates = JSON.parse(
-      localStorage.getItem("xplore_certificates") || "[]"
-    );
-    const userCerts = certificates.filter((c: any) => c.userId === userId);
+    const certificates = await prisma.certificate.findMany({
+      where: { userId },
+      orderBy: { issuedDate: "desc" },
+    });
 
-    return NextResponse.json({ success: true, data: userCerts });
+    return NextResponse.json({ success: true, data: certificates });
   } catch (error: any) {
     return NextResponse.json(
       { error: error.message },

@@ -1,12 +1,13 @@
 import { NextResponse } from "next/server";
 import Stripe from "stripe";
+import { prisma } from "@/lib/prisma";
+import { PaymentStatus, RegistrationStatus, NotificationCategory } from "@prisma/client";
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY || "sk_test_dummy");
 
 const endpointSecret = process.env.STRIPE_WEBHOOK_SECRET || "";
 
 // POST /api/payments/webhook
-// Stripe webhook for payment confirmation
 export async function POST(request: Request) {
   let event: Stripe.Event;
 
@@ -23,7 +24,6 @@ export async function POST(request: Request) {
     );
   }
 
-  // Handle event types
   if (
     event.type === "payment_intent.succeeded" ||
     event.type === "payment_intent.payment_failed"
@@ -31,76 +31,93 @@ export async function POST(request: Request) {
     const paymentIntent = event.data.object as Stripe.PaymentIntent;
     const registrationId = paymentIntent.metadata.registrationId;
 
-    // Get data from localStorage
-    const payments = JSON.parse(localStorage.getItem("xplore_payments") || "[]");
-    const registrations = JSON.parse(
-      localStorage.getItem("xplore_registrations") || "[]"
-    );
-    const notifications = JSON.parse(
-      localStorage.getItem("xplore_notifications") || "[]"
-    );
+    if (!registrationId) {
+      return NextResponse.json({ received: true });
+    }
 
-    if (event.type === "payment_intent.succeeded") {
-      // Update payment status
-      const payment = payments.find(
-        (p: any) => p.providerRef === paymentIntent.id
-      );
-      if (payment) {
-        payment.status = "COMPLETED";
-      }
+    const isSuccess = event.type === "payment_intent.succeeded";
 
-      // Update registration payment status
-      const registration = registrations.find((r: any) => r.id === registrationId);
-      if (registration) {
-        registration.status = "Confirmed";
-        registration.paymentStatus = "COMPLETED";
-        registration.paymentRef = paymentIntent.id;
-      }
+    // Update registration and payment in DB
+    const registration = await prisma.registration.findUnique({
+      where: { id: registrationId },
+      include: { event: true },
+    });
 
-      // Create success notification
-      if (registration) {
-        notifications.push({
-          id: `notif-${Date.now()}`,
+    if (!registration) {
+      return NextResponse.json({ received: true });
+    }
+
+    if (isSuccess) {
+      await prisma.registration.update({
+        where: { id: registrationId },
+        data: {
+          status: RegistrationStatus.CONFIRMED,
+          paymentStatus: PaymentStatus.COMPLETED,
+          amountPaid: registration.event.ticketPrice,
+        },
+      });
+
+      await prisma.payment.upsert({
+        where: { registrationId },
+        update: {
+          status: PaymentStatus.COMPLETED,
+          providerRef: paymentIntent.id,
+        },
+        create: {
+          registrationId,
+          amount: registration.event.ticketPrice,
+          status: PaymentStatus.COMPLETED,
+          provider: "stripe",
+          providerRef: paymentIntent.id,
+          paymentMethod: "card",
+        },
+      });
+
+      await prisma.event.update({
+        where: { id: registration.eventId },
+        data: { participantCount: { increment: 1 } },
+      });
+
+      await prisma.notification.create({
+        data: {
           userId: registration.userId,
           title: "Payment Successful",
           message: "Your event ticket payment has been confirmed",
-          category: "PAYMENT",
+          category: NotificationCategory.PAYMENT,
           priority: "high",
           isRead: false,
-          createdAt: new Date().toISOString(),
-        });
-      }
+        },
+      });
     } else {
-      // Payment failed
-      const payment = payments.find(
-        (p: any) => p.providerRef === paymentIntent.id
-      );
-      if (payment) {
-        payment.status = "FAILED";
-      }
+      await prisma.registration.update({
+        where: { id: registrationId },
+        data: { paymentStatus: PaymentStatus.FAILED },
+      });
 
-      const registration = registrations.find((r: any) => r.id === registrationId);
-      if (registration) {
-        registration.paymentStatus = "FAILED";
+      await prisma.payment.upsert({
+        where: { registrationId },
+        update: { status: PaymentStatus.FAILED },
+        create: {
+          registrationId,
+          amount: registration.event.ticketPrice,
+          status: PaymentStatus.FAILED,
+          provider: "stripe",
+          providerRef: paymentIntent.id,
+          paymentMethod: "card",
+        },
+      });
 
-        // Create failure notification
-        notifications.push({
-          id: `notif-${Date.now()}`,
+      await prisma.notification.create({
+        data: {
           userId: registration.userId,
           title: "Payment Failed",
           message: "Your payment could not be processed",
-          category: "PAYMENT",
+          category: NotificationCategory.PAYMENT,
           priority: "high",
           isRead: false,
-          createdAt: new Date().toISOString(),
-        });
-      }
+        },
+      });
     }
-
-    // Save updated data
-    localStorage.setItem("xplore_payments", JSON.stringify(payments));
-    localStorage.setItem("xplore_registrations", JSON.stringify(registrations));
-    localStorage.setItem("xplore_notifications", JSON.stringify(notifications));
   }
 
   return NextResponse.json({ received: true });

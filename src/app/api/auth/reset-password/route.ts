@@ -1,8 +1,9 @@
 import { NextResponse } from "next/server";
+import bcrypt from "bcryptjs";
 import crypto from "crypto";
+import { prisma } from "@/lib/prisma";
 
 // POST /api/auth/reset-password
-// Reset password with token
 export async function POST(request: Request) {
   try {
     const { token, password, confirmPassword } = await request.json();
@@ -28,49 +29,39 @@ export async function POST(request: Request) {
       );
     }
 
-    // Hash the token to find it
+    // Hash the token to find it in DB
     const tokenHash = crypto
       .createHash("sha256")
       .update(token)
       .digest("hex");
 
-    // Get reset tokens from localStorage
-    const resetTokens = JSON.parse(
-      localStorage.getItem("xplore_reset_tokens") || "[]"
-    );
+    // Find user with matching reset token that hasn't expired
+    const user = await prisma.user.findFirst({
+      where: {
+        resetToken: tokenHash,
+        resetTokenExpiry: { gt: new Date() },
+      },
+    });
 
-    // Find and validate token
-    const resetTokenIndex = resetTokens.findIndex(
-      (rt: any) => rt.tokenHash === tokenHash && new Date(rt.expiresAt) > new Date()
-    );
-
-    if (resetTokenIndex === -1) {
+    if (!user) {
       return NextResponse.json(
         { error: "Invalid or expired reset token" },
         { status: 400 }
       );
     }
 
-    const resetToken = resetTokens[resetTokenIndex];
+    // Hash new password
+    const hashedPassword = await bcrypt.hash(password, 10);
 
-    // Get users from localStorage
-    const users = JSON.parse(localStorage.getItem("xplore_users") || "[]");
-    const userIndex = users.findIndex((u: any) => u.id === resetToken.userId);
-
-    if (userIndex === -1) {
-      return NextResponse.json(
-        { error: "User not found" },
-        { status: 404 }
-      );
-    }
-
-    // Update password
-    users[userIndex].password = password; // In production: hash with bcrypt
-    localStorage.setItem("xplore_users", JSON.stringify(users));
-
-    // Remove used token
-    resetTokens.splice(resetTokenIndex, 1);
-    localStorage.setItem("xplore_reset_tokens", JSON.stringify(resetTokens));
+    // Update password and clear reset token
+    await prisma.user.update({
+      where: { id: user.id },
+      data: {
+        password: hashedPassword,
+        resetToken: null,
+        resetTokenExpiry: null,
+      },
+    });
 
     return NextResponse.json({
       success: true,

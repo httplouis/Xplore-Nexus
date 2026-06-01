@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
+import { prisma } from "@/lib/prisma";
 
 // GET /api/reports/user?userId=XXX
-// Get user engagement report from localStorage
 export async function GET(request: Request) {
   try {
     const { searchParams } = new URL(request.url);
@@ -14,47 +14,39 @@ export async function GET(request: Request) {
       );
     }
 
-    // Get data from localStorage
-    const users = JSON.parse(localStorage.getItem("xplore_users") || "[]");
-    const registrations = JSON.parse(
-      localStorage.getItem("xplore_registrations") || "[]"
-    );
-    const enrollments = JSON.parse(localStorage.getItem("xplore_enrollments") || "[]");
-    const certificates = JSON.parse(
-      localStorage.getItem("xplore_certificates") || "[]"
-    );
-
-    const user = users.find((u: any) => u.id === userId);
+    const user = await prisma.user.findUnique({ where: { id: userId } });
     if (!user) {
       return NextResponse.json({ error: "User not found" }, { status: 404 });
     }
 
-    const userRegs = registrations.filter((r: any) => r.userId === userId);
-    const userEnrollments = enrollments.filter((e: any) => e.userId === userId);
-    const userCerts = certificates.filter((c: any) => c.userId === userId);
+    const [registrations, enrollments, certificates] = await Promise.all([
+      prisma.registration.findMany({ where: { userId }, include: { event: true } }),
+      prisma.enrollment.findMany({ where: { userId }, include: { training: true } }),
+      prisma.certificate.findMany({ where: { userId } }),
+    ]);
 
-    const eventAttended = userRegs.filter((r: any) => r.checkedIn).length;
-    const trainingCompleted = userEnrollments.filter(
-      (e: any) => e.status === "COMPLETED"
+    const eventAttended = registrations.filter((r) => r.checkedIn).length;
+    const trainingCompleted = enrollments.filter(
+      (e) => e.status === "COMPLETED"
     ).length;
     const totalPoints =
-      trainingCompleted * 10 + eventAttended * 5 + userCerts.length * 20;
+      trainingCompleted * 10 + eventAttended * 5 + certificates.length * 20;
 
     const activities = [
-      ...userRegs.map((r: any) => ({
-        type: "EVENT_REGISTRATION",
-        title: `Registered for ${r.eventName}`,
-        date: r.registeredAt,
+      ...registrations.map((r) => ({
+        type: "EVENT_REGISTRATION" as const,
+        title: `Registered for ${r.event?.name || "Event"}`,
+        date: r.createdAt.toISOString(),
       })),
-      ...userEnrollments.map((e: any) => ({
-        type: "TRAINING_ENROLLMENT",
-        title: `Enrolled in training`,
-        date: e.enrolledAt || new Date().toISOString(),
+      ...enrollments.map((e) => ({
+        type: "TRAINING_ENROLLMENT" as const,
+        title: `Enrolled in ${e.training?.title || "Training"}`,
+        date: e.createdAt.toISOString(),
       })),
-      ...userCerts.map((c: any) => ({
-        type: "CERTIFICATE_EARNED",
+      ...certificates.map((c) => ({
+        type: "CERTIFICATE_EARNED" as const,
         title: `Earned certificate: ${c.title}`,
-        date: c.issuedDate,
+        date: c.issuedDate.toISOString(),
       })),
     ].sort(
       (a, b) =>
@@ -69,13 +61,13 @@ export async function GET(request: Request) {
         email: user.email,
         role: user.role,
         department: user.department,
-        joinedDate: user.createdAt,
-        lastActive: user.lastActive,
-        eventsRegistered: userRegs.length,
+        joinedDate: user.createdAt.toISOString(),
+        lastActive: user.lastActive.toISOString(),
+        eventsRegistered: registrations.length,
         eventsAttended: eventAttended,
-        trainingsEnrolled: userEnrollments.length,
+        trainingsEnrolled: enrollments.length,
         trainingsCompleted: trainingCompleted,
-        certificatesEarned: userCerts.length,
+        certificatesEarned: certificates.length,
         totalPoints,
         rank:
           totalPoints > 100 ? "Expert" : totalPoints > 50 ? "Intermediate" : "Beginner",

@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
+import { prisma } from "@/lib/prisma";
 
 // GET /api/reports/event?eventId=XXX
-// Get event analytics from localStorage
 export async function GET(request: Request) {
   try {
     const { searchParams } = new URL(request.url);
@@ -14,28 +14,26 @@ export async function GET(request: Request) {
       );
     }
 
-    // Get data from localStorage
-    const events = JSON.parse(localStorage.getItem("xplore_events") || "[]");
-    const registrations = JSON.parse(
-      localStorage.getItem("xplore_registrations") || "[]"
-    );
-    const feedback = JSON.parse(localStorage.getItem("xplore_feedback") || "[]");
-
-    const event = events.find((e: any) => e.id === eventId);
+    const event = await prisma.event.findUnique({ where: { id: eventId } });
     if (!event) {
       return NextResponse.json({ error: "Event not found" }, { status: 404 });
     }
 
-    const eventRegs = registrations.filter((r: any) => r.eventId === eventId);
-    const eventFeedback = feedback.filter((f: any) => f.eventId === eventId);
+    const [registrations, feedback] = await Promise.all([
+      prisma.registration.findMany({
+        where: { eventId },
+        include: { user: true },
+      }),
+      prisma.feedback.findMany({ where: { eventId }, include: { user: true } }),
+    ]);
 
-    const totalRegistered = eventRegs.length;
-    const confirmedRegs = eventRegs.filter((r: any) => r.status === "Confirmed").length;
-    const attendedRegs = eventRegs.filter((r: any) => r.checkedIn).length;
+    const totalRegistered = registrations.length;
+    const confirmedRegs = registrations.filter((r) => r.status === "CONFIRMED").length;
+    const attendedRegs = registrations.filter((r) => r.checkedIn).length;
     const avgRating =
-      eventFeedback.length > 0
-        ? eventFeedback.reduce((sum: number, f: any) => sum + (f.rating || 0), 0) /
-          eventFeedback.length
+      feedback.length > 0
+        ? feedback.reduce((sum: number, f) => sum + (f.rating || 0), 0) /
+          feedback.length
         : 0;
 
     const attendanceRate =
@@ -46,11 +44,11 @@ export async function GET(request: Request) {
       data: {
         eventId,
         eventName: event.name,
-        eventDate: event.date,
+        eventDate: event.date.toISOString(),
         eventStatus: event.status,
         totalRegistered,
         confirmedRegistrations: confirmedRegs,
-        cancelledRegistrations: eventRegs.filter((r: any) => r.status === "Cancelled")
+        cancelledRegistrations: registrations.filter((r) => r.status === "CANCELLED")
           .length,
         registrationRate: ((confirmedRegs / (event.maxParticipants || 50)) * 100).toFixed(2),
         totalAttended: attendedRegs,
@@ -59,14 +57,14 @@ export async function GET(request: Request) {
         totalRevenue: 0,
         averageRating: avgRating.toFixed(2),
         engagementScore: Math.round((attendanceRate * 0.5 + avgRating * 10) / 1.5),
-        totalFeedback: eventFeedback.length,
-        attendees: eventRegs.map((r: any) => ({
+        totalFeedback: feedback.length,
+        attendees: registrations.map((r) => ({
           id: r.id,
-          name: r.userName,
-          email: r.userEmail,
+          name: r.user ? `${r.user.firstName} ${r.user.lastName}` : "Unknown",
+          email: r.user?.email || "",
           status: r.status,
           checkedIn: r.checkedIn || false,
-          registeredAt: r.registeredAt,
+          registeredAt: r.createdAt.toISOString(),
         })),
       },
     });

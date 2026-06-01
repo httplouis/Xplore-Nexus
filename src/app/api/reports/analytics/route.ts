@@ -1,58 +1,67 @@
 import { NextResponse } from "next/server";
+import { prisma } from "@/lib/prisma";
 
 // GET /api/reports/analytics?startDate=YYYY-MM-DD&endDate=YYYY-MM-DD
-// Get platform-wide analytics from localStorage
 export async function GET(request: Request) {
   try {
-    // Get all data from localStorage
-    const users = JSON.parse(localStorage.getItem("xplore_users") || "[]");
-    const events = JSON.parse(localStorage.getItem("xplore_events") || "[]");
-    const trainings = JSON.parse(localStorage.getItem("xplore_trainings") || "[]");
-    const registrations = JSON.parse(
-      localStorage.getItem("xplore_registrations") || "[]"
-    );
-    const enrollments = JSON.parse(localStorage.getItem("xplore_enrollments") || "[]");
-    const certificates = JSON.parse(
-      localStorage.getItem("xplore_certificates") || "[]"
-    );
-    const payments = JSON.parse(localStorage.getItem("xplore_payments") || "[]");
+    const { searchParams } = new URL(request.url);
+    const startDate = searchParams.get("startDate");
+    const endDate = searchParams.get("endDate");
 
-    // Calculate metrics
+    const dateFilter = startDate && endDate ? {
+      createdAt: {
+        gte: new Date(startDate),
+        lte: new Date(endDate + "T23:59:59.999Z"),
+      },
+    } : {};
+
+    const [
+      users,
+      events,
+      trainings,
+      registrations,
+      enrollments,
+      certificates,
+      payments,
+    ] = await Promise.all([
+      prisma.user.findMany({ where: dateFilter }),
+      prisma.event.findMany({ where: dateFilter }),
+      prisma.training.findMany({ where: dateFilter }),
+      prisma.registration.findMany({ where: dateFilter }),
+      prisma.enrollment.findMany({ where: dateFilter }),
+      prisma.certificate.findMany({ where: dateFilter }),
+      prisma.payment.findMany({ where: dateFilter }),
+    ]);
+
     const totalUsers = users.length;
-    const activeUsers = users.filter((u: any) => u.status === "ACTIVE").length;
+    const activeUsers = users.filter((u) => u.status === "ACTIVE").length;
     const totalEvents = events.length;
     const totalTrainings = trainings.length;
     const totalCertificates = certificates.length;
     const totalRegistrations = registrations.length;
-    const totalAttendance = registrations.filter((r: any) => r.checkedIn).length;
+    const totalAttendance = registrations.filter((r) => r.checkedIn).length;
 
-    // Revenue
-    const completedPayments = payments.filter((p: any) => p.status === "COMPLETED");
-    const totalRevenue = completedPayments.reduce((sum: number, p: any) => sum + p.amount, 0);
+    const completedPayments = payments.filter((p) => p.status === "COMPLETED");
+    const totalRevenue = completedPayments.reduce((sum: number, p) => sum + p.amount, 0);
 
-    // User distribution
-    const usersByRole: any = {};
-    users.forEach((u: any) => {
+    const usersByRole: Record<string, number> = {};
+    users.forEach((u) => {
       usersByRole[u.role] = (usersByRole[u.role] || 0) + 1;
     });
 
-    // Event status
-    const eventsByStatus: any = {};
-    events.forEach((e: any) => {
+    const eventsByStatus: Record<string, number> = {};
+    events.forEach((e) => {
       eventsByStatus[e.status] = (eventsByStatus[e.status] || 0) + 1;
     });
 
-    // Training stats
-    const trainingStats: any = {};
-    enrollments.forEach((e: any) => {
+    const trainingStats: Record<string, number> = {};
+    enrollments.forEach((e) => {
       trainingStats[e.status] = (trainingStats[e.status] || 0) + 1;
     });
 
-    // Attendance rate
     const avgAttendanceRate =
       totalRegistrations > 0 ? (totalAttendance / totalRegistrations) * 100 : 0;
 
-    // System health (0-100)
     const paymentConversion =
       payments.length > 0 ? (completedPayments.length / payments.length) * 100 : 0;
     const systemHealth = Math.round(
@@ -79,7 +88,7 @@ export async function GET(request: Request) {
             : 0,
         paymentMetrics: {
           completed: completedPayments.length,
-          pending: payments.filter((p: any) => p.status === "PENDING").length,
+          pending: payments.filter((p) => p.status === "PENDING").length,
           conversionRate: paymentConversion.toFixed(2),
         },
         trainingStats,
