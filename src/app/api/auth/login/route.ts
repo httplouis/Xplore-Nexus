@@ -1,52 +1,8 @@
 import { NextResponse } from "next/server";
 import jwt from "jsonwebtoken";
-
-// Demo account fallback
-const DEMO_ACCOUNTS = [
-  {
-    id: "u-001",
-    firstName: "Jose",
-    lastName: "Dela Cruz",
-    email: "jose.dc@xplore.io",
-    password: "hashed_password_123",
-    role: "ADMIN",
-    status: "ACTIVE",
-    department: "Information Technology",
-    avatarInitials: "JDC",
-    bio: "Platform administrator for Xplore Nexus.",
-    phone: "+63 912 345 6789",
-  },
-  {
-    id: "u-002",
-    firstName: "Maria",
-    lastName: "Santos",
-    email: "maria.santos@xplore.io",
-    password: "hashed_password_123",
-    role: "ORGANIZER",
-    department: "Events & Communications",
-    avatarInitials: "MS",
-  },
-  {
-    id: "u-004",
-    firstName: "Anna",
-    lastName: "Cruz",
-    email: "anna.cruz@xplore.io",
-    password: "hashed_password_123",
-    role: "INSTRUCTOR",
-    department: "Learning & Development",
-    avatarInitials: "AC",
-  },
-  {
-    id: "u-007",
-    firstName: "Carlos",
-    lastName: "Bautista",
-    email: "carlos.bautista@xplore.io",
-    password: "hashed_password_123",
-    role: "PARTICIPANT",
-    department: "Finance",
-    avatarInitials: "CB",
-  },
-];
+import bcrypt from "bcryptjs";
+import { prisma } from "@/lib/prisma";
+import { mapUserToAuthUser } from "@/lib/db-mappers";
 
 // POST /api/auth/login
 export async function POST(request: Request) {
@@ -66,60 +22,68 @@ export async function POST(request: Request) {
     );
   }
 
-  // Try localStorage first
   try {
-    const users = JSON.parse(localStorage.getItem("xplore_users") || "[]");
-    const user = users.find((u: any) => u.email.toLowerCase() === email.toLowerCase());
+    // Find user in DB
+    const dbUser = await prisma.user.findUnique({
+      where: { email: email.toLowerCase() },
+    });
 
-    if (user && user.status === "ACTIVE") {
-      if (password === user.password || password.length >= 4) {
-        const token = jwt.sign(
-          { id: user.id, email: user.email, role: user.role },
-          process.env.JWT_SECRET || "dev-secret",
-          { expiresIn: "7d" }
-        );
+    if (!dbUser) {
+      return NextResponse.json(
+        { success: false, error: "Invalid email or password." },
+        { status: 401 }
+      );
+    }
 
-        const { password: _, ...userWithoutPassword } = user;
+    if (dbUser.status !== "ACTIVE") {
+      return NextResponse.json(
+        { success: false, error: "This account has been suspended or is inactive." },
+        { status: 403 }
+      );
+    }
 
-        return NextResponse.json({
-          success: true,
-          data: { user: userWithoutPassword, token },
-          message: `Logged in as ${user.firstName} (${user.role})`,
-        });
+    // Verify password via bcrypt
+    let passwordMatches = false;
+    if (dbUser.password) {
+      passwordMatches = await bcrypt.compare(password, dbUser.password);
+      // Fallback for mock direct match (in case any legacy data remains)
+      if (!passwordMatches && password === dbUser.password) {
+        passwordMatches = true;
       }
     }
-  } catch (storageError) {
-    console.log("localStorage not available, using demo fallback");
-  }
 
-  // Fallback to demo accounts
-  const demoUser = DEMO_ACCOUNTS.find(
-    (a) => a.email.toLowerCase() === email.toLowerCase()
-  );
+    if (!passwordMatches) {
+      return NextResponse.json(
+        { success: false, error: "Invalid email or password." },
+        { status: 401 }
+      );
+    }
 
-  if (!demoUser) {
+    // Generate JWT token
+    const token = jwt.sign(
+      { id: dbUser.id, email: dbUser.email, role: dbUser.role },
+      process.env.JWT_SECRET || "dev-secret",
+      { expiresIn: "7d" }
+    );
+
+    const clientUser = mapUserToAuthUser(dbUser);
+
+    // Update last active timestamp in background
+    prisma.user.update({
+      where: { id: dbUser.id },
+      data: { lastActive: new Date() },
+    }).catch(err => console.error("Failed to update lastActive", err));
+
+    return NextResponse.json({
+      success: true,
+      data: { user: clientUser, token },
+      message: `Logged in as ${clientUser.firstName} (${clientUser.role})`,
+    });
+  } catch (error: any) {
+    console.error("Login API Error:", error);
     return NextResponse.json(
-      { success: false, error: "No account found with that email. Use one of the demo accounts." },
-      { status: 401 }
+      { success: false, error: "Internal server error: " + error.message },
+      { status: 500 }
     );
   }
-
-  if (!password || password.length < 4) {
-    return NextResponse.json(
-      { success: false, error: "Password too short." },
-      { status: 401 }
-    );
-  }
-
-  const token = jwt.sign(
-    { id: demoUser.id, email: demoUser.email, role: demoUser.role },
-    process.env.JWT_SECRET || "dev-secret",
-    { expiresIn: "7d" }
-  );
-
-  return NextResponse.json({
-    success: true,
-    data: { user: demoUser, token },
-    message: `Logged in as ${demoUser.firstName} (${demoUser.role})`,
-  });
 }

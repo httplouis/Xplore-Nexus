@@ -4,11 +4,11 @@ import { useEffect, useRef, useState, useCallback } from "react";
 import { useRole } from "@/lib/context/RoleContext";
 import {
   Copy, Check, Users, Clock, ArrowLeft,
-  Mic, MicOff, Video, VideoOff, PhoneOff,
-  Shield, Info, ExternalLink, Loader2,
+  Video, VideoOff, PhoneOff, Shield, Info, ExternalLink, Loader2,
 } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import type { Meeting } from "@/types";
 
 // ─── Extend window to include Jitsi API ──────────────────────────────────────
 declare global {
@@ -44,39 +44,6 @@ function buildRoom(id: string, title: string) {
   return `xplore-nexus-${safe}-${id}`;
 }
 
-// ─── Meeting lookup from localStorage / mock ─────────────────────────────────
-interface MeetingInfo {
-  id: string;
-  title: string;
-  description: string;
-  hostName: string;
-  isHost: boolean;
-  duration: number;
-  date: string;
-  participantCount: number;
-  maxParticipants?: number;
-}
-
-const MOCK: MeetingInfo[] = [
-  { id: "mt-001", title: "Leadership Training Workshop",     description: "Live session covering advanced leadership frameworks.", hostName: "Maria Santos",   isHost: false, duration: 60,  date: "2026-04-16T06:00:00.000Z", participantCount: 28, maxParticipants: 50 },
-  { id: "mt-002", title: "Product Review Meeting",           description: "Weekly product sync to review feature progress.",         hostName: "John Reyes",    isHost: false, duration: 45,  date: "2026-04-17T02:00:00.000Z", participantCount: 12, maxParticipants: 20 },
-  { id: "mt-003", title: "Weekly Team Sync",                 description: "Monday team sync — priorities, blockers, and updates.",   hostName: "Jose Dela Cruz", isHost: true, duration: 30,  date: "2026-04-18T07:00:00.000Z", participantCount: 8,  maxParticipants: 15 },
-  { id: "mt-005", title: "IT Infrastructure Review",         description: "Quarterly review of server performance and cloud costs.", hostName: "Jose Dela Cruz", isHost: true, duration: 60,  date: "2026-04-22T05:00:00.000Z", participantCount: 5,  maxParticipants: 10 },
-];
-
-function getMeeting(id: string): MeetingInfo | null {
-  // First try localStorage (created meetings)
-  try {
-    const raw = localStorage.getItem("xplore_meetings");
-    if (raw) {
-      const arr: MeetingInfo[] = JSON.parse(raw);
-      const found = arr.find((m) => m.id === id);
-      if (found) return found;
-    }
-  } catch { /* ignore */ }
-  return MOCK.find((m) => m.id === id) ?? null;
-}
-
 // ─── Page ─────────────────────────────────────────────────────────────────────
 export default function MeetingRoomPage({ params }: { params: { id: string } }) {
   const { user } = useRole();
@@ -84,15 +51,29 @@ export default function MeetingRoomPage({ params }: { params: { id: string } }) 
   const containerRef = useRef<HTMLDivElement>(null);
   const apiRef       = useRef<JitsiAPI | null>(null);
 
-  const [meeting,  setMeeting]  = useState<MeetingInfo | null>(null);
+  const [meeting,  setMeeting]  = useState<Meeting | null>(null);
   const [status,   setStatus]   = useState<"loading" | "ready" | "joined" | "left">("loading");
   const [copied,   setCopied]   = useState(false);
   const [elapsed,  setElapsed]  = useState(0);
 
   // ── Look up meeting ────────────────────────────────────────────────────────
   useEffect(() => {
-    const m = getMeeting(params.id);
-    setMeeting(m);
+    async function fetchMeetingDetails() {
+      if (!params.id) return;
+      try {
+        const res = await fetch(`/api/meetings/${params.id}`);
+        const json = await res.json();
+        if (json.success) {
+          setMeeting(json.data);
+        } else {
+          setStatus("left");
+        }
+      } catch (error) {
+        console.error("Failed to load meeting details:", error);
+        setStatus("left");
+      }
+    }
+    fetchMeetingDetails();
   }, [params.id]);
 
   // ── Elapsed timer (starts when joined) ────────────────────────────────────
@@ -109,7 +90,7 @@ export default function MeetingRoomPage({ params }: { params: { id: string } }) 
 
     const roomName = buildRoom(meeting.id, meeting.title);
     const displayName = `${user.firstName} ${user.lastName}`;
-    const isHost = meeting.isHost || user.role === "Admin" || user.role === "Organizer";
+    const isHost = meeting.hostId === user.id || user.role === "Admin" || user.role === "Organizer";
 
     let mounted = true;
 
@@ -124,13 +105,13 @@ export default function MeetingRoomPage({ params }: { params: { id: string } }) 
           parentNode: containerRef.current,
 
           configOverwrite: {
-            prejoinPageEnabled:        false,  // ← skip prejoin / name-entry screen
+            prejoinPageEnabled:        false,
             startWithAudioMuted:       true,
             startWithVideoMuted:       false,
             disableModeratorIndicator: false,
-            enableLobbyChat:           false,
-            // Disable lobby so participants enter directly without waiting for host login
-            lobby: { enabled: false },
+            enableLobbyChat:           true,
+            // Lobby (waiting room) — only the host can admit guests
+            lobby: { enabled: true },
             toolbarButtons: [
               "microphone", "camera", "desktop", "chat",
               "raisehand",  "tileview", "fullscreen", "hangup",
@@ -146,7 +127,6 @@ export default function MeetingRoomPage({ params }: { params: { id: string } }) 
           userInfo: {
             displayName,
             email: user.email,
-            // moderator hint — works on self-hosted; on public server first joiner is moderator
             moderator: isHost,
           },
         });
@@ -159,7 +139,6 @@ export default function MeetingRoomPage({ params }: { params: { id: string } }) 
         api.on("readyToClose",          () => router.push("/meetings"));
       })
       .catch(() => {
-        // Fallback: open in new tab
         if (meeting) {
           const room = buildRoom(meeting.id, meeting.title);
           window.open(`https://meet.jit.si/${room}`, "_blank");
@@ -177,11 +156,11 @@ export default function MeetingRoomPage({ params }: { params: { id: string } }) 
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [meeting, user]);
 
-  // ── Copy invite link ───────────────────────────────────────────────────────
+  // ── Copy invite link (secure app URL — forces login) ──────────────────────
   const copyLink = useCallback(() => {
     if (!meeting) return;
-    const room = buildRoom(meeting.id, meeting.title);
-    const url  = `https://meet.jit.si/${room}`;
+    // Share the in-app URL so recipients must log in to Xplore Nexus first
+    const url = `${window.location.origin}/meetings/${meeting.id}/room`;
     navigator.clipboard.writeText(url).catch(() => {});
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
@@ -203,10 +182,15 @@ export default function MeetingRoomPage({ params }: { params: { id: string } }) 
   }
 
   const isHost = Boolean(
-    meeting?.isHost || user?.role === "Admin" || user?.role === "Organizer"
+    meeting?.hostId === user?.id || user?.role === "Admin" || user?.role === "Organizer"
   );
 
-  const inviteUrl = meeting
+  // Secure in-app URL (shared via copyLink) — only host gets the direct Jitsi fallback
+  const secureInviteUrl = meeting
+    ? `${typeof window !== "undefined" ? window.location.origin : ""}/meetings/${meeting.id}/room`
+    : "";
+  // Direct Jitsi URL — exposed only to the host as a fallback tab
+  const jitsiDirectUrl = meeting
     ? `https://meet.jit.si/${buildRoom(meeting.id, meeting.title)}`
     : "";
 
@@ -281,16 +265,18 @@ export default function MeetingRoomPage({ params }: { params: { id: string } }) 
             {copied ? "Link Copied!" : "Copy Invite Link"}
           </button>
 
-          {/* Open in new tab fallback */}
-          <a
-            href={inviteUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="flex items-center gap-1.5 px-3 py-1.5 bg-gray-800 border border-gray-700 hover:bg-gray-700 text-gray-300 text-xs font-semibold rounded-lg transition-all"
-          >
-            <ExternalLink className="w-3.5 h-3.5" />
-            Open in Tab
-          </a>
+          {/* Open in new tab — only for host (hides raw Jitsi URL from guests) */}
+          {isHost && (
+            <a
+              href={jitsiDirectUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center gap-1.5 px-3 py-1.5 bg-gray-800 border border-gray-700 hover:bg-gray-700 text-gray-300 text-xs font-semibold rounded-lg transition-all"
+            >
+              <ExternalLink className="w-3.5 h-3.5" />
+              Open in Tab
+            </a>
+          )}
 
           {/* Hang up */}
           <button

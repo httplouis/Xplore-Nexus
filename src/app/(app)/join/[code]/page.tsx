@@ -8,25 +8,6 @@ import {
 } from "lucide-react";
 import type { Event, Registration } from "@/types";
 import { useRole } from "@/lib/context/RoleContext";
-import { validateTicket, findRegistration } from "@/lib/registrations";
-
-const EVENTS_KEY = "xplore_events";
-
-function getEventByJoinCodeOrId(codeOrId: string): Event | null {
-  if (typeof window === "undefined") return null;
-  try {
-    const raw = localStorage.getItem(EVENTS_KEY);
-    if (raw) {
-      const arr: Event[] = JSON.parse(raw);
-      return (
-        arr.find((e) => e.joinCode === codeOrId.toUpperCase()) ??
-        arr.find((e) => e.id === codeOrId) ??
-        null
-      );
-    }
-  } catch { /* ignore */ }
-  return null;
-}
 
 function fmtDate(iso: string) {
   const d = new Date(iso);
@@ -52,26 +33,58 @@ export default function JoinPage({ params }: { params: { code: string } }) {
   const [validatedReg,  setValidatedReg]   = useState<Registration | null>(null);
 
   useEffect(() => {
-    const e = getEventByJoinCodeOrId(code);
-    setEvent(e);
-    // Auto-fill ticket code if user already registered
-    if (e && user) {
-      const reg = findRegistration(e.id, user.id);
-      if (reg) setTicketInput(reg.ticketCode);
+    async function loadEvent() {
+      setLoadingEvent(true);
+      try {
+        // Try to fetch event by joinCode first
+        let res = await fetch(`/api/events?joinCode=${code}`);
+        let json = await res.json();
+        
+        if (!json.success || !json.data) {
+          // Fall back to looking up by event ID
+          res = await fetch(`/api/events/${code}`);
+          json = await res.json();
+        }
+
+        if (json.success && json.data) {
+          const ev = json.data;
+          setEvent(ev);
+
+          // Auto-fill ticket code if user already registered in DB
+          if (user) {
+            const regRes = await fetch(`/api/events/${ev.id}/register?userId=${user.id}`);
+            const regJson = await regRes.json();
+            if (regJson.success && regJson.data) {
+              setTicketInput(regJson.data.ticketCode);
+            }
+          }
+        }
+      } catch (error) {
+        console.error("Error loading event for join:", error);
+      } finally {
+        setLoadingEvent(false);
+      }
     }
-    setLoadingEvent(false);
+    loadEvent();
   }, [code, user]);
 
   async function handleValidate(e: React.FormEvent) {
     e.preventDefault();
     if (!event || !ticketInput.trim()) return;
     setValidateState("loading");
-    await new Promise((r) => setTimeout(r, 800)); // simulate check
-    const reg = validateTicket(event.joinCode, ticketInput, event.id);
-    if (reg) {
-      setValidatedReg(reg);
-      setValidateState("success");
-    } else {
+    
+    try {
+      const res = await fetch(`/api/events/${event.id}/register?ticketCode=${ticketInput}`);
+      const json = await res.json();
+      
+      if (json.success && json.data && json.data.status === "Confirmed") {
+        setValidatedReg(json.data);
+        setValidateState("success");
+      } else {
+        setValidateState("failed");
+      }
+    } catch (error) {
+      console.error("Validation error:", error);
       setValidateState("failed");
     }
   }

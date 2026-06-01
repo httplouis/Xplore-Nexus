@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   Video, Calendar, Clock, Users, Plus, X,
   VideoIcon, Shield, Mic,
@@ -10,61 +10,6 @@ import Link from "next/link";
 import type { Meeting, CreateMeetingPayload, MeetingStatus } from "@/types";
 import { showToast } from "@/components/ui/Toast";
 import { useRole } from "@/lib/context/RoleContext";
-
-
-// ─── Jitsi room name ──────────────────────────────────────────────────────────
-function toJitsiRoom(meeting: Meeting): string {
-  const safe = meeting.title.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
-  return `xplore-nexus-${safe}-${meeting.id}`;
-}
-
-// ─── Mock data ────────────────────────────────────────────────────────────────
-const INITIAL_MEETINGS: Meeting[] = [
-  {
-    id: "mt-001", title: "Leadership Training Workshop",
-    description: "Live session covering advanced leadership frameworks and executive decision-making.",
-    status: "Live", date: "2026-04-16T06:00:00.000Z", duration: 60,
-    hostId: "u-002", hostName: "Maria Santos",
-    participantCount: 28, maxParticipants: 50,
-    meetingUrl: "https://meet.jit.si/xplore-nexus-leadership-training-workshop-mt-001",
-    isHost: false, createdAt: "2026-04-01T00:00:00.000Z",
-  },
-  {
-    id: "mt-002", title: "Product Review Meeting",
-    description: "Weekly product sync to review feature progress and align on sprint goals.",
-    status: "Upcoming", date: "2026-04-17T02:00:00.000Z", duration: 45,
-    hostId: "u-003", hostName: "John Reyes",
-    participantCount: 12, maxParticipants: 20,
-    meetingUrl: "https://meet.jit.si/xplore-nexus-product-review-meeting-mt-002",
-    isHost: false, createdAt: "2026-04-10T00:00:00.000Z",
-  },
-  {
-    id: "mt-003", title: "Weekly Team Sync",
-    description: "Monday team sync — priorities, blockers, and weekend updates.",
-    status: "Upcoming", date: "2026-04-18T07:00:00.000Z", duration: 30,
-    hostId: "u-001", hostName: "Jose Dela Cruz",
-    participantCount: 8, maxParticipants: 15,
-    meetingUrl: "https://meet.jit.si/xplore-nexus-weekly-team-sync-mt-003",
-    isHost: true, createdAt: "2026-04-12T00:00:00.000Z",
-  },
-  {
-    id: "mt-004", title: "Client Presentation",
-    description: "Final presentation of Phase 1 deliverables to key stakeholders.",
-    status: "Completed", date: "2026-03-29T03:00:00.000Z", duration: 120,
-    hostId: "u-005", hostName: "Robert Tan",
-    participantCount: 15, isHost: false,
-    createdAt: "2026-03-20T00:00:00.000Z",
-  },
-  {
-    id: "mt-005", title: "IT Infrastructure Review",
-    description: "Quarterly review of server performance, cloud costs, and security posture.",
-    status: "Upcoming", date: "2026-04-22T05:00:00.000Z", duration: 60,
-    hostId: "u-001", hostName: "Jose Dela Cruz",
-    participantCount: 5, maxParticipants: 10,
-    meetingUrl: "https://meet.jit.si/xplore-nexus-it-infrastructure-review-mt-005",
-    isHost: true, createdAt: "2026-04-13T00:00:00.000Z",
-  },
-];
 
 // ─── Helpers ──────────────────────────────────────────────────────────────────
 function formatDuration(minutes: number) {
@@ -109,14 +54,12 @@ const STATUS_CONFIG: Record<MeetingStatus, {
   },
 };
 
-
 // ─── Meeting Card ─────────────────────────────────────────────────────────────
 function MeetingCard({ m }: { m: Meeting }) {
   const { role } = useRole();
   const cfg    = STATUS_CONFIG[m.status];
   const isLive = m.status === "Live";
   const isDone = m.status === "Completed";
-  // Host = they created it, or Admin/Organizer role
   const isHost = m.isHost || role === "Admin" || role === "Organizer";
 
   return (
@@ -245,7 +188,6 @@ function ScheduleMeetingModal({ onClose, onCreated }: {
   onClose: () => void;
   onCreated: (m: Meeting) => void;
 }) {
-  // Pre-fill date: tomorrow 10 AM
   const defaultDate = (() => {
     const d = new Date();
     d.setDate(d.getDate() + 1);
@@ -271,11 +213,7 @@ function ScheduleMeetingModal({ onClose, onCreated }: {
       });
       const json = await res.json();
       if (json.success) {
-        const newMeeting: Meeting = {
-          ...json.data,
-          meetingUrl: `https://meet.jit.si/${toJitsiRoom(json.data)}`,
-        };
-        onCreated(newMeeting);
+        onCreated(json.data);
         showToast("Meeting scheduled! Jitsi room is ready.", "success");
         onClose();
       } else {
@@ -377,9 +315,27 @@ function ScheduleMeetingModal({ onClose, onCreated }: {
 
 // ─── Main Page ────────────────────────────────────────────────────────────────
 export default function MeetingsPage() {
-  const [meetings, setMeetings]         = useState<Meeting[]>(INITIAL_MEETINGS);
+  const [meetings, setMeetings]         = useState<Meeting[]>([]);
+  const [loading, setLoading]           = useState(true);
   const [showSchedule, setShowSchedule] = useState(false);
   const [filter, setFilter]             = useState<"All" | MeetingStatus>("All");
+
+  useEffect(() => {
+    async function loadMeetings() {
+      try {
+        const res = await fetch("/api/meetings");
+        const json = await res.json();
+        if (json.success) {
+          setMeetings(json.data.items);
+        }
+      } catch (error) {
+        console.error("Failed to load meetings:", error);
+      } finally {
+        setLoading(false);
+      }
+    }
+    loadMeetings();
+  }, []);
 
   const handleCreated = (m: Meeting) => setMeetings((prev) => [m, ...prev]);
 
@@ -389,6 +345,13 @@ export default function MeetingsPage() {
   const filtered       = filter === "All" ? meetings : meetings.filter((m) => m.status === filter);
   const FILTERS: Array<"All" | MeetingStatus> = ["All", "Live", "Upcoming", "Completed"];
 
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center py-24">
+        <Loader2 className="w-6 h-6 text-gray-400 animate-spin" />
+      </div>
+    );
+  }
 
   return (
     <>
@@ -485,7 +448,7 @@ export default function MeetingsPage() {
           </div>
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
-                        {filtered.map((m) => (
+            {filtered.map((m) => (
               <MeetingCard key={m.id} m={m} />
             ))}
           </div>

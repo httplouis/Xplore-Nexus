@@ -1,7 +1,10 @@
 import { NextResponse } from "next/server";
+import bcrypt from "bcryptjs";
+import { prisma } from "@/lib/prisma";
+import { mapUserToAuthUser } from "@/lib/db-mappers";
+import { UserRole, UserStatus, NotificationCategory } from "@prisma/client";
 
 // POST /api/auth/register
-// Register a new user - stores in localStorage
 export async function POST(request: Request) {
   try {
     const {
@@ -14,83 +17,73 @@ export async function POST(request: Request) {
 
     if (!firstName || !lastName || !email || !password) {
       return NextResponse.json(
-        { error: "Missing required fields" },
+        { success: false, error: "Missing required fields" },
         { status: 400 }
       );
     }
 
     if (password.length < 6) {
       return NextResponse.json(
-        { error: "Password must be at least 6 characters" },
+        { success: false, error: "Password must be at least 6 characters" },
         { status: 400 }
       );
     }
 
-    try {
-      // Check if user already exists
-      const users = JSON.parse(localStorage.getItem("xplore_users") || "[]");
-      const existingUser = users.find(
-        (u: any) => u.email.toLowerCase() === email.toLowerCase()
+    // Check if user already exists in DB
+    const existingUser = await prisma.user.findUnique({
+      where: { email: email.toLowerCase() },
+    });
+
+    if (existingUser) {
+      return NextResponse.json(
+        { success: false, error: "Email already registered" },
+        { status: 400 }
       );
+    }
 
-      if (existingUser) {
-        return NextResponse.json(
-          { error: "Email already registered" },
-          { status: 400 }
-        );
-      }
+    // Hash password
+    const hashedPassword = await bcrypt.hash(password, 10);
+    const initials = `${firstName[0]}${lastName[0]}`.toUpperCase();
 
-      // Create new user
-      const newUser = {
-        id: `u-${Date.now()}`,
+    // Create new user in DB
+    const dbUser = await prisma.user.create({
+      data: {
         firstName,
         lastName,
         email: email.toLowerCase(),
-        password,
+        password: hashedPassword,
         department: department || "General",
-        avatarInitials: `${firstName[0]}${lastName[0]}`.toUpperCase(),
-        role: "PARTICIPANT",
-        status: "ACTIVE",
-        lastActive: new Date().toISOString(),
-        createdAt: new Date().toISOString(),
-      };
+        avatarInitials: initials,
+        role: UserRole.PARTICIPANT,
+        status: UserStatus.ACTIVE,
+      },
+    });
 
-      users.push(newUser);
-      localStorage.setItem("xplore_users", JSON.stringify(users));
-
-      // Create welcome notification
-      const notifications = JSON.parse(
-        localStorage.getItem("xplore_notifications") || "[]"
-      );
-      notifications.push({
-        id: `notif-${Date.now()}`,
-        userId: newUser.id,
+    // Create welcome notification in DB
+    await prisma.notification.create({
+      data: {
+        userId: dbUser.id,
         title: "Welcome to Xplore Nexus!",
         message: "Your account has been successfully created. Start exploring!",
-        category: "SYSTEM",
+        category: NotificationCategory.SYSTEM,
         priority: "high",
         isRead: false,
-        createdAt: new Date().toISOString(),
-      });
-      localStorage.setItem("xplore_notifications", JSON.stringify(notifications));
+      },
+    });
 
-      const { password: _, ...userWithoutPassword } = newUser;
+    const clientUser = mapUserToAuthUser(dbUser);
 
-      return NextResponse.json({
-        success: true,
-        data: {
-          user: userWithoutPassword,
-          message: "Account created successfully",
-        },
-      });
-    } catch (storageError) {
-      console.error("localStorage error:", storageError);
-      throw storageError;
-    }
+    return NextResponse.json({
+      success: true,
+      data: {
+        user: clientUser,
+        message: "Account created successfully",
+      },
+    });
   } catch (error: any) {
-    console.error("Register error:", error);
+    console.error("Register API error:", error);
     return NextResponse.json(
-      { error: error.message || "Failed to register" },
+      { success: false, error: error.message || "Failed to register" },
       { status: 500 }
     );
   }

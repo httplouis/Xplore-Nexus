@@ -4,7 +4,6 @@ generator client {
 
 datasource db {
   provider = "postgresql"
-  url      = env("DATABASE_URL")
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -35,6 +34,7 @@ model User {
   hostedMeetings  Meeting[]  @relation("Host")
   notifications   Notification[]
   certificates    Certificate[]
+  enrollments    Enrollment[] @relation("UserEnrollments")
   feedbackResponses Feedback[]
 
   @@index([email])
@@ -94,6 +94,7 @@ model Event {
   registrations     Registration[]
   feedback          Feedback[]
   reports           EventReport[]
+  certificates      Certificate[] @relation("EventCertificates")
 
   @@index([organizerId])
   @@index([status])
@@ -121,7 +122,7 @@ model Registration {
   user          User         @relation(fields: [userId], references: [id], onDelete: Cascade)
   ticketCode    String       @unique
   status        RegistrationStatus @default(PENDING)
-  paymentRef    String?      // Payment gateway reference
+  payment       Payment?     @relation("RegistrationPayment")
   paymentStatus PaymentStatus @default(PENDING)
   amountPaid    Float?
   checkedIn     Boolean      @default(false)
@@ -189,7 +190,7 @@ enum TrainingCategory {
 model Enrollment {
   id            String    @id @default(cuid())
   userId        String
-  user          User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user          User      @relation("UserEnrollments", fields: [userId], references: [id], onDelete: Cascade)
   trainingId    String
   training      Training  @relation(fields: [trainingId], references: [id], onDelete: Cascade)
   progress      Int       @default(0) // 0-100
@@ -253,7 +254,7 @@ model Certificate {
   trainingId    String?
   training      Training? @relation("TrainingCertificates", fields: [trainingId], references: [id])
   eventId       String?
-  event         Event?    @relation(fields: [eventId], references: [id])
+  event         Event?    @relation("EventCertificates", fields: [eventId], references: [id])
   title         String
   description   String?
   certificateNumber String @unique
@@ -274,7 +275,7 @@ model Certificate {
 model Payment {
   id              String    @id @default(cuid())
   registrationId  String    @unique
-  registration    Registration @relation(fields: [registrationId], references: [id], onDelete: Cascade)
+  registration    Registration @relation("RegistrationPayment", fields: [registrationId], references: [id], onDelete: Cascade)
   amount          Float
   currency        String    @default("PHP")
   status          PaymentStatus

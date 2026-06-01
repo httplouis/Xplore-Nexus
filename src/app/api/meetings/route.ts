@@ -1,104 +1,121 @@
 import { NextResponse } from "next/server";
-import type { ApiSuccess, ApiError, PaginatedResponse, Meeting, CreateMeetingPayload } from "@/types";
-import { MOCK_MEETINGS, addMeeting, deleteMeeting } from "@/lib/data/meetings";
-import { CURRENT_USER_ID, getUserById } from "@/lib/data/users";
+import { prisma } from "@/lib/prisma";
+import { mapMeetingToClient } from "@/lib/db-mappers";
+import { MeetingStatus as DbMeetingStatus } from "@prisma/client";
+import type { PaginatedResponse, Meeting } from "@/types";
 import { createZoomMeeting } from "@/lib/zoom";
 
-function ok<T>(data: T, message?: string): NextResponse<ApiSuccess<T>> {
-  return NextResponse.json({ success: true, data, ...(message ? { message } : {}) });
-}
-function err(error: string, status = 400): NextResponse<ApiError> {
-  return NextResponse.json({ success: false, error }, { status });
-}
-
-// GET /api/meetings
+// GET /api/meetings — list with optional search, status filters
 export async function GET(request: Request) {
-  const { searchParams } = new URL(request.url);
-  const search = searchParams.get("search")?.toLowerCase() ?? "";
-  const status = searchParams.get("status");
-  const page = Math.max(1, Number(searchParams.get("page") ?? "1"));
-  const pageSize = Math.min(50, Math.max(1, Number(searchParams.get("pageSize") ?? "20")));
+  try {
+    const { searchParams } = new URL(request.url);
+    const search = searchParams.get("search")?.toLowerCase() ?? "";
+    const status = searchParams.get("status");
+    const page = Math.max(1, Number(searchParams.get("page") ?? "1"));
+    const pageSize = Math.min(50, Math.max(1, Number(searchParams.get("pageSize") ?? "20")));
 
-  let filtered = [...MOCK_MEETINGS];
+    let dbStatus: DbMeetingStatus | undefined;
+    if (status) {
+      const norm = status.toUpperCase();
+      if (norm === "LIVE" || norm === "UPCOMING" || norm === "COMPLETED" || norm === "CANCELLED") {
+        dbStatus = norm as DbMeetingStatus;
+      }
+    }
 
-  if (search) {
-    filtered = filtered.filter(
-      (m) =>
-        m.title.toLowerCase().includes(search) ||
-        m.hostName.toLowerCase().includes(search) ||
-        m.description.toLowerCase().includes(search)
-    );
+    const dbMeetings = await prisma.meeting.findMany({
+      where: {
+        AND: [
+          dbStatus ? { status: dbStatus } : {},
+        ],
+      },
+      include: {
+        host: true,
+      },
+      orderBy: {
+        date: 'asc',
+      },
+    });
+
+    let filtered = dbMeetings;
+    if (search) {
+      filtered = dbMeetings.filter((m) => {
+        const titleMatch = m.title.toLowerCase().includes(search);
+        const descMatch = m.description.toLowerCase().includes(search);
+        const hostMatch = m.host 
+          ? `${m.host.firstName} ${m.host.lastName}`.toLowerCase().includes(search)
+          : false;
+        return titleMatch || descMatch || hostMatch;
+      });
+    }
+
+    const total = filtered.length;
+    const paginated = filtered.slice((page - 1) * pageSize, page * pageSize);
+    const totalPages = Math.ceil(total / pageSize);
+
+    // Map to client schema
+    const items = paginated.map((m) => mapMeetingToClient(m));
+
+    const payload: PaginatedResponse<Meeting> = { items, total, page, pageSize, totalPages };
+    return NextResponse.json({ success: true, data: payload });
+  } catch (error: any) {
+    console.error("GET /api/meetings error:", error);
+    return NextResponse.json({ success: false, error: "Internal server error: " + error.message }, { status: 500 });
   }
-  if (status) filtered = filtered.filter((m) => m.status === status);
-
-  const total = filtered.length;
-  const items = filtered.slice((page - 1) * pageSize, page * pageSize);
-
-  const payload: PaginatedResponse<Meeting> = {
-    items,
-    total,
-    page,
-    pageSize,
-    totalPages: Math.ceil(total / pageSize),
-  };
-  return ok(payload);
 }
 
 // POST /api/meetings
 export async function POST(request: Request) {
-  let body: CreateMeetingPayload;
   try {
-    body = await request.json();
-  } catch {
-    return err("Invalid JSON body");
-  }
+    const body = await request.json();
 
-  if (!body.title || !body.date || !body.duration) {
-    return err("title, date, and duration are required");
-  }
+    if (!body.title || !body.date || !body.duration) {
+      return NextResponse.json({ success: false, error: "title, date, and duration are required" }, { status: 400 });
+    }
 
-  const owner = getUserById(CURRENT_USER_ID)!;
+    const hostId = "u-001"; // Default / Jose Dela Cruz
 
-  // ── Try to create a real Zoom meeting ──────────────────────────────────────
-  let meetingUrl = `https://meet.xplore.io/${body.title.toLowerCase().replace(/\s+/g, "-")}`;
-  let zoomMeetingId: number | undefined;
+    // Try Zoom creation
+    let meetingUrl = `https://meet.jit.si/xplore-${body.title.toLowerCase().replace(/[^a-z0-9]+/g, "-")}-${Date.now().toString(36)}`;
+    let zoomMeetingId: string | undefined;
+    let provider = "jitsi";
 
-  try {
-    const zoom = await createZoomMeeting({
-      topic:      body.title,
-      start_time: new Date(body.date).toISOString(),
-      duration:   body.duration,
-      timezone:   "Asia/Manila",
-      agenda:     body.description,
+    try {
+      const zoom = await createZoomMeeting({
+        topic:      body.title,
+        start_time: new Date(body.date).toISOString(),
+        duration:   body.duration,
+        timezone:   "Asia/Manila",
+        agenda:     body.description,
+      });
+      meetingUrl    = zoom.join_url;
+      zoomMeetingId = String(zoom.id);
+      provider      = "zoom";
+    } catch (zoomError) {
+      console.warn("[POST /api/meetings] Zoom meeting creation skipped:", zoomError);
+    }
+
+    const dbMeeting = await prisma.meeting.create({
+      data: {
+        title: body.title,
+        description: body.description ?? "",
+        status: DbMeetingStatus.UPCOMING,
+        date: new Date(body.date),
+        duration: parseInt(body.duration),
+        hostId,
+        maxParticipants: body.maxParticipants ?? 100,
+        meetingUrl,
+        meetingProvider: provider,
+        zoomMeetingId,
+      },
+      include: {
+        host: true,
+      },
     });
-    meetingUrl   = zoom.join_url;
-    zoomMeetingId = zoom.id;
-  } catch (zoomError) {
-    // Gracefully fall back if Zoom isn't configured yet (dev/demo mode)
-    console.warn(
-      "[POST /api/meetings] Zoom meeting creation skipped:",
-      zoomError instanceof Error ? zoomError.message : zoomError
-    );
+
+    const clientMeeting = mapMeetingToClient(dbMeeting, hostId);
+    return NextResponse.json({ success: true, data: clientMeeting, message: "Meeting scheduled" });
+  } catch (error: any) {
+    console.error("POST /api/meetings error:", error);
+    return NextResponse.json({ success: false, error: "Internal server error: " + error.message }, { status: 500 });
   }
-  // ──────────────────────────────────────────────────────────────────────────
-
-  const newMeeting: Meeting = {
-    id:              `mt-${Date.now()}`,
-    title:           body.title,
-    description:     body.description ?? "",
-    status:          "Upcoming",
-    date:            body.date,
-    duration:        body.duration,
-    hostId:          CURRENT_USER_ID,
-    hostName:        `${owner.firstName} ${owner.lastName}`,
-    participantCount: 0,
-    maxParticipants: body.maxParticipants,
-    meetingUrl,
-    zoomMeetingId,
-    isHost:          true,
-    createdAt:       new Date().toISOString(),
-  };
-
-  addMeeting(newMeeting);
-  return ok(newMeeting, "Meeting scheduled");
 }

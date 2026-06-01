@@ -10,25 +10,6 @@ import {
 import type { Event, Registration } from "@/types";
 import { useRole } from "@/lib/context/RoleContext";
 import { showToast } from "@/components/ui/Toast";
-import {
-  readRegistrations,
-  writeRegistrations,
-  findRegistration,
-} from "@/lib/registrations";
-
-const EVENTS_KEY = "xplore_events";
-
-function getEvent(id: string): Event | null {
-  if (typeof window === "undefined") return null;
-  try {
-    const raw = localStorage.getItem(EVENTS_KEY);
-    if (raw) {
-      const arr: Event[] = JSON.parse(raw);
-      return arr.find((e) => e.id === id) ?? null;
-    }
-  } catch { /* ignore */ }
-  return null;
-}
 
 function fmtPHP(amount: number) {
   return `₱${amount.toLocaleString("en-PH", { minimumFractionDigits: 2 })}`;
@@ -50,39 +31,41 @@ export default function CheckoutPage({ params }: { params: { id: string } }) {
   const [confirmed,  setConfirmed]  = useState(false);
   const [myReg,      setMyReg]      = useState<Registration | null>(null);
 
-  // Check for returning payment callback (?payment=success&ref=INF-XXXXX)
-  const paymentStatus = searchParams.get("payment");
-  const paymentRef    = searchParams.get("ref");
-
   useEffect(() => {
-    const e = getEvent(params.id);
-    setEvent(e);
+    async function loadData() {
+      if (!params.id) return;
+      try {
+        const evRes = await fetch(`/api/events/${params.id}`);
+        const evJson = await evRes.json();
+        if (evJson.success) {
+          setEvent(evJson.data);
 
-    if (e && user) {
-      const existing = findRegistration(e.id, user.id);
-      setMyReg(existing);
-
-      // Returning from payment gateway with success
-      if (paymentStatus === "success" && paymentRef && existing && existing.status === "Pending") {
-        const regs = readRegistrations();
-        const updated = regs.map((r) =>
-          r.id === existing.id ? { ...r, status: "Confirmed" as const, paymentRef: paymentRef } : r
-        );
-        writeRegistrations(updated);
-        setMyReg({ ...existing, status: "Confirmed", paymentRef });
-        setConfirmed(true);
-        showToast("Payment confirmed! Your ticket is ready.", "success");
+          if (user) {
+            const regRes = await fetch(`/api/events/${params.id}/register?userId=${user.id}`);
+            const regJson = await regRes.json();
+            if (regJson.success && regJson.data) {
+              setMyReg(regJson.data);
+              if (regJson.data.status === "Confirmed") {
+                setConfirmed(true);
+              }
+            }
+          }
+        }
+      } catch (error) {
+        console.error("Failed to load checkout details:", error);
+      } finally {
+        setLoading(false);
       }
     }
-    setLoading(false);
-  }, [params.id, user, paymentStatus, paymentRef]);
+    loadData();
+  }, [params.id, user]);
 
   async function handlePay() {
     if (!event || !user) return;
     setProcessing(true);
 
     try {
-      // 1. Create pending registration
+      // 1. Create pending registration in DB
       const res = await fetch(`/api/events/${event.id}/register`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -95,42 +78,52 @@ export default function CheckoutPage({ params }: { params: { id: string } }) {
         }),
       });
       const json = await res.json();
-      if (!json.success) { showToast("Failed to initiate registration.", "error"); return; }
+      if (!json.success) { 
+        showToast(json.error || "Failed to initiate registration.", "error"); 
+        setProcessing(false);
+        return; 
+      }
 
       const reg: Registration = json.data;
-      // Persist pending
-      const existing = readRegistrations();
-      writeRegistrations([...existing, reg]);
       setMyReg(reg);
 
-      // 2. In a real app: redirect to Informatics gateway
-      // window.location.href = `https://pay.informatics.ph/checkout?amount=${event.ticketPrice}&ref=${reg.id}&callback=/events/${event.id}/checkout`;
-      //
-      // For demo: simulate redirect with a short delay then return with success
+      // 2. Simulate external redirect and payment processing delay
       await new Promise((r) => setTimeout(r, 1500));
 
-      // Simulate payment success — update status
+      // 3. Confirm payment in database
       const payRef = `INF-${Date.now().toString(36).toUpperCase()}`;
-      const regs   = readRegistrations();
-      const updated = regs.map((r) =>
-        r.id === reg.id ? { ...r, status: "Confirmed" as const, paymentRef: payRef } : r
-      );
-      writeRegistrations(updated);
-      const confirmedReg = { ...reg, status: "Confirmed" as const, paymentRef: payRef };
-      setMyReg(confirmedReg);
+      const confirmRes = await fetch(`/api/payments/confirm`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          registrationId: reg.id,
+          paymentRef: payRef,
+        }),
+      });
+      const confirmJson = await confirmRes.json();
+      
+      if (confirmJson.success) {
+        // Fetch matching event details again to display updated registration counts
+        const evRes = await fetch(`/api/events/${event.id}`);
+        const evJson = await evRes.json();
+        if (evJson.success) {
+          setEvent(evJson.data);
+        }
 
-      // Bump event registration count
-      const rawEvs = localStorage.getItem(EVENTS_KEY) ?? "[]";
-      const evs    = JSON.parse(rawEvs) as Event[];
-      const nextEvs = evs.map((e) =>
-        e.id === event.id ? { ...e, registrationCount: e.registrationCount + 1 } : e
-      );
-      localStorage.setItem(EVENTS_KEY, JSON.stringify(nextEvs));
-
-      setConfirmed(true);
-      showToast("Payment successful! Your ticket is ready.", "success");
-    } catch {
+        const confirmedReg: Registration = {
+          ...reg,
+          status: "Confirmed",
+          paymentRef: payRef,
+        };
+        setMyReg(confirmedReg);
+        setConfirmed(true);
+        showToast("Payment successful! Your ticket is ready.", "success");
+      } else {
+        showToast(confirmJson.error || "Payment confirmation failed.", "error");
+      }
+    } catch (error) {
       showToast("Payment failed. Try again.", "error");
+      console.error(error);
     } finally {
       setProcessing(false);
     }
@@ -154,8 +147,8 @@ export default function CheckoutPage({ params }: { params: { id: string } }) {
     );
   }
 
-  // Already registered
-  if (myReg && !confirmed) {
+  // Already registered (Confirmed)
+  if (myReg && myReg.status === "Confirmed" && !confirmed) {
     return (
       <div className="max-w-md mx-auto space-y-6 animate-fade-in">
         <div className="flex items-center gap-2 text-sm text-gray-500">

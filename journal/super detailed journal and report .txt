@@ -1,0 +1,2392 @@
+feb ako nagstart feb 23
+april 20
+parang zoom ang atake ng xplore nexus
+like link n lang tlga ang isesend tas like may code for it
+problem: pano ivalidate and magbabayad
+sa bayad: may payment gateway provider na si informatics, iintegrate na lang sa website
+
+main prob: pagbabayad tlaga (ticket)
+participants: 40-50 (100 pede? pinakamax?)
+
+april 23 
+what if proficient na sa certain skill
+what if gusto nya pa matutunan yung ibang skills
+lagyan na lang ng fill in the blanks ganern
+look for other training ganern
+
+data privacy notice
+data consent 
+
+and enhance pa to?
+
+actually lagyan ko ng like folders sa backend admin page like para sa mga past surveys, like history ganon para makita rin
+
+
+now papaltan na natin yung mga questions ng ganito
+
+section 1 of 7
+Informatics Corporate Training 
+
+section 2 of 7 
+SELF-ASSESSMENT RATING SHEET
+Please complete this form by indicating your level of experience in the each area. The experience levels are:
+
+Level 			                      Description
+1 		                     Very experienced, often help others.
+2 		                     Experienced, rarely need to ask for help from others.
+3 		                     Moderately experienced, sometimes need to ask for help from others
+4 		                     Inexperienced, often need to ask for help from others
+5 		                     No experience at all
+
+
+
+Worksheet And Workbook Management
+1. Working with Worksheets
+2. Renaming Worksheets
+3. Deleting And Inserting Worksheets
+4. Finding Files
+5. Displaying Other Toolbars
+6. Customizing The Look Of The Toolbars And Menus
+7. Freeze Panes
+8. Grouping And Ungrouping Worksheets
+9. The Series Command
+10. Changing The Appearance Of A Spreadsheet
+11. Creating Colored Worksheet Tabs
+12. Overall competence in worksheet and workbook management
+
+
+section 3 of 7
+SELF-ASSESSMENT RATING SHEET
+Please complete this form by indicating your level of experience in the each area. The experience levels are:
+
+Level 			                      Description
+1 		                     Very experienced, often help others.
+2 		                     Experienced, rarely need to ask for help from others.
+3 		                     Moderately experienced, sometimes need to ask for help from others
+4 		                     Inexperienced, often need to ask for help from others
+5 		                     No experience at all
+
+
+Working with Graphic Objects
+1. Inserting Clip Art
+2. Inserting Pictures
+3. Resizing Graphic Images
+4. Overall competence in working with graphic objects
+
+Working with Charts
+1. Creating a Chart
+2. Changing the Chart Type
+3. Changing the Location of the Legend 
+4. Adding Data to a Chart
+5. Changing the Gridlines
+6. Overall competence in working with charts
+
+
+section 4 of 7
+SELF-ASSESSMENT RATING SHEET
+Please complete this form by indicating your level of experience in the each area. The experience levels are:
+
+Level 			                      Description
+1 		                     Very experienced, often help others.
+2 		                     Experienced, rarely need to ask for help from others.
+3 		                     Moderately experienced, sometimes need to ask for help from others
+4 		                     Inexperienced, often need to ask for help from others
+5 		                     No experience at all
+
+
+Working with Excel Databases
+1. Database Concepts
+2. Parts of a Database
+3. Entering Database Information
+4. Managing the Database
+5. Using Lists
+6. Inserting Automatic Subtotals
+7. Overall competence in working with Excel databases
+
+Working with Advanced Functions 
+1. Conditional Functions
+2. Lookup Functions
+3. Number Functions
+4. Text Functions
+5. Date and Time Functions
+6. Financial Functions
+7. Overall competence in working with advanced Excel functions
+
+
+Linking Data
+1. Overall competence in linking Excel data
+
+
+Section 5 of 7 
+SELF-ASSESSMENT RATING SHEET
+Please complete this form by indicating your level of experience in the each area. The experience levels are:
+
+Level 			                      Description
+1 		                     Very experienced, often help others.
+2 		                     Experienced, rarely need to ask for help from others.
+3 		                     Moderately experienced, sometimes need to ask for help from others
+4 		                     Inexperienced, often need to ask for help from others
+5 		                     No experience at all
+
+Proofing and Security 
+1. Conditional Formatting
+2. Data Validation
+3. Protecting Workbook and Worksheets
+4. Overall competence in proofing and securing excel data
+
+
+Organizing Table Data
+1. Advanced Sorting
+2. Filtering 
+3. Overall competence in organizing table data
+
+Analyzing Data
+1. Create a Trendline
+2. Create Scenarios
+3. Perform What-if Analysis 
+4. Using Analysis ToolPak
+5. Create a PivotTable Report 
+6. Analyze Data Using PivotCharts
+7. Overall competence in analyzing data
+
+Section 6 of 7
+SELF-ASSESSMENT RATING SHEET
+Please complete this form by indicating your level of experience in the each area. The experience levels are:
+
+Level 			                      Description
+1 		                     Very experienced, often help others.
+2 		                     Experienced, rarely need to ask for help from others.
+3 		                     Moderately experienced, sometimes need to ask for help from others
+4 		                     Inexperienced, often need to ask for help from others
+5 		                     No experience at all
+
+Working with Multiple Workbooks
+1. Create a Workspace
+2. Consolidate Data
+3. Link Cells in Different Workbooks
+4. Edit Links 
+5. Overall competence in working withh multiple workbooks
+
+Importing and Exporting Data
+1. Export Excel Data
+2. Import a Delimited Text File
+3. Overall competence in importing and exporting data
+
+Basic Macros 
+1. Recording a Macro
+2. Customizing a Macro
+3. Using a Macro
+4. Deleting a Macro 
+5. Overall competence in using basic macros
+
+Section 7 of 7 
+SELF-ASSESSMENT RATING SHEET
+Description (optional)
+
+What specific tasks do you perform using Microsoft Excel?
+
+(text)
+
+Of these tasks, which would you like to carry out effectively after the training?
+
+(text)
+
+
+
+ito ay galing sa google forms so gawin mo 
+
+and also sa admin dashboard lagyan mo ng mga charts and pi charts? create ka na rin ng ano para sa gemini api key natin para yung ai na mag susuggest na training para sa employee
+
+
+also, lagyan mo ng data privacy and data consent bago sila magsagot ng surveys, like yung agree and accept conditions kineme(ikaw na bahala sa content)
+make sure na pede nila makita to kahit after nila macheckan, pede mabalik balikan ganern, a button would do?? 
+
+wag mo rin gawing required lahat ng sections
+
+additional info from the participants:
+client name(can be name or name of the company)
+Address(make sure madali lang paglagay ng address)
+trainee Name
+Job Title
+Mobile Number
+Telephone Number
+E-mail
+include mo rin sa info sa backend yung timestamp(kung kailan sila nagsagot?)
+
+yung system na to is kaya rin mag export or gumawa ng csv sheet para sa data reports
+
+
+
+what if proficient na sa certain skill
+what if gusto nya pa matutunan
+lagyan na lang ng fill in the blanks ganern
+look for other training ganern
+
+data privacy notice
+data consent 
+
+and enhance pa to?
+
+actually lagyan ko ng like folders sa backend admin page like para sa mga past surveys, like history ganon para makita rin
+
+
+
+april 30 
+training programs ask kay sir rolan
+dashboard analytics: dynamic pag tinignan yung skill level, per skill area
+
+dapat per user?
+rating distribution: kung level 5 needs training, yung 31 ano yung needs training nila
+pati sa level 1 2 3 4? 
+
+parenthesis na rin yung actual value??? huh sir di ko gets
+
+dapat may percentage din dun sa rating distribution?
+like clickable yung levels? na pag pinindot makikita a ganto ganyan
+
+email kay sir rolan, i need the quick orient kung pano yung segmentation ng mga respondents, like para malaman yung process
+followup call with you
+list ng mga questions before tanungin si sir rolan
+
+mga manual segment pede ilagay, 
+or pag nag upload ng csv magkakaroon ng sarili nyang dashboard? edi dapat nareread and hindi maooverwrite etong current dashboard or main dashboard
+
+march 19 
+march 19
+
+We deliver modern solutions for complex organizational needs
+masyado malaki? 
+pati subtext palkihan
+adjust the text 
+
+hero section
+
+abt section
+
+royalty free
+avoid copyrights sa image
+
+mastersoft serves paltan
+reeuse diff photo each cards
+
+the gap and outcomes (different statement??)
+how are we addressing it? yung sa white text
+Workforce Challenges papalit sa the gap and outcomes
+
+mobile dapat optimize na rin if final na???
+wednesday??
+
+proposal na to
+be specific sa objeectives
+
+problem muna
+
+multiples platforms are used(cross connecting platforms)
+
+
+manual attendance tracking onsite
+
+dapat specific
+
+
+
+si cal nag oorganize ng events onsite eand online
+xplore nagttrain ng skillsoft platform
+
+check ko yung informatics website
+
+initial feeature ng training ay nasa meeting platform
+u can go inside the training parang event
+
+important feature: 
+meeting perspective
+
+phase 1: meeting features/internal use 
+payment gateway features ticketing platform
+registration features for the events
+zoom features api integrations
+
+customer journey 
+kung customer ako gagamit ako ng platform whats my journey
+
+
+march 27 9am tentative
+
+outline of the documentation of what?????? T_T
+
+
+gets ko po T_T
+
+
+
+march 13 
+
+
+NOTES:
+xplore magstart ng research about solutions na magagamit ng xplore(solutions event yung nagsschedule?)
+kasi pag naghohost ng yung CAL san yung platform
+benchmark: event something??
+research: ano kayang features na need sa ganong 
+
+
+1. internal companies awan
+2. offered as a product
+
+
+19 march 11am meeting with sir
+
+Homepage
+malaki yung 7 at 50
+pati yung we deliver sa hero 
+pati yung slider dapat malalaki fonts?
+
+business approach aksaya sa page
+pedeng sa left yung business approach 
+and sa our solutions sa right
+
+ABOUT PAGE:
+(tanggalin na lang and sa homepage ilagay)
+2-3 pages lang dapat
+who we are tanggalin
+yung core ay redundant
+who we worked with, same sa skillsoft
+7 and 50+ tanggalin na
+partners and platforms tanggalin na
+
+learning solutions under yung mastersoft and skillsoft
+increase the size font 
+
+mastersoft site
+yung platform
+bullet points
+
+social proof
+15yrs of leading campus management solutions
+500+ (find another term)
+2m+ (students who ___) 
+99.9% hanap ako new metrics digitally metric platform
+
+skillsoft microsite
+hero section (remove na yung image)
+paltan ko na lang ng image na nagcocomputer? nakaslider? bg?
+
+yung skillsoft is a global ilagay na sa hero section
+
+audience
+academe
+corporate org
+government
+non-profit 
+
+The gap
+and outcomes pagsasamahin
+
+two per row yung capabilities
+tanggalin na yung card na may percent yung 
+blue bg? navy blue
+
+why skillsoft sa right ilagay na sa taas
+left ay audience 
+
+may 6 discussion with sir rolan 
+once na naginquire sila, alam na nila specific yung course na need or itatatake?
+level 1 - same ng training course needs eachh level
+1st 10 questions level 1??? inaaverage para malaman ang level
+
+so ang pagkakagets ko is diba may 64 questions sa portal, pag na average yun at pumasa ibig sabihin advance level sila, which is level 2? 
+now, kung hindi naman sila pumasa may metrics pa rin kung paano sila magiging basic level
+
+kunwari si respondent 1 ay sa Worksheet And Workbook Management nakapasa sya? pero sa Working with Graphic Objects hindi, so dapat sa summarization ng results nya, na ay sa Worksheet And Workbook Management advanced yung skills nya pero sa Working with Graphic Objects hindi. pero madedetermin pa rin kung advanced or basic sya sa overall average ng 64 questions kung pasa ba sya or basic, kasi pedeng advanced ka sa isang category pero basic ka sa iba so, pano yun
+2 levels lang basic and advanced
+suggestion ni sir rolan: dapat may makausap kaming marketing team, may makakapag input sila ata sa questions namin.
+
+1. Paano po ba dapat i-group o i-segment yung respondents? Halimbawa po, by department, position/role, or years of experience?
+tna ng excel kunwari
+basic, and advance
+depende sa experience level ng respondents, based sa questions. 
+
+
+2. Ano-ano po yung mga required na categories para sa segmentation? Halimbawa po, staff vs. manager or technical vs. non-technical.
+tech vs nontech
+
+3. Yung segmentation po ba is predefined choices lang dapat, or pwede rin po maglagay ng custom input?
+custom input inaallow
+
+
+Kailan po ba dapat mangyari yung segmentation? Before starting the survey po ba or habang nagsasagot na sila?
+within it
+
+May mga required fields po ba na kailangan muna ma-fill up para maayos yung pag-segment ng respondents?
+yes daw, nandyan yyung mga rank nila? age bracket din. position classification. 
+dapat kasama sa portal yang mga yan.
+
+
+Paano po gagamitin yung segmented data sa analysis at reports ng system?
+after macollect ng data, yun gagamitin para maidentify, kung ilan sa respondents yung nandon sa level na yon. 
+
+Kailangan po ba na magkaiba yung set of questions depende sa segment ng respondent?
+
+
+Dapat po ba automatic na mag-aassign yung system ng segment based sa answers nila, or manual selection po siya?
+
+
+May specific filters or reports po ba na kailangan per segment? Halimbawa po, per department or per role yung results.
+
+
+May existing standard format, workflow, or company policy po ba tayo na dapat sundan for respondent segmentation?
+
+
+
+
+SUMMARY OF DISCUSSION:
+
+• For the TNA assessment, 2 levels lang muna yung magiging classification which is Basic and Advanced.
+
+• The respondent’s overall level will be determined based sa average score nila from all assessment questions.
+
+• Possible na advanced yung respondent sa isang specific category pero basic sa ibang categories, so kailangan makita both yung overall classification and detailed per-category results sa summary/report.
+
+• Example: pwedeng advanced yung respondent sa “Worksheet and Workbook Management” pero hindi sa “Working with Graphic Objects,” so dapat reflected pareho sa results.
+
+• Napag-usapan din na kahit may strong performance sa isang category, overall classification pa rin will depend sa combined average or metrics ng buong assessment.
+
+• Segmentation can be based on classifications such as technical vs non-technical respondents.
+
+• Required respondent information may include rank, age bracket, position classification, and other details needed for reporting and analysis.
+
+• Possible sa system na mag-add nalang ng fields, placeholders, or buttons where respondents can input these details, depending sa magiging implementation and database structure.
+
+• Custom inputs are allowed for respondent information and segmentation fields.
+
+• Segmentation will happen within the survey/assessment flow itself.
+
+• Collected data and segmentation results will be used for analytics, reporting, and identifying how many respondents belong under each level/category.
+
+• Possible rin na gamitin yung results for identifying training needs and recommended learning paths per respondent.
+
+• Suggestion ni Sir Rolan na possible makapagbigay rin ng valuable insights yung marketing team regarding the structure of the survey questions, flow, and overall assessment approach.
+
+
+month of may 
+===============================================================
+  TNA PORTAL — MAY 2026 PROGRESS LOG
+  Compiled: May 13, 2026
+===============================================================
+
+
+---------------------------------------------------------------
+  MAY 4, 2026 (Sunday)
+  Session: Enhancing TNA Analytics Dashboard
+---------------------------------------------------------------
+
+CHANGES MADE:
+
+  [tna-data.ts]
+  - Added LEVEL_DESCRIPTIONS constant (1–5 rating meanings)
+  - Added getRatingDistribution() — counts how many respondents
+    per level (1–5), returns count and percentage
+  - Added getTraineesAtRatingLevel() — returns list of trainees
+    at a specific rating level with their categories
+  - Added getCategoryLevelBreakdown() — per category, counts
+    respondents at each rating level (1–5)
+  - Added getTraineesAtCategoryLevel() — returns respondents
+    at a specific level for a specific category
+  - Added parseCSVToSubmissions() — parses exported CSV back
+    into Submission objects for isolated analysis
+  - Added exportToCSV() — exports all submissions to a CSV file
+
+  [next.config.ts]
+  - Fixed "multiple lockfiles" turbopack warning by pinning
+    the root directory to tna-portal
+
+  [components/dashboard/RatingDistributionChart.tsx] (NEW)
+  - Created from scratch
+  - Clickable rows per level (1–5)
+  - Shows count + percentage per level (e.g., "31 (45%)")
+  - Clicking a level shows a drill-down panel with which
+    trainees are at that level
+
+  [components/dashboard/SkillLevelBreakdown.tsx] (NEW)
+  - Created from scratch
+  - Stacked bar chart per skill category (12 categories)
+  - Shows how many respondents landed on each level per category
+  - Clickable bars → shows trainee names at that level
+
+  [components/dashboard/CsvUploadView.tsx] (NEW)
+  - Created from scratch
+  - Drag-and-drop CSV file upload
+  - Parses CSV in-browser using FileReader (no server upload)
+  - Completely isolated — does NOT affect main dashboard
+  - Has its own KPI cards, Rating Distribution, Skill Breakdown,
+    and Trainees table (with tabs)
+  - Shows warning banner: "Viewing uploaded CSV — not live data"
+
+  [admin/dashboard/page.tsx]
+  - Rewrote dashboard to integrate the 3 new components above
+  - Added submission history view (grouped by month, expandable)
+  - Added spreadsheet view (all categories as columns)
+  - Added segment filter (by company/client)
+  - Fixed layout, sidebar navigation, status badges
+
+
+---------------------------------------------------------------
+  MAY 6, 2026 (Tuesday) — NOTE: Xplore Nexus Project (Dev)
+  Session: Finalizing TNA Dashboard Development
+  (This was for a different project — Xplore Nexus, not TNA)
+---------------------------------------------------------------
+
+CHANGES MADE (Xplore Nexus — Dev folder):
+
+  [src/lib/data/notifications.ts] (NEW)
+  - Created mock notifications data (8 entries)
+  - Types: event, meeting, training, system
+  - Priority levels: high, normal, low
+
+  [src/app/(app)/notifications/page.tsx]
+  - Replaced "coming soon" with full notification feed
+  - Category filter tabs (All / Events / Meetings / Training / System)
+  - Mark as read per item + Mark all as read
+  - Unread count badges
+  - "View all notifications" in header now navigates here
+
+  [src/app/(app)/users/page.tsx]
+  - Made fully interactive (was static before)
+  - Live search by name/email/role
+  - Filter dropdowns (role, status)
+  - Toggle user status button
+  - Slide-in profile drawer when clicking a user
+
+  [src/app/api/dashboard/route.ts]
+  - Removed hardcoded KPI values
+  - attendanceRate now computed from actual event capacity data
+  - engagementScore computed from training completion rates
+  - Growth figures derived from relative mock data counts
+
+  [src/components/app/AppHeader.tsx]
+  - "View all notifications →" button now routes to /notifications
+
+
+---------------------------------------------------------------
+  MAY 7, 2026 (Wednesday)
+  Session: Implementing TNA Portal Segmentation
+  (Back to TNA Portal)
+---------------------------------------------------------------
+
+CHANGES MADE:
+
+  CLASSIFICATION SYSTEM OVERHAUL:
+  - Changed from 5-level scale to 2-level BASIC/ADVANCED system
+  - Threshold: avg score ≤ 2.5 = ADVANCED, > 2.5 = BASIC
+  - Logic: lower score = more experienced (1 = expert, 5 = none)
+  - ADVANCED = strong proficiency, needs specialized training
+  - BASIC = needs foundational/refresher training
+
+  [tna-data.ts]
+  - Added getScoreLevel() — classifies a score as Basic or Advanced
+  - Added computeOverallLevel() — computes overall classification
+    for one respondent across all their answers
+  - Updated TRAINING_MAP — now maps each category to basic[] and
+    advanced[] arrays of training program names
+  - Updated computeResults() — now returns "Basic" or "Advanced"
+    instead of a numeric level
+  - Updated getCategoryLevelBreakdown() — now returns
+    { Advanced: number, Basic: number } per category
+  - Updated generateDummySubmission() — generates dummy data
+    with new Basic/Advanced classification and new segmentation fields
+
+  [survey/InfoStep.tsx]
+  - Added 3 new required fields to the survey intake form:
+    * Rank (free text input — e.g., "Senior Manager")
+    * Age Bracket (dropdown: Under 25, 25–34, 35–44, 45–54, 55+)
+    * Position Classification (Technical / Non-Technical / Custom)
+  - These fields are stored in participantInfo on submission
+
+  [components/dashboard/RatingDistributionChart.tsx]
+  - Replaced old 5-level expandable view with new Basic/Advanced
+    clickable bars
+  - Clicking "Advanced" or "Basic" navigates to a dedicated
+    drill-down page (/admin/dashboard/level/[level])
+  - Shows percentage and count for each level
+
+  [components/dashboard/SkillLevelBreakdown.tsx]
+  - Updated to support Basic/Advanced classification
+  - Now shows 2 bars per category (Advanced + Basic)
+  - Clickable → inline drill-down showing respondents at that level
+
+  [admin/dashboard/page.tsx]
+  - Integrated new chart components
+  - Updated LEVEL_COLORS for Basic/Advanced palette
+
+  [admin/submissions/[id]/page.tsx]
+  - Updated submission review page to show Basic/Advanced level
+  - Surfaces new segmentation fields (Rank, Age, Position)
+
+  [admin/dashboard/level/[level]/page.tsx] (NEW)
+  - Created dedicated drill-down page for Basic and Advanced
+  - Shows all respondents at that level
+  - Per-respondent category breakdown table
+  - Recommended training programs per category
+  - Clickable "View full submission" links
+
+
+---------------------------------------------------------------
+  MAY 12, 2026 (Monday)
+  Session 1: Resolving Next.js Config Warnings
+---------------------------------------------------------------
+
+CHANGES MADE:
+
+  [next.config.ts]
+  - Removed deprecated 'turbo' key from experimental config
+  - Replaced with updated Next.js-compliant configuration
+  - Eliminated turbopack/workspace root warnings in dev server
+
+  Session 2: Fixing Tailwind Resolution Errors
+  - Identified root cause: package.json and node_modules existed
+    in the parent TNA/ folder, confusing module resolution
+  - Resolved by isolating dependency resolution to tna-portal/
+  - Dev server now starts cleanly with no module errors
+
+
+---------------------------------------------------------------
+  MAY 13, 2026 (Tuesday)
+  Session: Dashboard Debugging + UI Improvements
+---------------------------------------------------------------
+
+CHANGES MADE:
+
+  BUG FIX — Skill Level by Category bars showing empty:
+  [tna-data.ts]
+  - Added auto-migration in getSubmissions():
+    * Detects stale submissions stored in localStorage that have
+      old 5-level format (e.g., level: "Proficient")
+    * Automatically recomputes their results using the current
+      Basic/Advanced classification logic
+    * Saves migrated data back to localStorage
+  - This fixed the Skill Level by Category chart rendering as
+    blank despite having data
+
+  UI REDESIGN — Skill Level by Category:
+  [components/dashboard/SkillLevelBreakdown.tsx]
+  - Replaced stacked bar chart with a cleaner TABLE layout
+  - Added pagination: 6 categories per page (2 pages total)
+  - Added collapsible toggle (up/down arrow) to hide/show section
+  - Changed colors from harsh blue/orange to:
+    * Advanced: soft emerald green (#34d399 / #6ee7b7)
+    * Basic: soft rose red (#f87171 / #fca5a5)
+  - Clicking Advanced or Basic count → shows inline drill-down
+    table below with respondent names, company, avg score, link
+
+  FIX — Scroll behavior warning:
+  [app/layout.tsx]
+  - Added data-scroll-behavior="smooth" to <html> element
+  - Silences Next.js dev warning about smooth scroll during
+    route transitions
+
+  NEW ANALYTICS CARDS (3 new cards added to dashboard):
+  [admin/dashboard/page.tsx]
+  - Added Priority Training Areas card:
+    * Shows top 5 categories with highest Basic% (most needing
+      training), ranked #1–#5 with mini bar and count
+  - Added Respondent Demographics card:
+    * Breaks down respondents by Position Classification
+      (Technical/Non-Technical) using new survey field
+    * Breaks down respondents by Age Bracket
+    * Uses horizontal mini bars per group
+  - Added Overall Skill Health card:
+    * Circular gauge showing overall proficiency %
+    * Derived from mean avg score across all categories
+      (inverted: 45% = moderate, higher = more experienced)
+    * Shows "Strong / Moderate / Needs Work" label
+    * Shows mean score, scale explanation, respondent count
+
+  CSV UPLOAD — Made more visible:
+  [admin/dashboard/page.tsx]
+  - Added "CSV Upload" as its own sidebar navigation item
+  - Previously buried in Settings — now clearly accessible
+  - Isolated dashboard renders under this view
+  - Banner confirms: "not live data, does not affect main dashboard"
+
+  DATA PRIVACY — Updated to reflect new fields:
+  [app/privacy/page.tsx]
+  - Added to "Information we collect" list:
+    * Rank / Position Level
+    * Age Bracket
+    * Position Classification (Technical / Non-Technical)
+    * Clarified "Assessment responses and self-ratings (64 questions)"
+
+  [app/survey/PrivacyStep.tsx]
+  - Updated the inline consent summary shown before the survey
+  - Same 3 new fields added to the bullet list
+  - Both the modal and the full privacy page now match
+
+
+===============================================================
+  PENDING / NOT YET DONE
+===============================================================
+
+  - Training program names are still PLACEHOLDERS in TRAINING_MAP
+    → Need actual Informatics course names from Sir Rolan
+
+  - Demographics card shows "Unspecified" for existing dummy data
+    → Will populate correctly once real respondents submit
+       (old dummy records predate the new segmentation fields)
+
+  - CSV export has not been verified with the new segmentation
+    fields (Rank, Age, Position) in the column headers
+    → Should be tested before deployment
+
+  - Supabase integration is planned but not yet connected
+    → Currently all data is stored in localStorage
+
+===============================================================
+  END OF MAY 2026 LOG
+===============================================================
+
+
+
+===============================================================
+  TNA PORTAL + XPLORE NEXUS — PROJECT PROGRESS LOG
+  All Sessions Recorded by AI (Antigravity)
+  Compiled: May 13, 2026
+===============================================================
+
+NOTE ON FEBRUARY & MARCH:
+  The AI assistant (Antigravity) does not have stored logs for
+  February and March 2026. Conversation history only goes back
+  to April 23, 2026. Work done before that date is not
+  recoverable from this system. You may reference your own
+  notes or commit history (git log) for earlier work.
+
+  If you use Git, run this in the project folder:
+    git log --oneline --since="2026-02-01" --until="2026-04-22"
+
+===============================================================
+  APRIL 23, 2026 (Thursday)
+  Project: TNA Portal
+  Session: Full Survey & Admin Dashboard Build
+===============================================================
+
+CONTEXT:
+  Major overhaul of the TNA portal to match the actual
+  Informatics Excel TNA form exactly.
+
+CHANGES MADE:
+
+  [src/lib/tna-data.ts] — Full rewrite
+  - Added all 64 survey questions across 12 categories,
+    exactly matching the Informatics Excel TNA form
+  - New data model with proper TypeScript types
+  - Inverted rating scale: 1 = Very experienced, 5 = No experience
+  - Added CSV export function
+  - Added LEVEL_DESCRIPTIONS matching the form:
+      Level 1 — Very experienced, often help others
+      Level 2 — Experienced, rarely need to ask for help
+      Level 3 — Moderately experienced, sometimes need help
+      Level 4 — Inexperienced, often need help from others
+      Level 5 — No experience at all
+
+  [src/app/privacy/page.tsx] — New
+  - Full PDPA-compliant Data Privacy Notice page (/privacy)
+  - Standalone page with Informatics branding
+
+  [src/app/survey/PrivacyStep.tsx] — New
+  - First step shown before the survey starts
+  - Scrollable inline privacy summary
+  - Checkbox consent required to proceed
+  - "View Full Data Privacy Notice" link
+
+  [src/app/survey/InfoStep.tsx] — New
+  - Participant info fields: Client Name, Address, Trainee Name,
+    Job Title, Mobile, Telephone, Email
+  - All fields validated before proceeding
+
+  [src/app/survey/RatingSectionStep.tsx] — New
+  - Rating section component for Sections 2–6
+  - Shows level legend table (Level 1–5 descriptions)
+  - Fill-in-blank appears when rating 1 or 2 (proficient):
+    "What else would you like to learn?"
+  - All questions optional — only info fields required
+
+  [src/app/survey/Section7Step.tsx] — New
+  - Open-ended Section 7:
+    * Tasks currently performed
+    * Goals after training
+
+  [src/app/survey/page.tsx] — Rewritten
+  - Multi-step survey orchestrator (PrivacyStep → InfoStep →
+    Sections 1–7 → Submit)
+  - Floating "Privacy Policy" button bottom-right on all steps
+  - Survey submission saves to localStorage
+
+  [src/app/admin/dashboard/page.tsx] — Rewritten
+  - KPI cards (Total, Pending, Approved, Sent)
+  - Status breakdown donut chart
+  - Submissions table with search + filter
+
+  [src/app/admin/submissions/[id]/page.tsx]
+  - Submission detail/review page
+  - Shows all answers per category
+  - Status change buttons (Pending → Reviewed → Approved → Sent)
+
+  [src/app/success/SuccessClient.tsx]
+  - Thank you page shown after survey submission
+
+  [src/app/page.tsx]
+  - Updated landing page
+
+
+---------------------------------------------------------------
+  APRIL 24, 2026 (Friday)
+  Project: TNA Portal
+  Session: Bug Fixes + Deployment Prep
+---------------------------------------------------------------
+
+CHANGES MADE:
+  - Summarized new features for user review
+  - Fixed deployment-related issues
+  - Resolved build errors preventing Vercel deployment
+
+
+---------------------------------------------------------------
+  APRIL 27, 2026 (Monday)
+  Project: TNA Portal
+  Session: Email Draft + Recommendation Features
+---------------------------------------------------------------
+
+CHANGES MADE:
+  - Drafted email to Sir Rolan explaining the TNA portal and
+    requesting feedback before finalization
+    (explaining how it replaces traditional Google Forms)
+  - Investigated and addressed missing recommendation features
+    in the results/approval workflow
+
+
+---------------------------------------------------------------
+  APRIL 29, 2026 (Wednesday) — Session 1
+  Project: TNA Portal
+  Session: Gemini AI Integration + UI Improvements
+---------------------------------------------------------------
+
+CHANGES MADE:
+
+  [Gemini AI Integration]
+  - Added Google Gemini API key setup to the project
+  - Used AI to generate training recommendations in results
+  - Instructions provided for .env.local API key configuration
+
+  [ThemeToggle Component] — New
+  - Added Dark Mode / Light Mode toggle button
+  - Implemented ThemeProvider (next-themes)
+  - Default: dark mode
+  - Toggle persists across page reloads
+
+  [src/app/globals.css]
+  - Added CSS variables for both dark and light themes
+  - All component colors reference CSS variables
+    (--bg-page, --text-base, --border, etc.)
+
+  [Survey — Quick Fill Button]
+  - Added "Quick Fill (Test)" button for admin/dev testing
+  - Auto-fills all survey fields with sample data
+  - Speeds up testing without manual input
+
+  [UI Readability Improvements]
+  - Made the survey more readable and empathetic in tone
+  - Improved spacing, font sizes, contrast
+  - Made rating instructions clearer for all user types
+
+
+---------------------------------------------------------------
+  APRIL 29, 2026 (Wednesday) — Session 2
+  Project: TNA Portal
+  Session: Smooth Scroll Performance Fix
+---------------------------------------------------------------
+
+CHANGES MADE:
+  - Identified laggy smooth scroll behavior on survey steps
+  - Removed or disabled the CSS scroll-behavior: smooth
+    animation that was causing performance issues during
+    multi-step navigation
+
+
+---------------------------------------------------------------
+  APRIL 30, 2026 (Thursday)
+  Project: TNA Portal
+  Session: Email Draft for Sir Rolan + Question List
+---------------------------------------------------------------
+
+CHANGES MADE:
+  - Drafted formal email to Sir Rolan (Sir Rolan Esber)
+    requesting quick orientation on respondent segmentation
+  - Generated list of questions to ask Sir Rolan covering:
+    * How respondents should be categorized/segmented
+    * What criteria determine groupings
+    * Workflow for assigning respondents to groups
+    * Whether segmentation is manual or automatic
+  - User (Jose Louis Rosales) provided a revised draft email;
+    additional clarifying questions were generated based on it
+
+
+---------------------------------------------------------------
+  MAY 4, 2026 (Monday) — Session 1
+  Project: TNA Portal Documentation
+  Session: Updating Project Proposal
+---------------------------------------------------------------
+
+CHANGES MADE:
+
+  [TNA_Project_Proposal.md / .docx]
+  - Removed handover & continuity plan section
+  - Removed business impact analysis section
+  - Removed anything business-oriented (scope is internal
+    assessment tool for Informatics, not a commercial product)
+  - Added completion time comparison:
+      * TNA Portal average: 3–4 minutes
+      * Google Forms: typically 8+ minutes (Sabaci benchmark)
+  - Cleaned and restructured documentation
+
+
+---------------------------------------------------------------
+  MAY 4, 2026 (Monday) — Sessions 2 & 3
+  Project: TNA Portal
+  Session: TNA Project Proposal Docx + Analytics Enhancement
+---------------------------------------------------------------
+
+  [TNA_Project_Proposal.docx]
+  - Updated Supabase integration section
+  - Converted text table descriptions to formal tables
+  - Added Vercel production URL: tna-taupe.vercel.app
+  - Ensured full documentation of all 64 assessment questions
+
+  [Dashboard Analytics — Full Enhancement]
+  See MAY 4 entry in may_2026_progress.txt for full details.
+  Key additions: RatingDistributionChart, SkillLevelBreakdown,
+  CsvUploadView, history view, spreadsheet view
+
+
+---------------------------------------------------------------
+  MAY 5, 2026 (Tuesday)
+  Project: TNA Portal Documentation
+  Session: TNA Project Proposal — Handover Doc
+---------------------------------------------------------------
+
+CHANGES MADE:
+  - Added formal handover and maintenance plan to documentation
+  - Added Vercel deployment strategy details
+  - Consolidated all documentation into single final .docx file
+
+
+---------------------------------------------------------------
+  MAY 6, 2026 (Wednesday)
+  Project: Xplore Nexus (Dev project — separate from TNA)
+  Session: Finalizing Xplore Nexus Modules
+---------------------------------------------------------------
+
+  See MAY 6 entry in may_2026_progress.txt for full details.
+  Key additions: Notifications page, Interactive Users page,
+  Dynamic Dashboard API, Join-by-code routing
+
+
+---------------------------------------------------------------
+  MAY 7–13, 2026
+  See: may_2026_progress.txt (separate file) for full details
+---------------------------------------------------------------
+
+
+===============================================================
+  REGARDING FEBRUARY & MARCH 2026:
+===============================================================
+
+  No AI session logs exist for these months in my storage.
+  Based on context clues from April sessions, work during
+  Feb–March likely included:
+
+  - Initial TNA portal scaffolding (Next.js + pnpm setup)
+  - Early survey form prototyping
+  - Initial Xplore website development
+  - Xplore Nexus early build (events, meetings, training pages)
+  - Project proposal first drafts
+
+  To recover this history, check:
+    1. Git commit log:
+       cd "c:\jolo\College\Work Related\Xplore Project Proposal\TNA\tna-portal"
+       git log --oneline --since="2026-02-01"
+
+    2. Your own notes in:
+       c:\jolo\College\Work Related\Xplore Project Proposal\TNA\april 30.txt
+       (and any other .txt files in that folder)
+
+===============================================================
+  END OF LOG
+===============================================================
+
+February 23, 2026 Monday 
+
+Thursday, Meeting with sir Nathan Samiley regarding in layout of the website(11:00 - 11:30pm) 
+
+ 
+
+solutions add sa nav bar(precipio skillsoft)  
+
+ 
+
+UP maroon black and white color scheme 
+
+ 
+
+internsheet and NDA sa google drive 
+
+ 
+
+February 24, 2026 
+
+) Notes and Tasks (Brief for Documentation) 
+
+Title: Notes and Tasks – Website Redesign Planning (Week 1) 
+
+Brief / Intro (pwede mo ilagay sa taas): 
+
+This document contains my working notes, observations, and task list for the initial planning phase of the Xplore Philippines website redesign. It serves as a guide for organizing daily work, tracking progress, and preparing updates for my supervisor. 
+
+What to include inside (sections): 
+
+Current website observations 
+
+Improvement ideas (layout, navigation, branding, CTA) 
+
+Tasks for the day / week	 
+
+Pending items for supervisor approval 
+
+Follow-up actions 
+
+Sample short paragraph (ready to paste): 
+
+During my first week as an intern, I started the planning phase for the Xplore Philippines website redesign. I reviewed the current website layout, identified usability and visual issues, and began drafting an improved homepage structure. I also prepared notes on the navigation, sections, and content requirements to support future design and development work.		 
+
+ 
+
+ 
+
+February 26, 2026 
+
+I developed a second website layout concept (Option B) for the Xplore Philippines website rework. The goal is to provide an additional design direction for review, focusing on improved section hierarchy, clarity, and a more professional visual style.			 
+
+ 
+
+February 27, 2026 
+
+ 
+
+THE FIRST NAV BARS AY ILALAGAY SA OPTION B NA WEBPAGE DESIGN  
+LOGIN BUTTON IS FOR ANOTHER LINK SI SIR BAHALA https://www.skillsoft.com/login-skillsoft 
+
+SUCCESS STORIES DAPAT INSTEAD OF CASE STUDIES 
+
+ 
+
+MASTER SOFT AND SKILLSOFT SA RIGHT FEATURED SA HERO SECTION 
+NO METRICS NEEDED 
+
+NAGCCYCLE, IMAGE SLIDER YUNG MASTERSOFT AT SKILLSOFT  
+
+ 
+
+2ND SECTION  
+
+METRICS YUNG MGA BUSINESS APPROACH  
+
+7YRS OF PROVIDING QUALITY, AND CONSULTANCY, TRAINING, AND MANAGEMENT SOLUTIONS 
+
+7 AY MALAKI AND BOLD  
+
+OVER 50(BOLD) TRUSTED PARTNERS AND CLIENTS ACROSS INDUSTRIES 
+
+ 
+
+YUNG SERVICES SECTIONS AY GAGAWING SOLUTIONS  
+
+NAGIISIP PA NG SUBTEXT  
+
+LEARNING SOL – WE PROVIDE LEARNING AND MANAGEMENT SERVICES FOR THE INDUSTRIES ACADEME AND GOVERNMENT  
+
+TECH SERVICES – WE PROVIDE MANPOWER – CONVEYOR BELT SOMETHNG, NAIA 3(INDUSTRY CLIENT OR PARTNER) 
+
+CONSULTING AND SUPPORT   - WE PROVIDE DATA AND AI READINESS AND MATURITY CONNSULTANCY FROM GOVERNANCE FRAMEWORKS TO  TRAINING AND DEVELOPMENT  
+
+ 
+
+ 
+
+ 
+
+SKILLSOFT SECTION AKO NA BAHALA  
+
+PATI SA MASTERSOFT  
+
+TANGGALIN NA YAN, PERO NASA IBANG PAGE 
+
+INSIGHTS WAG NA ILAGAY 
+
+CASE STUDIES AY SUCCESS STORIES 
+
+TEAM REMOVE NA  
+
+ 
+
+ALL RIGHTS RESERVE, WAG KAKALIMUTAN YUNG INC.  
+
+OUR SOLUTIONS HA 	 
+
+563 KERNEL BONNY SERANO AVENUE CUBAO QUEZON CITY  
+
+ 
+
+TRUSTED PARTNERS MGA LOGO 
+
+INFORMATICS HOLDING 
+
+711 
+
+DOST 
+
+NBI 
+
+SAN MIGUEL CORP 
+
+ 
+
+March 2, 2026 
+
+Update, sir, Nathan asked me to give the adjustments for the requested features for the website last Friday. Nagkaissue lang kasi dahil sa vercel, di madeploy.  
+
+Mobile view, yung get in touch 
+
+ 
+
+March 6, 2026 
+
+Nagpunta kami kina sir nathan sa taguig para meeting din and report for the progress 
+
+1. GLOBAL / HOMEPAGE ADJUSTMENTS 
+
+1.1 Hide Success Stories Section 
+
+Reason: 
+Permission is still needed because some individuals do not want their faces shown on the homepage. 
+
+Tasks 
+
+Temporarily hide the Success Stories section from the homepage. 
+
+Do not delete the component; only disable rendering. 
+
+Ensure the section can be easily re-enabled later once permission is granted. 
+
+ 
+
+1.2 Remove “Visit Site” Buttons 
+
+Reason: 
+Sir prefers Xplore to explain the products, rather than redirecting users immediately to external sites (Skillsoft / MasterSoft). 
+
+Tasks 
+
+Remove Visit Site buttons that redirect to: 
+
+Skillsoft external website 
+
+MasterSoft external website 
+
+Ensure all explanation of products happens within the Xplore site pages. 
+
+ 
+
+1.3 Trusted Partners Navigation 
+
+Tasks 
+
+When Trusted Partners is clicked in the navbar: 
+
+It should open the Trusted Partners page directly 
+
+It should not scroll to a section in the homepage 
+
+Ensure the route is something like: 
+
+/trusted-partners 
+
+ 
+
+1.4 Trusted Partners Visual Hierarchy 
+
+Tasks 
+
+Highlight Skillsoft and MasterSoft as the primary partners. 
+
+Make their logos: 
+
+Larger 
+
+More visually prominent 
+
+Other partners remain standard size. 
+
+ 
+
+2. MASTER SOFT MICROSITE (TODAY’S PRIORITY) 
+
+This is the main work you will implement today. 
+
+ 
+
+2.1 MasterSoft Microsite – Feature Navigation 
+
+Current Issue 
+
+Feature labels contain too much information or unnecessary navigation. 
+
+Tasks 
+
+Convert MasterSoft features into simple labels only. 
+
+The Explore button should lead to the MasterSoft microsite page. 
+
+Remove excessive explanation from the homepage. 
+
+ 
+
+2.2 Buttons Adjustment 
+
+Remove Button 
+
+Remove: 
+
+Talk to an Expert 
+
+Merge Buttons 
+
+Combine these two into one button only: 
+
+Schedule a Demo 
+Request Consultation 
+
+Final Button: 
+
+Request Consultation 
+
+Apply the same change later to Skillsoft microsite. 
+
+ 
+
+2.3 Platform Section Restructure 
+
+Current Problem 
+
+Too much empty space while also lacking structured information. 
+
+Desired Layout 
+
+Use collapsible modules or hover expansion. 
+
+Goal 
+
+Avoid dead space 
+
+Avoid overwhelming the page 
+
+ 
+
+2.4 Core Platform Modules 
+
+Create a section called: 
+
+Core Platform Modules 
+
+Inside it place the main MasterSoft solutions: 
+
+Student Information System (SIS) 
+
+Learning Management System (LMS) 
+
+Outcome-Based Education (OBE) 
+
+Application Lead Management 
+
+Beyond the Classroom 
+
+Each should have: 
+
+Short description 
+
+Expandable section (collapse or hover) 
+
+Inside the collapse: module list only 
+
+ 
+
+2.5 Student Information System (SIS) 
+
+Description 
+
+Provide a short summary explaining that SIS manages the entire academic lifecycle through a centralized system. 
+
+Collapsible Content 
+
+Modules: 
+
+Admission & Enrollment 
+
+Academics & Curriculum 
+
+Examination & Assessment 
+
+Fees Management 
+
+Scholarship & Financial Aid 
+
+Student Services 
+
+Alumni Engagement 
+
+Mobile Application 
+
+ 
+
+2.6 Learning Management System (LMS) 
+
+Description 
+
+Short explanation that LMS centralizes learning delivery, assessments, analytics, and engagement. 
+
+Collapsible Content 
+
+Features: 
+
+Curriculum-Aligned Digital Learning 
+
+Academic Communication & Collaboration 
+
+Interactive Content & Assessments 
+
+Performance Tracking & Learning Analytics 
+
+ 
+
+2.7 Outcome-Based Education (OBE) 
+
+Description 
+
+Explain that OBE helps universities measure and improve learning outcomes aligned with accreditation standards. 
+
+Collapsible Content 
+
+Features: 
+
+Outcome Framework & Curriculum Mapping 
+
+Bloom’s Taxonomy Aligned Assessments & Attainment 
+
+Accreditation Ready Reporting & Analytics 
+
+Student Learning Profiles & Continuous Improvement 
+
+ 
+
+2.8 Application Lead Management 
+
+Description 
+
+Explain that it helps institutions capture, track, and convert admissions enquiries efficiently. 
+
+Collapsible Content 
+
+Features: 
+
+Multi-Channel Enquiry Capture 
+
+AI-Assisted Lead Prioritization 
+
+Unified Communication Timeline 
+
+Admission-Ready Workflows 
+
+Campaign & Source Intelligence 
+
+Automation for Routine Tasks 
+
+Leadership Dashboards & SLAs 
+
+ 
+
+2.9 Beyond the Classroom (HRIS) 
+
+Description 
+
+Explain that this module handles university operational systems beyond academics. 
+
+Collapsible Content 
+
+Modules: 
+
+Human Resources 
+
+Payroll Management 
+
+Financial Accounting 
+
+Budget Planning & Control 
+
+Procurement & Inventory 
+
+Hostel Management 
+
+Library Services 
+
+Campus Operations & Administration 
+
+ 
+
+2.10 CTA Section Adjustment 
+
+Current section: 
+
+See How MasterSoft Can Transform Your Campus 
+Schedule a Demo 
+Request Consultation 
+
+Change to 
+
+Remove Schedule a Demo. 
+
+Final CTA: 
+
+Request Consultation 
+
+ 
+
+3. SKILLSOFT MICROSITE (NEXT TASK – NOT TODAY) 
+
+ 
+
+3.1 Logo Visibility 
+
+Problem 
+Logo is not visible against background. 
+
+Task 
+
+Change Skillsoft logo to white version for contrast. 
+
+ 
+
+3.2 Audiences Section 
+
+Add new audiences: 
+
+Academic Institutions 
+
+Government Agencies 
+
+ 
+
+3.3 Icons Styling 
+
+Replace emoji-style icons with proper icons. 
+
+Color rule: 
+
+Partner 
+
+Color 
+
+Skillsoft 
+
+Blue 
+
+MasterSoft 
+
+Maroon 
+
+Apply this to both microsites. 
+
+ 
+
+3.4 Products → Capabilities 
+
+Rename section: 
+
+Products 
+
+to 
+
+Capabilities 
+
+ 
+
+3.5 Skillsoft Solutions Section 
+
+Create 4 solution columns: 
+
+Leadership & Business Skills 
+
+Compliance & Ethics 
+
+Technology Skills 
+
+Support & Services 
+
+Each should contain: 
+
+Challenge explanation 
+
+Statistics 
+
+“More” button linking to Skillsoft site 
+
+Example links: 
+
+Leadership 
+https://www.skillsoft.com/leadership-and-business-skills 
+
+Compliance 
+https://www.skillsoft.com/compliance-leaders 
+
+Technology 
+https://www.skillsoft.com/technology-skills 
+
+Support 
+https://www.skillsoft.com/skillsoft-support-success-and-services 
+
+ 
+
+4. ABOUT PAGE ADJUSTMENTS 
+
+ 
+
+4.1 Hero Navbar Visibility 
+
+Problem: 
+Navbar becomes black only after scrolling, causing text visibility issues. 
+
+Task: 
+
+Make the navbar black immediately on load in the About page. 
+
+ 
+
+4.2 Hero Tagline Update 
+
+Replace with: 
+
+Empowering organizations through learning, technology solutions, and consulting. 
+
+ 
+
+4.3 Affiliation Statement 
+
+Clarify that Xplore is affiliated, not directly owned. 
+
+Text should reflect: 
+
+Affiliated with CAL 
+
+Affiliated with Informatics Holdings Philippines 
+
+(Logos will be added later.) 
+
+ 
+
+4.4 Who We Are Section 
+
+Status: 
+Waiting for Sir's copy or content. 
+
+Task: 
+
+Leave placeholder section. 
+
+ 
+
+4.5 Our Foundation Section 
+
+Task: 
+
+Remove the diagram with arrows. 
+
+ 
+
+4.6 What We Deliver Section 
+
+Cards should contain: 
+
+Learning & Skills Management 
+
+Technology Solutions 
+
+Consulting & Support 
+
+ 
+
+4.7 Who We Work With 
+
+Task: 
+
+Move the section earlier in the page 
+
+It should not be at the very end. 
+
+ 
+
+5. DESIGN CONSISTENCY TASKS 
+
+Apply globally: 
+
+Remove Emoji Icons 
+
+Replace with proper icons. 
+
+Color Rules 
+
+Skillsoft → Blue icons 
+
+MasterSoft → Maroon icons 
+
+ 
+
+6. TODAY'S PRIORITY TASK LIST (MASTER SOFT) 
+
+Focus only on: 
+
+MasterSoft microsite structure 
+
+Core Platform Modules collapsible layout 
+
+Remove Talk to Expert 
+
+Merge CTA to Request Consultation 
+
+Platform modules listing 
+
+Remove Visit Site buttons 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+March 13, 2026 
+
+  
+
+NOTES: 
+
+xplore magstart ng research about solutions na magagamit ng xplore(solutions event yung nagsschedule?) 
+
+kasi pag naghohost ng yung CAL san yung platform 
+
+benchmark: event something?? 
+
+research: ano kayang features na need sa ganong  
+
+  
+
+ 
+
+1. internal companies awan 
+
+2. offered as a product 
+
+  
+
+  
+
+19 march 11am meeting with sir 
+
+  
+
+nag aayos na ulit ako ng xplore website  
+
+paayos nitong mga details na need ko ayusin kasi ipprompt ko 
+
+ 
+
+Homepage  
+
+dapat mas malaki yung 7 at 50   
+
+pati yung we deliver sa hero  na texts lakihan  
+
+pati yung slider dapat malalaki fonts?  
+
+   
+
+  
+
+business approach aksaya sa page   
+
+pedeng sa left yung business approach   
+
+and our solutions sa right (so two column) 
+
+kasi dapat talaga ang pinakaimportant or pansin ng boss ko is andaming dead spaces and dapat hindi ganon,  
+
+  
+
+ABOUT PAGE:  
+
+(tanggalin na lang and sa homepage ilagay)  
+
+2-3 pages lang dapat  
+
+who we are tanggalin  
+
+yung core ay redundant  
+
+who we worked with, same sa skillsoft microsite  
+
+7 and 50+ tanggalin na  
+
+partners and platforms tanggalin na  
+
+(dito sa about page iniisip ko na tanggalin na yung about page? tapos ilagay na lang yung ibang details sa homepage? kasi minsan nagiging redundant what do u think) 
+
+learning solutions under yung mastersoft and skillsoft (nav bar ata to?)  
+
+increase the size font   
+
+  
+
+mastersoft microsite : 
+
+yung platform  
+
+yung bullet points part, sa card may dead space kapag onti lang yung bullets, so ang naisip ko pag pinindot yung card, yung card lang na yon ang gagalaw, kasi naaapektuhan din yung ibang card, so dapat hindi?  
+
+  
+
+social proof  
+
+15yrs of leading campus management solutions  
+
+500+ (find another term)  
+
+2m+ (students who ___)  find another term din  
+
+99.9% hanap ako new metrics digitally metric platform(wag daw platform uptime? di ko masyado to nagets pero sana nagets mo) 
+
+  
+
+  
+
+skillsoft microsite  
+
+hero section (remove na yung image)  
+
+  
+
+paltan ko na lang ng image na nagcocomputer? nakaslider? bg? 
+
+yung bg image sa hero section ng skillsoft microsite papaltan ng actual images like mga nagcocomputer, naggagadgets something like that, and dapat nasslide and nagpapalit yung image every 3-4s? (ps. gawin mo rin to sa microsite ng mastersoft pero magkakaiba naman ng images ha, at least 4-5 images each?)  
+
+  
+
+yung Skillsoft is a global leader in enterprise learning, helping organizations build the leadership capability, compliance readiness, and technical skills their teams need to thrive in a rapidly changing world. ilagay na sa hero section(icombine mo dun sa Help organizations build st... ?)  
+
+  
+
+ 
+
+audience  
+
+academe  
+
+corporate org  
+
+government  
+
+non-profit   
+
+The gap  
+
+and outcomes pagsasamahin (ikaw na bahala) 
+
+ 
+
+two per row yung capabilities  
+
+tanggalin na yung card na may percent yung   
+
+blue bg? navy blue (apply mo to sa whole page ng skillsoft)?  
+
+  
+
+  
+
+why skillsoft sa right ilagay na sa taas  
+
+left ay audience(so two column? or ikaw na bahala) 
+
+pinakagusto talaga kasi ng boss ko is mamarket to nang maayos and walang mga dead spaces 
+
+ 
+
+ 
+
+ 
+
+ 
+
+March 16, 2026 
+
+Xplore Website – UI Improvements & Layout Adjustments 
+
+Goal: 
+Improve the visual hierarchy, remove dead spaces, and make the pages feel more marketable and content-focused without changing the core content. 
+
+ 
+
+HOMEPAGE 
+
+Hero Section 
+
+Increase the font size of the “7” and “50+” metrics so they become visual highlights. 
+
+Increase the font size of the “We Deliver” headline text to strengthen the hero message. 
+
+Increase the font size inside the hero slider content so the text is clearly readable and impactful. 
+
+Ensure the hero section feels full and balanced (reduce empty spacing). 
+
+ 
+
+Business Approach Section 
+
+The current layout wastes space. 
+
+Change the layout into a two-column structure: 
+
+Left column 
+
+Business Approach 
+
+Right column 
+
+Our Solutions 
+
+Goal: 
+
+Fill the horizontal space better. 
+
+Remove empty areas. 
+
+Make the section visually balanced. 
+
+ 
+
+ABOUT PAGE 
+
+Current issue: 
+Many sections are redundant and repeat information already shown on other pages. 
+
+Remove the following sections 
+
+Who We Are 
+
+Core Values (redundant) 
+
+Who We Worked With (already shown in Skillsoft microsite) 
+
+7 and 50+ metrics 
+
+Partners and Platforms 
+
+Recommendation 
+
+Consider removing the About Page entirely and distributing the important information into the Homepage instead to avoid duplication. 
+
+Target website structure: 
+
+Homepage 
+
+Mastersoft Microsite 
+
+Skillsoft Microsite 
+
+Only 2–3 pages total. 
+
+ 
+
+NAVIGATION BAR 
+
+Under Learning Solutions: 
+
+Include: 
+
+Mastersoft 
+
+Skillsoft 
+
+Increase the font size of these menu items slightly so they are easier to see and feel more prominent. 
+
+ 
+
+MASTERSOFT MICROSITE 
+
+Platform Section 
+
+No major layout change, but ensure the spacing is consistent. 
+
+ 
+
+Feature Cards (Bullet Points Section) 
+
+Current issue: 
+Cards with fewer bullet points create visible dead space. 
+
+Solution 
+
+When a card is clicked: 
+
+Only the clicked card expands 
+
+Other cards remain unchanged 
+
+Expansion should not affect the height of neighboring cards 
+
+Goal: 
+
+Avoid uneven card heights 
+
+Prevent layout shifts affecting the entire grid 
+
+ 
+
+Social Proof Section 
+
+Current metrics need improvement. 
+
+Current content: 
+
+15 years of leading campus management solutions 
+
+500+ 
+
+2M+ 
+
+99.9% 
+
+Improvements 
+
+Keep: 
+
+15+ Years of Leading Campus Management Solutions 
+
+Rewrite the others: 
+
+Instead of 
+500+ 
+
+Use something like: 
+
+500+ Institutions Supported 
+
+500+ Academic Institutions Served 
+
+Instead of 
+2M+ students 
+
+Use something like: 
+
+2M+ Students Supported Through Partner Institutions 
+
+2M+ Students Impacted by Our Solutions 
+
+Replace the 99.9% metric with something more meaningful digitally. 
+
+Possible examples: 
+
+99% Client Satisfaction Rate 
+
+Trusted by Leading Universities 
+
+Proven at Scale Across Institutions 
+
+Avoid using platform uptime as a metric. 
+
+ 
+
+SKILLSOFT MICROSITE 
+
+Hero Section 
+
+Remove the current hero image. 
+
+Replace with a background image slider. 
+
+Requirements: 
+
+Use realistic images of people learning: 
+
+people using laptops 
+
+people using tablets 
+
+people working or studying 
+
+Slider behavior: 
+
+change image every 3–4 seconds 
+
+smooth transition 
+
+use 4–5 images 
+
+Apply the same slider concept to the Mastersoft microsite, but with different images. 
+
+ 
+
+Hero Text 
+
+Move this text into the hero section: 
+
+“Skillsoft is a global leader in enterprise learning, helping organizations build leadership capability, compliance readiness, and technical skills their teams need to thrive in a rapidly changing world.” 
+
+Combine it with the existing line: 
+
+“Help organizations build…” 
+
+So the hero message becomes a single strong headline + supporting description. 
+
+ 
+
+Audience Section 
+
+Target groups: 
+
+Academe 
+
+Corporate Organizations 
+
+Government 
+
+Non-Profit Organizations 
+
+Display them clearly (cards or icons). 
+
+ 
+
+The Gap + Outcomes 
+
+Merge these two sections into a single section. 
+
+Possible structure: 
+
+Left side 
+Problem / Gap 
+
+Right side 
+Outcomes / Results 
+
+Goal: 
+
+reduce page length 
+
+remove redundant vertical spacing 
+
+ 
+
+Capabilities Section 
+
+Change layout: 
+
+2 capabilities per row 
+
+balanced grid 
+
+Remove the card that contains percentage metrics. 
+
+ 
+
+Page Theme 
+
+Apply a navy blue background theme across the entire Skillsoft page to align with Skillsoft branding. 
+
+ 
+
+Layout Adjustment 
+
+Current structure is not balanced. 
+
+Change to: 
+
+Left column 
+Audience 
+
+Right column 
+Why Skillsoft 
+
+This should appear higher on the page to immediately communicate value. 
+
+ 
+
+Overall Design Goal 
+
+The main priority is: 
+
+Reduce dead spaces 
+
+Improve content density 
+
+Strengthen marketing clarity 
+
+Make sections visually balanced 
+
+Ensure the pages feel intentional and professional 
+
+The layout should feel compact, informative, and easy to scan, rather than having large empty spaces between sections. 
+
+ 
+
+ 
+
+March 19, 2026 
+march 19 
+
+  
+
+We deliver modern solutions for complex organizational needs 
+
+masyado malaki?  
+
+pati subtext palkihan 
+
+adjust the text  
+
+  
+
+hero section 
+
+  
+
+abt section 
+
+  
+
+royalty free 
+
+avoid copyrights sa image 
+
+  
+
+mastersoft serves paltan 
+
+reeuse diff photo each cards 
+
+  
+
+the gap and outcomes (different statement??) 
+
+how are we addressing it? yung sa white text 
+
+Workforce Challenges papalit sa the gap and outcomes 
+
+  
+
+mobile dapat optimize na rin if final na??? 
+
+wednesday?? 
+
+  
+
+proposal na to 
+
+be specific sa objeectives 
+
+  
+
+problem muna 
+
+  
+
+multiples platforms are used(cross connecting platforms) 
+
+  
+
+  
+
+manual attendance tracking onsite 
+
+  
+
+dapat specific 
+
+  
+
+  
+
+  
+
+si cal nag oorganize ng events onsite eand online 
+
+xplore nagttrain ng skillsoft platform 
+
+  
+
+check ko yung informatics website 
+
+  
+
+initial feeature ng training ay nasa meeting platform 
+
+u can go inside the training parang event 
+
+  
+
+important feature:  
+
+meeting perspective 
+
+  
+
+phase 1: meeting features/internal use  
+
+payment gateway features ticketing platform 
+
+registration features for the events 
+
+zoom features api integrations 
+
+  
+
+customer journey  
+
+kung customer ako gagamit ako ng platform whats my journey 
+
+  
+
+  
+
+march 27 9am tentative 
+
+  
+
+outline of the documentation of what?????? T_T 
+
+  
+
+  
+
+gets ko po T_T 
+
+
+ Recovered Project History: February to April 2026
+Projects: Xplore Website & TNA Portal Source: Recovered from Git Commit History Compiled: May 14, 2026
+
+Note: Ang mga logs na ito ay nakuha mula sa git history ng iyong mga project folders. Dahil dito, nakasentro ang impormasyon sa mga major commits at features na nai-save (pushed/committed) sa repository.
+
+📌 February 2026
+Xplore Website (Xplore directory)
+Feb 27, 2026:
+Project Kickoff: Initialized the Xplore Website project using Create Next App. Nilatag ang pinaka-unang structure ng website.
+📌 March 2026
+Xplore Website (Xplore directory)
+Sa buwang ito nagkaroon ng malaking UI/UX development para sa main Xplore website, specifically focusing on responsiveness at animations.
+
+Mar 2, 2026:
+Inayos ang mobile navbar drawer para sa mas magandang mobile experience.
+Ginawang responsive ang hero layout at hero slider.
+Nag-fix ng overflow issues sa layout.
+Cleaned up the root structure ng project.
+Mar 4, 2026:
+Nagdagdag ng scroll reveal animations across all homepage sections.
+Fixed Turbopack root config para ma-resolve ang module path confusion (katulad ng na-encounter nating issue sa TNA portal).
+Fixed TypeScript build errors (specifically StaggerGroup ease type).
+Mar 5, 2026:
+Fixed hydration errors na related sa scroll animations.
+Nag-implement ng responsive layout fixes sa buong homepage sections para maging maayos sa iba't ibang screen sizes.
+Cleaned up the repository (tinanggal ang malalaking .exe files mula sa tracking).
+Mar 6, 2026:
+Binou ang About Page.
+Finalized enhancements para sa Hero Slider.
+Mar 9, 2026:
+Sinimulan at ginawa ang Microsite for Mastersoft.
+📌 April 2026
+TNA Portal (TNA/tna-portal directory)
+Sa buwang ito nag-shift ang focus mula sa main website papunta sa pag-build ng Training Needs Assessment (TNA) Portal.
+
+Apr 17, 2026:
+Project Kickoff: Initialized the TNA Portal project using Create Next App.
+Apr 20, 2026:
+Official initial commit para sa custom codebase ng TNA portal.
+Nagdagdag ng Back button functionality sa login page.
+Apr 23–24, 2026:
+Near-completion of the initial frontend phases ("almost finish", "last" commits).
+Apr 29, 2026:
+AI Integration & Robustness Fixes:
+Nag-implement ng robust AI response handling na may better error logging.
+Nagkaroon ng series of model switching para ma-optimize ang usage at rate limits (from gemini-1.5-flash → gemini-2.0-flash → reverted back to gemini-2.5-flash dahil ito ang available sa API key).
+UI/Build Fixes:
+Inayos ang text colors at sinet ang white logo para laging visible.
+Fixed build issue regarding ThemeProviderProps (imported correctly from React ComponentProps).
+ 
+
+ 
+
+
+
+ikaw na bahala, 
+basta february non tas march  
+ginawa ko lang ay nagdedevelop ng site for xplore philippines, gamit next js, yon basta alam mo na yon, then mga 
+
+tas mga bandang april di ko lang alam exact date mga march 29 ata ako nakatapos ng ppt non abt sa presentation ng proposal ng xplore nexus since yan yung pinag usapan namin ni sir Nathan na another project na gagawin ko for the company SAAS. then after noon gumawa na ako ng mga technical documentation tas after that (week by week siguro yon) nag start na ako magdevelop, april yon syemrpre frontend muna since ang usapan namin ni sir is hindi ko naman matatapos to ngayong internship ko. tas mga late april nagkaroon ulit ng changes, yun nga yung gagawa ako ng another na website for TNA, and yun yung current kong ginagawa along with the xplore nexus. mga first week ng may ko sha ginawan ng technical documentation kasi nauna akong magdevelo, although may mini documents sha pero di ganon ka detailed, inuna ko develop since urgent daw, so yon,. ano pa ba, ikaw na bahala sa mga learnings ko, mag imbento ka na lang nung iba. tsaka ang duty ko rin is pinapag encode ako ng supervisor ko ng mga receipts for reimbursement. actually today nag encode ulit ako,(may 14)
+march 27 shha nagstart then march 30 then april 17 then may 14, yan yungg mga date na nagencode ako ng mga receipts 
+
+yung mga date na wala akong notes and journal siguro nag dedevelop lang ako nun, kasi yun lang naman ginagawa ko. 
+
+
+dapat detailed lahat ng  araw sa buwan na pinasok ko
+heres the additional info 
+The Version Log below must be updated whenever a significant change is made to the system or documentation.
+Date
+Problems
+Changes Made
+April 15
+Single shared UI for all users; no role separation. Event creation non-persistent.
+Added RBAC (4 roles: Admin, Organizer, Instructor, Participant). Role-gated sidebar, dashboard actions, and event management. Implemented functional Create Event modal with localStorage data persistence.
+
+
+April 20
+
+
+Training and Users modules had no functional API endpoints; data was fully static with no CRUD operations available.
+Built /api/training and /api/training/[id] REST endpoints supporting GET, POST, PATCH, and DELETE. Created /api/users route for user listing and management. Updated types/index.ts to add Training and User type definitions.
+April 21 
+External service credentials (Zoom API, environment config) were not configured; application could not connect to third-party services.
+Configured .env.local with required environment variables for API integrations. Finalized Training module data layer and refined type schemas across the platform.
+May 6
+Notifications page was a non-functional placeholder ("coming soon"). Join-by-code route (/join/[code]) had no page component. Users page used static inline data with no interactivity. Dashboard API had hardcoded KPI values (attendance rate, engagement score, growth figures).
+Implemented full Notifications page with category tabs, read/unread state, and mark-as-read controls. Validated and preserved the existing Join page ticket validation flow. Rebuilt Users page with live search, role/status filters, status toggle, and a slide-in profile drawer backed by MOCK_USERS data. Refactored dashboard API to compute attendanceRate from event registration fill rates, engagementScore from training completion ratios, and minutesRemaining from actual session timestamps.
+
+
+
+
+
+
+
+xplore nexus yan 
+
+and i attached my hours 
+

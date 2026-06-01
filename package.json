@@ -14,8 +14,11 @@
   },
   "dependencies": {
     "@jitsi/react-sdk": "^1.4.4",
+    "@prisma/adapter-pg": "^7.8.0",
     "@prisma/client": "^7.8.0",
     "@stripe/react-stripe-js": "^6.3.0",
+    "@supabase/supabase-js": "^2.106.2",
+    "@types/pg": "^8.20.0",
     "@zoom/meetingsdk": "^6.0.0",
     "@zoom/videosdk": "^2.4.0",
     "bcryptjs": "^3.0.3",
@@ -27,6 +30,7 @@
     "next": "14.2.3",
     "nodemailer": "^8.0.7",
     "pdf-lib": "^1.17.1",
+    "pg": "^8.21.0",
     "prisma": "^7.8.0",
     "qrcode": "^1.5.4",
     "react": "^18",
@@ -47,5 +51,8 @@
     "postcss": "^8",
     "tailwindcss": "^3.4.3",
     "typescript": "^5"
+  },
+  "prisma": {
+    "seed": "ts-node --skip-project prisma/seed.ts"
   }
 }

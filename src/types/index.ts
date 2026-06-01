@@ -17,7 +17,8 @@ export type TrainingCategory =
   | "Leadership"
   | "Technology"
   | "Finance"
-  | "HR";
+  | "HR"
+  | "Communication";
 
 // ─── User ────────────────────────────────────────────────────────────────────
 

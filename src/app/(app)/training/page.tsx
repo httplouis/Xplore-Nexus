@@ -1,10 +1,10 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import {
   BookOpen, Clock, LayoutGrid, BarChart2, Pencil, Award, Plus,
-  Search, Filter, Play, CheckCircle2, Loader2, X, GraduationCap,
+  Search, Play, CheckCircle2, Loader2, X, GraduationCap,
 } from "lucide-react";
 import { useRole } from "@/lib/context/RoleContext";
 import { showToast } from "@/components/ui/Toast";
@@ -15,68 +15,14 @@ interface Training {
   category: string;
   title: string;
   description: string;
-  hours: number;
-  modules: number;
+  totalHours: number;
+  moduleCount: number;
   progress: number;
-  instructor: string;
+  instructorName: string;
   instructorId: string;
   completed: boolean;
   progressColor: string;
-  enrolled: boolean;
-}
-
-// ─── Seed data ─────────────────────────────────────────────────────────────────
-const SEED: Training[] = [
-  {
-    id: "tr-001", category: "Marketing", title: "Digital Marketing Fundamentals",
-    description: "Master the essentials of digital marketing strategies and tools for modern platforms.",
-    hours: 6, modules: 12, progress: 75, instructor: "Maria Santos", instructorId: "u-002",
-    completed: false, progressColor: "#8B1A1A", enrolled: true,
-  },
-  {
-    id: "tr-002", category: "Management", title: "Project Management Essentials",
-    description: "Learn the core principles of effective project management and agile methodologies.",
-    hours: 8, modules: 15, progress: 45, instructor: "John Reyes", instructorId: "u-003",
-    completed: false, progressColor: "#16a34a", enrolled: true,
-  },
-  {
-    id: "tr-003", category: "Analytics", title: "Data Analytics Bootcamp",
-    description: "Transform data into actionable insights using modern analytics tools and techniques.",
-    hours: 10, modules: 18, progress: 60, instructor: "Anna Cruz", instructorId: "u-004",
-    completed: false, progressColor: "#d97706", enrolled: true,
-  },
-  {
-    id: "tr-004", category: "Leadership", title: "Leadership Excellence Program",
-    description: "Develop essential leadership skills for modern organizations and cross-functional teams.",
-    hours: 5, modules: 10, progress: 100, instructor: "Robert Tan", instructorId: "u-005",
-    completed: true, progressColor: "#7c3aed", enrolled: true,
-  },
-  {
-    id: "tr-005", category: "Technology", title: "Cloud Computing Fundamentals",
-    description: "Understand cloud platforms (AWS, Azure, GCP) and infrastructure-as-a-service models.",
-    hours: 12, modules: 20, progress: 0, instructor: "Anna Cruz", instructorId: "u-004",
-    completed: false, progressColor: "#0284c7", enrolled: false,
-  },
-  {
-    id: "tr-006", category: "Communication", title: "Business Communication Mastery",
-    description: "Enhance workplace communication, presentation, and stakeholder management skills.",
-    hours: 4, modules: 8, progress: 0, instructor: "Maria Santos", instructorId: "u-002",
-    completed: false, progressColor: "#be185d", enrolled: false,
-  },
-];
-
-const STORE_KEY = "xplore_trainings";
-
-function readTrainings(): Training[] {
-  if (typeof window === "undefined") return SEED;
-  try {
-    const r = localStorage.getItem(STORE_KEY);
-    return r ? JSON.parse(r) : (() => { localStorage.setItem(STORE_KEY, JSON.stringify(SEED)); return SEED; })();
-  } catch { return SEED; }
-}
-
-function writeTrainings(t: Training[]) {
-  if (typeof window !== "undefined") localStorage.setItem(STORE_KEY, JSON.stringify(t));
+  status: string;
 }
 
 // ─── Create Training Modal (Instructor / Admin only) ───────────────────────────
@@ -87,26 +33,36 @@ function CreateTrainingModal({ onClose, onCreated, instructorName }: {
 }) {
   const [form, setForm] = useState({ title: "", description: "", category: "Technology", hours: 4, modules: 8 });
   const [loading, setLoading] = useState(false);
-  const colors = ["#8B1A1A", "#16a34a", "#d97706", "#7c3aed", "#0284c7", "#be185d"];
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
+    if (!form.title) return;
     setLoading(true);
-    await new Promise((r) => setTimeout(r, 600)); // simulate API
-    const newT: Training = {
-      id: `tr-${Date.now()}`,
-      ...form,
-      instructor: instructorName,
-      instructorId: "current",
-      progress: 0,
-      completed: false,
-      progressColor: colors[Math.floor(Math.random() * colors.length)],
-      enrolled: true,
-    };
-    onCreated(newT);
-    showToast("Training program created!", "success");
-    setLoading(false);
-    onClose();
+    try {
+      const res = await fetch("/api/training", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          title: form.title,
+          description: form.description,
+          category: form.category,
+          hours: form.hours,
+          modules: form.modules,
+        }),
+      });
+      const json = await res.json();
+      if (json.success) {
+        onCreated(json.data);
+        showToast("Training program created!", "success");
+        onClose();
+      } else {
+        showToast(json.error || "Failed to create training program.", "error");
+      }
+    } catch {
+      showToast("Network error.", "error");
+    } finally {
+      setLoading(false);
+    }
   }
 
   return (
@@ -193,8 +149,8 @@ function TrainingCard({ training, canManage, isInstructor, onEnroll, onContinue,
   onEdit: (id: string) => void;
 }) {
   const router = useRouter();
-  const isOwner = isInstructor || canManage;
-  const showManage = isOwner;
+  const showManage = isInstructor || canManage;
+  const isEnrolled = training.status !== "Not Started";
 
   return (
     <div className="bg-white border border-gray-100 rounded-xl shadow-sm flex flex-col hover:shadow-md hover:-translate-y-0.5 transition-all duration-200">
@@ -211,7 +167,7 @@ function TrainingCard({ training, canManage, isInstructor, onEnroll, onContinue,
                 <Award className="w-3 h-3" />Completed
               </span>
             )}
-            {!training.enrolled && !training.completed && (
+            {!isEnrolled && !training.completed && (
               <span className="px-2 py-0.5 rounded-full text-xs font-semibold bg-gray-100 text-gray-500">
                 Not Enrolled
               </span>
@@ -228,15 +184,15 @@ function TrainingCard({ training, canManage, isInstructor, onEnroll, onContinue,
         {/* Meta */}
         <div className="flex items-center gap-4">
           <span className="flex items-center gap-1.5 text-xs text-gray-500">
-            <Clock className="w-3.5 h-3.5" />{training.hours} hours
+            <Clock className="w-3.5 h-3.5" />{training.totalHours} hours
           </span>
           <span className="flex items-center gap-1.5 text-xs text-gray-500">
-            <LayoutGrid className="w-3.5 h-3.5" />{training.modules} modules
+            <LayoutGrid className="w-3.5 h-3.5" />{training.moduleCount} modules
           </span>
         </div>
 
         {/* Progress (only if enrolled) */}
-        {training.enrolled && (
+        {isEnrolled && (
           <div>
             <div className="flex items-center justify-between mb-1.5">
               <span className="text-xs text-gray-500 font-medium">Progress</span>
@@ -251,7 +207,7 @@ function TrainingCard({ training, canManage, isInstructor, onEnroll, onContinue,
 
         {/* Instructor */}
         <p className="text-xs text-gray-500">
-          Instructor: <span className="font-medium text-gray-700">{training.instructor}</span>
+          Instructor: <span className="font-medium text-gray-700">{training.instructorName}</span>
         </p>
       </div>
 
@@ -265,12 +221,12 @@ function TrainingCard({ training, canManage, isInstructor, onEnroll, onContinue,
               <Pencil className="w-3.5 h-3.5" />Edit Course
             </button>
             <button
-              onClick={() => router.push(`/app/analytics?trainingId=${training.id}`)}
+              onClick={() => router.push(`/analytics?trainingId=${training.id}`)}
               className="w-full flex items-center justify-center gap-2 border border-gray-200 hover:bg-gray-50 text-gray-700 text-sm font-medium py-2.5 rounded-lg transition-colors">
               <BarChart2 className="w-3.5 h-3.5" />View Analytics
             </button>
           </>
-        ) : training.enrolled ? (
+        ) : isEnrolled ? (
           <button
             onClick={() => onContinue(training.id)}
             className="w-full flex items-center justify-center gap-2 bg-[#8B1A1A] hover:bg-[#7B1414] text-white text-sm font-semibold py-2.5 rounded-lg transition-colors">
@@ -293,69 +249,99 @@ function TrainingCard({ training, canManage, isInstructor, onEnroll, onContinue,
 // ─── Main Page ──────────────────────────────────────────────────────────────────
 export default function TrainingPage() {
   const { user, canManage, isInstructor } = useRole();
-  const [trainings, setTrainings] = useState<Training[]>(() => readTrainings());
+  const [trainings, setTrainings] = useState<Training[]>([]);
+  const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState("");
   const [filter, setFilter] = useState<"All" | "Enrolled" | "Completed" | "Available">("All");
   const [showCreate, setShowCreate] = useState(false);
-  const [selectedTraining, setSelectedTraining] = useState<Training | null>(null);
-  const [showEdit, setShowEdit] = useState(false);
-  const [showModules, setShowModules] = useState(false);
   const router = useRouter();
 
   const displayName = user ? `${user.firstName} ${user.lastName}` : "Instructor";
   const canCreate = canManage || isInstructor;
 
+  // Load trainings from dynamic API
+  useEffect(() => {
+    async function loadTrainings() {
+      if (!user) return;
+      try {
+        const res = await fetch(`/api/training?userId=${user.id}`);
+        const json = await res.json();
+        if (json.success) {
+          setTrainings(json.data.items);
+        }
+      } catch (error) {
+        console.error("Failed to load trainings:", error);
+      } finally {
+        setLoading(false);
+      }
+    }
+    loadTrainings();
+  }, [user]);
+
   // Filter
   const filtered = trainings.filter((t) => {
+    const isEnrolled = t.status !== "Not Started";
     const matchSearch = t.title.toLowerCase().includes(search.toLowerCase()) ||
-      t.instructor.toLowerCase().includes(search.toLowerCase()) ||
+      t.instructorName.toLowerCase().includes(search.toLowerCase()) ||
       t.category.toLowerCase().includes(search.toLowerCase());
     const matchFilter =
       filter === "All"       ? true :
-      filter === "Enrolled"  ? t.enrolled && !t.completed :
+      filter === "Enrolled"  ? isEnrolled && !t.completed :
       filter === "Completed" ? t.completed :
-                               !t.enrolled;
+                               !isEnrolled;
     return matchSearch && matchFilter;
   });
 
-  const enrolledCount   = trainings.filter((t) => t.enrolled && !t.completed).length;
+  const enrolledCount   = trainings.filter((t) => t.status !== "Not Started" && !t.completed).length;
   const completedCount  = trainings.filter((t) => t.completed).length;
-  const availableCount  = trainings.filter((t) => !t.enrolled).length;
+  const availableCount  = trainings.filter((t) => t.status === "Not Started").length;
 
-  function handleEnroll(id: string) {
-    const next = trainings.map((t) => t.id === id ? { ...t, enrolled: true } : t);
-    setTrainings(next);
-    writeTrainings(next);
-    showToast("Enrolled successfully!", "success");
+  async function handleEnroll(id: string) {
+    if (!user) return;
+    try {
+      const res = await fetch(`/api/training/${id}/enroll`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ userId: user.id }),
+      });
+      const json = await res.json();
+      if (json.success) {
+        showToast("Enrolled successfully!", "success");
+        // Reload trainings
+        const loadRes = await fetch(`/api/training?userId=${user.id}`);
+        const loadJson = await loadRes.json();
+        if (loadJson.success) {
+          setTrainings(loadJson.data.items);
+        }
+      } else {
+        showToast(json.error || "Enrollment failed.", "error");
+      }
+    } catch {
+      showToast("Network error.", "error");
+    }
   }
 
   function handleContinue(id: string) {
-    const training = trainings.find(t => t.id === id);
-    if (training) {
-      setSelectedTraining(training);
-      setShowModules(true);
-    }
+    showToast("Starting course viewer...", "info");
   }
 
   function handleEditTraining(id: string) {
-    const training = trainings.find(t => t.id === id);
-    if (training) {
-      setSelectedTraining(training);
-      setShowEdit(true);
-    }
-  }
-
-  function handleViewAnalytics(id: string) {
-    router.push(`/app/analytics?trainingId=${id}`);
+    showToast("Edit training program coming soon!", "info");
   }
 
   function handleCreated(t: Training) {
-    const next = [t, ...trainings];
-    setTrainings(next);
-    writeTrainings(next);
+    setTrainings((prev) => [t, ...prev]);
   }
 
   const FILTERS = ["All", "Enrolled", "Completed", "Available"] as const;
+
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center py-24">
+        <Loader2 className="w-6 h-6 text-gray-400 animate-spin" />
+      </div>
+    );
+  }
 
   return (
     <div className="space-y-6 animate-fade-in">
@@ -446,7 +432,7 @@ export default function TrainingPage() {
               key={t.id}
               training={t}
               canManage={canManage}
-              isInstructor={isInstructor && t.instructorId === "u-004"}
+              isInstructor={isInstructor && t.instructorId === user?.id}
               onEnroll={handleEnroll}
               onContinue={handleContinue}
               onEdit={handleEditTraining}

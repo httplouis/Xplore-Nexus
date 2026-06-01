@@ -11,28 +11,8 @@ import {
 import type { Event, Registration } from "@/types";
 import { useRole } from "@/lib/context/RoleContext";
 import { showToast } from "@/components/ui/Toast";
-import {
-  findRegistration,
-  createRegistration,
-  readRegistrations,
-  writeRegistrations,
-} from "@/lib/registrations";
 
 // ─── Helpers ──────────────────────────────────────────────────────────────────
-const EVENTS_KEY = "xplore_events";
-
-function getEvent(id: string): Event | null {
-  if (typeof window === "undefined") return null;
-  try {
-    const raw = localStorage.getItem(EVENTS_KEY);
-    if (raw) {
-      const arr: Event[] = JSON.parse(raw);
-      return arr.find((e) => e.id === id) ?? null;
-    }
-  } catch { /* ignore */ }
-  return null;
-}
-
 function fmtDate(iso: string) {
   if (!iso) return "Date TBD";
   const d = new Date(iso);
@@ -63,7 +43,9 @@ function TicketCard({ reg }: { reg: Registration }) {
     <div className="border-2 border-dashed border-[#8B1A1A]/30 rounded-2xl bg-gradient-to-br from-red-50 to-white p-5 space-y-3">
       <div className="flex items-center gap-2">
         <ShieldCheck className="w-4 h-4 text-green-600" />
-        <span className="text-xs font-bold text-green-700 uppercase tracking-wide">Your Ticket — Confirmed</span>
+        <span className="text-xs font-bold text-green-700 uppercase tracking-wide">
+          Your Ticket — {reg.status}
+        </span>
       </div>
 
       <div className="text-center py-3">
@@ -79,12 +61,14 @@ function TicketCard({ reg }: { reg: Registration }) {
           {copied ? <Check className="w-3.5 h-3.5" /> : <Copy className="w-3.5 h-3.5" />}
           {copied ? "Copied!" : "Copy Code"}
         </button>
-        <Link
-          href={`/join/${reg.eventId}`}
-          className="flex items-center justify-center gap-2 px-4 rounded-xl border border-[#8B1A1A]/30 text-[#8B1A1A] text-xs font-bold hover:bg-red-50 transition-all">
-          <Video className="w-3.5 h-3.5" />
-          Join
-        </Link>
+        {reg.status === "Confirmed" && (
+          <Link
+            href={`/join/${reg.eventId}`}
+            className="flex items-center justify-center gap-2 px-4 rounded-xl border border-[#8B1A1A]/30 text-[#8B1A1A] text-xs font-bold hover:bg-red-50 transition-all">
+            <Video className="w-3.5 h-3.5" />
+            Join
+          </Link>
+        )}
       </div>
 
       {reg.paymentRef && (
@@ -111,18 +95,37 @@ export default function EventDetailPage({ params }: { params: { id: string } }) 
 
   // Load event + my registration
   useEffect(() => {
-    const e = getEvent(params.id);
-    setEvent(e);
-    if (e && user) {
-      setMyReg(findRegistration(e.id, user.id));
+    async function loadData() {
+      if (!params.id) return;
+      try {
+        const evRes = await fetch(`/api/events/${params.id}`);
+        const evJson = await evRes.json();
+        if (evJson.success) {
+          setEvent(evJson.data);
+          
+          if (user) {
+            const regRes = await fetch(`/api/events/${params.id}/register?userId=${user.id}`);
+            const regJson = await regRes.json();
+            if (regJson.success) {
+              setMyReg(regJson.data);
+            }
+          }
+        }
+      } catch (error) {
+        console.error("Failed to load event details:", error);
+      } finally {
+        setLoading(false);
+      }
     }
-    setLoading(false);
+    loadData();
   }, [params.id, user]);
 
-  const isFull   = Boolean(event && event.registrationCount >= event.maxParticipants);
-  const canEdit  = Boolean(isAdmin || (canManage && event?.organizerId === user?.id));
-  const seatsLeft = event ? event.maxParticipants - event.registrationCount : 0;
-  const seatsPct  = event ? Math.min(100, Math.round((event.registrationCount / event.maxParticipants) * 100)) : 0;
+  const isFull    = Boolean(event && event.registrationCount >= event.maxParticipants);
+  const canEdit   = Boolean(isAdmin || (canManage && event?.organizerId === user?.id));
+  // Internal staff (Admin / Organizer / Instructor) get free access to all events
+  const isInternal = Boolean(user?.role === "Admin" || user?.role === "Organizer" || user?.role === "Instructor");
+  const seatsLeft  = event ? event.maxParticipants - event.registrationCount : 0;
+  const seatsPct   = event ? Math.min(100, Math.round((event.registrationCount / event.maxParticipants) * 100)) : 0;
 
   // ── Free registration ──────────────────────────────────────────────────────
   async function handleFreeRegister() {
@@ -142,21 +145,13 @@ export default function EventDetailPage({ params }: { params: { id: string } }) 
       });
       const json = await res.json();
       if (json.success) {
-        const reg: Registration = json.data;
-        // Persist
-        const existing = readRegistrations();
-        writeRegistrations([...existing, reg]);
-        setMyReg(reg);
-        // Bump count
-        const raw  = localStorage.getItem(EVENTS_KEY) ?? "[]";
-        const arr  = JSON.parse(raw) as Event[];
-        const next = arr.map((e) =>
-          e.id === event.id
-            ? { ...e, registrationCount: e.registrationCount + 1 }
-            : e
-        );
-        localStorage.setItem(EVENTS_KEY, JSON.stringify(next));
-        setEvent((v) => v ? { ...v, registrationCount: v.registrationCount + 1 } : v);
+        setMyReg(json.data);
+        // Refetch event to update registration counts
+        const evRes = await fetch(`/api/events/${event.id}`);
+        const evJson = await evRes.json();
+        if (evJson.success) {
+          setEvent(evJson.data);
+        }
         showToast("Registered! Check your ticket below.", "success");
       } else {
         showToast(json.error ?? "Registration failed.", "error");
@@ -173,12 +168,14 @@ export default function EventDetailPage({ params }: { params: { id: string } }) 
     if (!event) return;
     setDeleting(true);
     try {
-      await fetch(`/api/events/${event.id}`, { method: "DELETE" });
-      const raw = localStorage.getItem(EVENTS_KEY) ?? "[]";
-      const arr = (JSON.parse(raw) as Event[]).filter((e) => e.id !== event.id);
-      localStorage.setItem(EVENTS_KEY, JSON.stringify(arr));
-      showToast("Event deleted.", "success");
-      router.push("/events");
+      const res = await fetch(`/api/events/${event.id}`, { method: "DELETE" });
+      const json = await res.json();
+      if (json.success) {
+        showToast("Event deleted.", "success");
+        router.push("/events");
+      } else {
+        showToast(json.error ?? "Failed to delete event.", "error");
+      }
     } catch {
       showToast("Failed to delete event.", "error");
     } finally {
@@ -370,8 +367,17 @@ export default function EventDetailPage({ params }: { params: { id: string } }) 
       {/* ── Action bar ─────────────────────────────────────────────────────── */}
       <div className="flex items-center gap-3 flex-wrap">
 
-        {/* Participant actions — not yet registered, not full */}
-        {!canManage && !myReg && !isFull && event.status === "Upcoming" && (
+        {/* Internal staff: free access bypass (Admin / Organizer / Instructor) */}
+        {isInternal && !myReg && !isFull && event.status === "Upcoming" && (
+          <button onClick={handleFreeRegister} disabled={registering}
+            className="flex items-center gap-2 bg-emerald-600 hover:bg-emerald-700 disabled:opacity-60 text-white text-sm font-bold px-6 py-2.5 rounded-lg transition-colors shadow-sm">
+            {registering ? <Loader2 className="w-4 h-4 animate-spin" /> : <ShieldCheck className="w-4 h-4" />}
+            {registering ? "Registering…" : "Register (Staff Free)"}
+          </button>
+        )}
+
+        {/* External participant actions — only shown to non-internal users */}
+        {!isInternal && !canManage && !myReg && !isFull && event.status === "Upcoming" && (
           event.isPaid ? (
             <Link
               href={`/events/${event.id}/checkout`}
@@ -388,8 +394,8 @@ export default function EventDetailPage({ params }: { params: { id: string } }) 
           )
         )}
 
-        {/* Online join link */}
-        {event.type === "Online" && event.location && (
+        {/* Online join link — confirmed participants, internal staff, organizer, or admin */}
+        {event.type === "Online" && event.location && (myReg?.status === "Confirmed" || canEdit || isAdmin || isInternal) && (
           <a href={event.location} target="_blank" rel="noopener noreferrer"
             className="flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white text-sm font-semibold px-5 py-2.5 rounded-lg transition-colors">
             <Video className="w-4 h-4" />Join Online
@@ -430,13 +436,26 @@ export default function EventDetailPage({ params }: { params: { id: string } }) 
 // ─── Registrations list component ─────────────────────────────────────────────
 function RegistrationsList({ eventId }: { eventId: string }) {
   const [regs, setRegs] = useState<Registration[]>([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const { getEventRegistrations } = require("@/lib/registrations");
-    setRegs(getEventRegistrations(eventId));
+    async function fetchRegs() {
+      try {
+        const res = await fetch(`/api/events/${eventId}/register`);
+        const json = await res.json();
+        if (json.success) {
+          setRegs(json.data);
+        }
+      } catch (error) {
+        console.error("Failed to load registrations:", error);
+      } finally {
+        setLoading(false);
+      }
+    }
+    fetchRegs();
   }, [eventId]);
 
-  if (regs.length === 0) return null;
+  if (loading || regs.length === 0) return null;
 
   return (
     <div className="bg-white border border-gray-100 rounded-2xl shadow-sm overflow-hidden">
