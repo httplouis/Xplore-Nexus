@@ -11,6 +11,17 @@ import { NextResponse } from "next/server";
 import { getZoomAccessToken } from "@/lib/zoom";
 
 export async function GET() {
+  // If Zoom is not configured (we use Jitsi), return a non-error response
+  // so the build/static generation does not attempt an external request.
+  const accountId = process.env.ZOOM_ACCOUNT_ID;
+  const clientId = process.env.ZOOM_CLIENT_ID;
+  const clientSecret = process.env.ZOOM_CLIENT_SECRET;
+
+  if (!accountId || !clientId || !clientSecret) {
+    console.info("[zoom/token] Zoom credentials not configured; endpoint disabled.");
+    return NextResponse.json({ success: false, error: "Zoom not configured" }, { status: 501 });
+  }
+
   try {
     const token = await getZoomAccessToken();
     return NextResponse.json({ success: true, token });
