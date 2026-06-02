@@ -11,8 +11,15 @@ import { NextResponse } from "next/server";
 import { getZoomAccessToken } from "@/lib/zoom";
 
 export async function GET() {
-  // If Zoom is not configured (we use Jitsi), return a non-error response
-  // so the build/static generation does not attempt an external request.
+  // Default to disabled unless the project explicitly opts-in.
+  // This avoids build-time calls to Zoom when the project uses Jitsi.
+  const useZoom = process.env.USE_ZOOM === "1";
+  if (!useZoom) {
+    console.info("[zoom/token] Zoom integration disabled (USE_ZOOM != 1).");
+    return NextResponse.json({ success: false, error: "Zoom disabled" }, { status: 501 });
+  }
+
+  // If USE_ZOOM=1, require credentials to be present.
   const accountId = process.env.ZOOM_ACCOUNT_ID;
   const clientId = process.env.ZOOM_CLIENT_ID;
   const clientSecret = process.env.ZOOM_CLIENT_SECRET;
