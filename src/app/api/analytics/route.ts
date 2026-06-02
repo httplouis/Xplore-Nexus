@@ -3,6 +3,8 @@ import { prisma } from "@/lib/prisma";
 import { TrainingCategory, TrainingStatus } from "@prisma/client";
 import type { ApiSuccess, AnalyticsDashboard } from "@/types";
 
+export const dynamic = 'force-dynamic';
+
 function ok<T>(data: T): NextResponse<ApiSuccess<T>> {
   return NextResponse.json({ success: true, data });
 }

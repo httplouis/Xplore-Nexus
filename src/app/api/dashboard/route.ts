@@ -4,6 +4,8 @@ import { mapEventToClient } from "@/lib/db-mappers";
 import { EventStatus, MeetingStatus, TrainingStatus } from "@prisma/client";
 import type { ApiSuccess, DashboardData } from "@/types";
 
+export const dynamic = 'force-dynamic';
+
 function ok<T>(data: T): NextResponse<ApiSuccess<T>> {
   return NextResponse.json({ success: true, data });
 }
