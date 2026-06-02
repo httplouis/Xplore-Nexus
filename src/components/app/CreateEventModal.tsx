@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Plus, X, Loader2, Ticket, Lock, Unlock } from "lucide-react";
+import { Plus, X, Loader2, Ticket, Lock, Unlock, Pencil } from "lucide-react";
 import type { Event, EventType, CreateEventPayload } from "@/types";
 import { useRole } from "@/lib/context/RoleContext";
 import { showToast } from "@/components/ui/Toast";
@@ -9,7 +9,9 @@ import { generateJoinCode } from "@/lib/registrations";
 
 interface Props {
   onClose: () => void;
-  onCreated: (event: Event) => void;
+  onCreated?: (event: Event) => void;
+  onUpdated?: (event: Event) => void;
+  eventToEdit?: Event; // if provided → edit mode
 }
 
 function toDatetimeLocal(d: Date): string {
@@ -17,8 +19,9 @@ function toDatetimeLocal(d: Date): string {
   return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}T${pad(d.getHours())}:${pad(d.getMinutes())}`;
 }
 
-export function CreateEventModal({ onClose, onCreated }: Props) {
+export function CreateEventModal({ onClose, onCreated, onUpdated, eventToEdit }: Props) {
   const { user } = useRole();
+  const isEditMode = Boolean(eventToEdit);
 
   const tomorrow = new Date();
   tomorrow.setDate(tomorrow.getDate() + 1);
@@ -27,16 +30,16 @@ export function CreateEventModal({ onClose, onCreated }: Props) {
   tomorrowEnd.setHours(17, 0, 0, 0);
 
   const [form, setForm] = useState<CreateEventPayload>({
-    name:            "",
-    description:     "",
-    type:            "Online",
-    date:            toDatetimeLocal(tomorrow),
-    endDate:         toDatetimeLocal(tomorrowEnd),
-    location:        "",
-    maxParticipants: 50,
-    tags:            [],
-    isPaid:          false,
-    ticketPrice:     0,
+    name:            eventToEdit?.name ?? "",
+    description:     eventToEdit?.description ?? "",
+    type:            eventToEdit?.type ?? "Online",
+    date:            eventToEdit?.date ? toDatetimeLocal(new Date(eventToEdit.date)) : toDatetimeLocal(tomorrow),
+    endDate:         eventToEdit?.endDate ? toDatetimeLocal(new Date(eventToEdit.endDate)) : toDatetimeLocal(tomorrowEnd),
+    location:        eventToEdit?.location ?? "",
+    maxParticipants: eventToEdit?.maxParticipants ?? 50,
+    tags:            eventToEdit?.tags ?? [],
+    isPaid:          eventToEdit?.isPaid ?? false,
+    ticketPrice:     eventToEdit?.ticketPrice ?? 0,
   });
   const [tagInput, setTagInput] = useState("");
   const [loading,  setLoading]  = useState(false);
@@ -64,24 +67,42 @@ export function CreateEventModal({ onClose, onCreated }: Props) {
     setLoading(true);
 
     try {
-      const joinCode = generateJoinCode();
-      const res = await fetch("/api/events", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          ...form,
-          organizerId:   user?.id,
-          organizerName: user ? `${user.firstName} ${user.lastName}` : "Unknown",
-          joinCode,
-        }),
-      });
-      const json = await res.json();
-      if (json.success) {
-        onCreated(json.data as Event);
-        showToast("Event created! Join code generated.", "success");
-        onClose();
+      if (isEditMode && eventToEdit) {
+        // EDIT MODE — PATCH request
+        const res = await fetch(`/api/events/${eventToEdit.id}`, {
+          method: "PATCH",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(form),
+        });
+        const json = await res.json();
+        if (json.success) {
+          onUpdated?.(json.data as Event);
+          showToast("Event updated successfully!", "success");
+          onClose();
+        } else {
+          showToast(json.error ?? "Failed to update event", "error");
+        }
       } else {
-        showToast(json.error ?? "Failed to create event", "error");
+        // CREATE MODE — POST request
+        const joinCode = generateJoinCode();
+        const res = await fetch("/api/events", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            ...form,
+            organizerId:   user?.id,
+            organizerName: user ? `${user.firstName} ${user.lastName}` : "Unknown",
+            joinCode,
+          }),
+        });
+        const json = await res.json();
+        if (json.success) {
+          onCreated?.(json.data as Event);
+          showToast("Event created! Join code generated.", "success");
+          onClose();
+        } else {
+          showToast(json.error ?? "Failed to create event", "error");
+        }
       }
     } catch {
       showToast("Network error. Try again.", "error");
@@ -97,8 +118,12 @@ export function CreateEventModal({ onClose, onCreated }: Props) {
         {/* Header */}
         <div className="flex items-center justify-between p-6 border-b border-gray-100 sticky top-0 bg-white z-10">
           <div>
-            <h2 className="font-display font-bold text-gray-900 text-lg">Create New Event</h2>
-            <p className="text-xs text-gray-500 mt-0.5">Fill in the details to schedule and publish a new event</p>
+            <h2 className="font-display font-bold text-gray-900 text-lg">
+              {isEditMode ? "Edit Event" : "Create New Event"}
+            </h2>
+            <p className="text-xs text-gray-500 mt-0.5">
+              {isEditMode ? "Update event details below" : "Fill in the details to schedule and publish a new event"}
+            </p>
           </div>
           <button onClick={onClose}
             className="p-2 text-gray-400 hover:text-gray-700 hover:bg-gray-100 rounded-lg transition-colors">
@@ -156,14 +181,14 @@ export function CreateEventModal({ onClose, onCreated }: Props) {
           <div className="grid grid-cols-2 gap-3">
             <div>
               <label className="block text-xs font-semibold text-gray-600 mb-1.5">
-                Start Date & Time <span className="text-red-500">*</span>
+                Start Date &amp; Time <span className="text-red-500">*</span>
               </label>
               <input required type="datetime-local" value={form.date}
                 onChange={(e) => set("date", e.target.value)}
                 className="input-field" />
             </div>
             <div>
-              <label className="block text-xs font-semibold text-gray-600 mb-1.5">End Date & Time</label>
+              <label className="block text-xs font-semibold text-gray-600 mb-1.5">End Date &amp; Time</label>
               <input type="datetime-local" value={form.endDate}
                 onChange={(e) => set("endDate", e.target.value)}
                 className="input-field" />
@@ -185,14 +210,13 @@ export function CreateEventModal({ onClose, onCreated }: Props) {
               className="input-field" />
           </div>
 
-          {/* ── Ticketing Section ─────────────────────────────────────────── */}
+          {/* Ticketing Section */}
           <div className="border border-gray-100 rounded-xl overflow-hidden">
             <div className="bg-gray-50 px-4 py-3 flex items-center justify-between">
               <div className="flex items-center gap-2">
                 <Ticket className="w-4 h-4 text-[#8B1A1A]" />
                 <span className="text-xs font-bold text-gray-700 uppercase tracking-wide">Ticketing</span>
               </div>
-              {/* Free / Paid toggle */}
               <div className="flex items-center gap-2 bg-white border border-gray-200 rounded-lg p-0.5">
                 <button type="button"
                   onClick={() => { set("isPaid", false); set("ticketPrice", 0); }}
@@ -240,13 +264,15 @@ export function CreateEventModal({ onClose, onCreated }: Props) {
                 </div>
               )}
 
-              <div className="flex items-center gap-2 bg-blue-50 rounded-lg px-3 py-2.5">
-                <span className="text-blue-600 text-xs font-bold">🔑</span>
-                <p className="text-xs text-blue-700">
-                  A <span className="font-bold">Join Code</span> (e.g. <code className="font-mono bg-blue-100 px-1 rounded">XPL-XXXX-2026</code>) will be auto-generated.
-                  Participants use this + their Ticket Code to validate access.
-                </p>
-              </div>
+              {!isEditMode && (
+                <div className="flex items-center gap-2 bg-blue-50 rounded-lg px-3 py-2.5">
+                  <span className="text-blue-600 text-xs font-bold">🔑</span>
+                  <p className="text-xs text-blue-700">
+                    A <span className="font-bold">Join Code</span> (e.g. <code className="font-mono bg-blue-100 px-1 rounded">XPL-XXXX-2026</code>) will be auto-generated.
+                    Participants use this + their Ticket Code to validate access.
+                  </p>
+                </div>
+              )}
             </div>
           </div>
 
@@ -279,16 +305,18 @@ export function CreateEventModal({ onClose, onCreated }: Props) {
             )}
           </div>
 
-          {/* Organizer info */}
-          <div className="bg-gray-50 rounded-lg px-4 py-3 text-xs text-gray-500 flex items-center gap-2">
-            <div className="w-6 h-6 rounded-full bg-[#8B1A1A] flex items-center justify-center text-white text-[9px] font-bold flex-shrink-0">
-              {user?.avatarInitials ?? "?"}
+          {/* Organizer info (create mode only) */}
+          {!isEditMode && (
+            <div className="bg-gray-50 rounded-lg px-4 py-3 text-xs text-gray-500 flex items-center gap-2">
+              <div className="w-6 h-6 rounded-full bg-[#8B1A1A] flex items-center justify-center text-white text-[9px] font-bold flex-shrink-0">
+                {user?.avatarInitials ?? "?"}
+              </div>
+              <span>
+                Creating as <span className="font-semibold text-gray-700">{user ? `${user.firstName} ${user.lastName}` : "Unknown"}</span>
+                {" "}· <span className="font-semibold text-gray-700">{user?.role}</span>
+              </span>
             </div>
-            <span>
-              Creating as <span className="font-semibold text-gray-700">{user ? `${user.firstName} ${user.lastName}` : "Unknown"}</span>
-              {" "}· <span className="font-semibold text-gray-700">{user?.role}</span>
-            </span>
-          </div>
+          )}
 
           {/* Actions */}
           <div className="flex items-center justify-end gap-3 pt-2 border-t border-gray-100">
@@ -298,8 +326,8 @@ export function CreateEventModal({ onClose, onCreated }: Props) {
             </button>
             <button type="submit" disabled={loading}
               className="flex items-center gap-2 bg-[#8B1A1A] hover:bg-[#7B1414] disabled:opacity-60 text-white text-sm font-semibold px-5 py-2.5 rounded-lg transition-colors shadow-sm">
-              {loading ? <Loader2 className="w-4 h-4 animate-spin" /> : <Plus className="w-4 h-4" />}
-              {loading ? "Creating…" : "Create Event"}
+              {loading ? <Loader2 className="w-4 h-4 animate-spin" /> : isEditMode ? <Pencil className="w-4 h-4" /> : <Plus className="w-4 h-4" />}
+              {loading ? (isEditMode ? "Saving…" : "Creating…") : isEditMode ? "Save Changes" : "Create Event"}
             </button>
           </div>
         </form>

@@ -3,6 +3,7 @@ import { prisma } from "@/lib/prisma";
 import { mapUserToAuthUser } from "@/lib/db-mappers";
 import { UserRole, UserStatus } from "@prisma/client";
 import type { PaginatedResponse, AuthUser } from "@/types";
+import bcrypt from "bcryptjs";
 
 function ok<T>(data: T, message?: string) {
   return NextResponse.json({ success: true, data, ...(message ? { message } : {}) });
@@ -75,6 +76,52 @@ export async function GET(request: Request) {
     return ok(payload);
   } catch (error: any) {
     console.error("GET /api/users error:", error);
+    return err("Internal server error: " + error.message, 500);
+  }
+}
+
+// POST /api/users — invite/create a new user
+export async function POST(request: Request) {
+  try {
+    const body = await request.json();
+    const { email, firstName, lastName, department, role, password } = body;
+
+    if (!email || !firstName || !lastName) {
+      return err("email, firstName, and lastName are required", 400);
+    }
+
+    const existing = await prisma.user.findUnique({ where: { email } });
+    if (existing) return err("A user with this email already exists", 409);
+
+    let dbRole: UserRole = "PARTICIPANT";
+    if (role) {
+      const r = String(role).toUpperCase();
+      if (r === "ADMIN") dbRole = "ADMIN";
+      else if (r === "ORGANIZER") dbRole = "ORGANIZER";
+      else if (r === "INSTRUCTOR") dbRole = "INSTRUCTOR";
+    }
+
+    const tempPassword = password || "Welcome@123";
+    const hashedPassword = await bcrypt.hash(tempPassword, 12);
+    const avatarInitials = `${firstName[0] ?? ""}${lastName[0] ?? ""}`.toUpperCase();
+
+    const newUser = await prisma.user.create({
+      data: {
+        email,
+        firstName,
+        lastName,
+        department: department || null,
+        role: dbRole,
+        status: "ACTIVE",
+        avatarInitials,
+        password: hashedPassword,
+        lastActive: new Date(),
+      },
+    });
+
+    return ok(mapUserToAuthUser(newUser), "User invited successfully");
+  } catch (error: any) {
+    console.error("POST /api/users error:", error);
     return err("Internal server error: " + error.message, 500);
   }
 }

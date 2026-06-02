@@ -2,75 +2,44 @@
 
 import { useState, useEffect, useCallback } from "react";
 import type { Event } from "@/types";
-import { MOCK_EVENTS } from "@/lib/data/events";
-
-const STORE_KEY = "xplore_events";
-
-function readStore(): Event[] {
-  if (typeof window === "undefined") return [];
-  try {
-    const raw = localStorage.getItem(STORE_KEY);
-    if (raw) {
-      const parsed = JSON.parse(raw) as Event[];
-      // Migration: if any event is missing ticket fields, re-seed
-      const needsMigration = parsed.some((e) => e.joinCode === undefined);
-      if (needsMigration) {
-        localStorage.setItem(STORE_KEY, JSON.stringify(MOCK_EVENTS));
-        return MOCK_EVENTS;
-      }
-      return parsed;
-    }
-  } catch {
-    // ignore
-  }
-  // Seed with mock data on first visit
-  localStorage.setItem(STORE_KEY, JSON.stringify(MOCK_EVENTS));
-  return MOCK_EVENTS;
-}
-
-function writeStore(events: Event[]) {
-  if (typeof window === "undefined") return;
-  localStorage.setItem(STORE_KEY, JSON.stringify(events));
-}
 
 export function useEvents() {
   const [events, setEventsState] = useState<Event[]>([]);
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    setEventsState(readStore());
-    setLoading(false);
+  // Fetch all events from the real database API
+  const refetch = useCallback(async () => {
+    setLoading(true);
+    try {
+      const res = await fetch("/api/events");
+      const json = await res.json();
+      if (json.success) {
+        setEventsState(json.data.items ?? []);
+      }
+    } catch (error) {
+      console.error("Failed to load events:", error);
+    } finally {
+      setLoading(false);
+    }
   }, []);
 
+  useEffect(() => {
+    refetch();
+  }, [refetch]);
+
   const addEvent = useCallback((event: Event) => {
-    setEventsState((prev) => {
-      const next = [event, ...prev];
-      writeStore(next);
-      return next;
-    });
+    setEventsState((prev) => [event, ...prev]);
   }, []);
 
   const deleteEvent = useCallback((id: string) => {
-    setEventsState((prev) => {
-      const next = prev.filter((e) => e.id !== id);
-      writeStore(next);
-      return next;
-    });
+    setEventsState((prev) => prev.filter((e) => e.id !== id));
   }, []);
 
   const updateEvent = useCallback((id: string, patch: Partial<Event>) => {
-    setEventsState((prev) => {
-      const next = prev.map((e) => (e.id === id ? { ...e, ...patch } : e));
-      writeStore(next);
-      return next;
-    });
+    setEventsState((prev) =>
+      prev.map((e) => (e.id === id ? { ...e, ...patch } : e))
+    );
   }, []);
 
-  /** Wipe localStorage and re-seed with defaults (useful for dev reset) */
-  const resetToDefaults = useCallback(() => {
-    writeStore(MOCK_EVENTS);
-    setEventsState(MOCK_EVENTS);
-  }, []);
-
-  return { events, loading, addEvent, deleteEvent, updateEvent, resetToDefaults };
+  return { events, loading, addEvent, deleteEvent, updateEvent, refetch };
 }
