@@ -31,13 +31,13 @@ model User {
   // Relations
   organizedEvents Event[]     @relation("Organizer")
   registrations   Registration[]
-  trainingsEnrolled Training[] @relation("Students")
   instructorTrainings Training[] @relation("Instructor")
   hostedMeetings  Meeting[]  @relation("Host")
   notifications   Notification[]
   certificates    Certificate[]
   enrollments    Enrollment[] @relation("UserEnrollments")
   feedbackResponses Feedback[]
+  meetingsAttended MeetingAttendance[]
 
   @@index([email])
   @@index([role])
@@ -164,7 +164,6 @@ model Training {
   modules         Int
   instructorId    String
   instructor      User      @relation("Instructor", fields: [instructorId], references: [id])
-  students        User[]    @relation("Students")
   thumbnailUrl    String?
   contentUrl      String?   // Link to training materials
   createdAt       DateTime  @default(now())
@@ -173,6 +172,7 @@ model Training {
   // Relations
   enrollments     Enrollment[]
   certificates    Certificate[] @relation("TrainingCertificates")
+  feedback        Feedback[]
 
   @@index([instructorId])
   @@index([category])
@@ -233,6 +233,8 @@ model Meeting {
   recordingUrl    String?
   createdAt       DateTime  @default(now())
   updatedAt       DateTime  @updatedAt
+
+  attendees       MeetingAttendance[]
 
   @@index([hostId])
   @@index([status])
@@ -330,12 +332,15 @@ model Feedback {
   user          User      @relation(fields: [userId], references: [id], onDelete: Cascade)
   eventId       String?
   event         Event?    @relation(fields: [eventId], references: [id])
+  trainingId    String?
+  training      Training? @relation(fields: [trainingId], references: [id], onDelete: Cascade)
   rating        Int       // 1-5
   comment       String?   @db.Text
   createdAt     DateTime  @default(now())
 
   @@index([userId])
   @@index([eventId])
+  @@index([trainingId])
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -369,4 +374,18 @@ model AnalyticsSnapshot {
   createdAt             DateTime  @default(now())
 
   @@unique([date])
+}
+
+model MeetingAttendance {
+  id          String    @id @default(cuid())
+  meetingId   String
+  meeting     Meeting   @relation(fields: [meetingId], references: [id], onDelete: Cascade)
+  userId      String
+  user        User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  joinedAt    DateTime  @default(now())
+  leftAt      DateTime?
+
+  @@unique([meetingId, userId])
+  @@index([meetingId])
+  @@index([userId])
 }

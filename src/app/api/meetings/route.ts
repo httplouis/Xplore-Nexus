@@ -3,7 +3,6 @@ import { prisma } from "@/lib/prisma";
 import { mapMeetingToClient } from "@/lib/db-mappers";
 import { MeetingStatus as DbMeetingStatus } from "@prisma/client";
 import type { PaginatedResponse, Meeting } from "@/types";
-import { createZoomMeeting } from "@/lib/zoom";
 
 // GET /api/meetings — list with optional search, status filters
 export async function GET(request: Request) {
@@ -74,25 +73,8 @@ export async function POST(request: Request) {
 
     const hostId = "u-001"; // Default / Jose Dela Cruz
 
-    // Try Zoom creation
-    let meetingUrl = `https://meet.jit.si/xplore-${body.title.toLowerCase().replace(/[^a-z0-9]+/g, "-")}-${Date.now().toString(36)}`;
-    let zoomMeetingId: string | undefined;
-    let provider = "jitsi";
-
-    try {
-      const zoom = await createZoomMeeting({
-        topic:      body.title,
-        start_time: new Date(body.date).toISOString(),
-        duration:   body.duration,
-        timezone:   "Asia/Manila",
-        agenda:     body.description,
-      });
-      meetingUrl    = zoom.join_url;
-      zoomMeetingId = String(zoom.id);
-      provider      = "zoom";
-    } catch (zoomError) {
-      console.warn("[POST /api/meetings] Zoom meeting creation skipped:", zoomError);
-    }
+    const meetingUrl = `https://meet.jit.si/xplore-${body.title.toLowerCase().replace(/[^a-z0-9]+/g, "-")}-${Date.now().toString(36)}`;
+    const provider = "jitsi";
 
     const dbMeeting = await prisma.meeting.create({
       data: {
@@ -105,7 +87,6 @@ export async function POST(request: Request) {
         maxParticipants: body.maxParticipants ?? 100,
         meetingUrl,
         meetingProvider: provider,
-        zoomMeetingId,
       },
       include: {
         host: true,

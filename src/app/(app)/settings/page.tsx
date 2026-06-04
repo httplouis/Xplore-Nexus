@@ -241,7 +241,6 @@ export default function SettingsPage() {
                 <p className="text-sm text-gray-500 mt-0.5">Connect third-party services to Nexus</p>
               </div>
               {[
-                { name: "Zoom",        status: "Not configured", logo: "Z", color: "bg-blue-600",   desc: "Video conferencing for meetings" },
                 { name: "Jitsi Meet",  status: "Active",         logo: "J", color: "bg-emerald-600", desc: "Open-source video rooms" },
                 { name: "Google Calendar", status: "Not connected", logo: "G", color: "bg-red-500", desc: "Sync events with Google Calendar" },
                 { name: "Slack",       status: "Not connected",  logo: "S", color: "bg-violet-600", desc: "Notifications via Slack channels" },

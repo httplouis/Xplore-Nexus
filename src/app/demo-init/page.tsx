@@ -199,7 +199,6 @@ export default function DemoInitPage() {
             startTime: nextWeek.toISOString(),
             endTime: new Date(nextWeek.getTime() + 60 * 60 * 1000).toISOString(),
             hostId: "user-2",
-            zoomMeetingId: "123456789",
             status: "SCHEDULED",
             createdAt: new Date().toISOString(),
           },
