@@ -55,6 +55,9 @@ export default function MeetingRoomPage({ params }: { params: { id: string } }) 
   const [status,   setStatus]   = useState<"loading" | "ready" | "joined" | "left">("loading");
   const [copied,   setCopied]   = useState(false);
   const [elapsed,  setElapsed]  = useState(0);
+  const [displayName] = useState(() =>
+    user ? `${user.firstName} ${user.lastName}` : `Guest_${Math.floor(1000 + Math.random() * 9000)}`
+  );
 
   // ── Look up meeting ────────────────────────────────────────────────────────
   useEffect(() => {
@@ -85,12 +88,11 @@ export default function MeetingRoomPage({ params }: { params: { id: string } }) 
 
   // ── Init Jitsi iFrame API ──────────────────────────────────────────────────
   useEffect(() => {
-    if (!meeting || !user) return;
+    if (!meeting) return;
     if (status !== "loading") return;
 
     const roomName = buildRoom(meeting.id, meeting.title);
-    const displayName = `${user.firstName} ${user.lastName}`;
-    const isHost = meeting.hostId === user.id || user.role === "Admin" || user.role === "Organizer";
+    const isHost = user ? (meeting.hostId === user.id || user.role === "Admin" || user.role === "Organizer") : false;
 
     let mounted = true;
 
@@ -126,7 +128,7 @@ export default function MeetingRoomPage({ params }: { params: { id: string } }) 
 
           userInfo: {
             displayName,
-            email: user.email,
+            email: user?.email ?? "guest@xplore-nexus.local",
             moderator: isHost,
           },
         });
@@ -295,7 +297,7 @@ export default function MeetingRoomPage({ params }: { params: { id: string } }) 
           <Info className="w-4 h-4 text-amber-400 flex-shrink-0" />
           <p className="text-amber-300 text-xs">
             <span className="font-bold">You are the host.</span>{" "}
-            Joining as <span className="font-bold">{user?.firstName} {user?.lastName}</span>.
+            Joining as <span className="font-bold">{user ? `${user.firstName} ${user.lastName}` : "Guest"}</span>.
             {" "}You&apos;ll enter the room directly as moderator since you are the first to open this room.
             {" "}Share the invite link above for participants to join.
           </p>
@@ -307,7 +309,7 @@ export default function MeetingRoomPage({ params }: { params: { id: string } }) 
         <div className="bg-blue-500/10 border-b border-blue-500/20 px-5 py-2.5 flex items-center gap-3 flex-shrink-0">
           <Info className="w-4 h-4 text-blue-400 flex-shrink-0" />
           <p className="text-blue-300 text-xs">
-            Joining as <span className="font-bold">{user?.firstName} {user?.lastName}</span>.
+            Joining as <span className="font-bold">{user ? `${user.firstName} ${user.lastName}` : displayName}</span>.
             {" "}The host will admit you once they start the session.
           </p>
         </div>

@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect } from "react";
-import { useRouter } from "next/navigation";
+import { useRouter, usePathname } from "next/navigation";
 import { RoleProvider, useRole } from "@/lib/context/RoleContext";
 import Sidebar from "@/components/app/Sidebar";
 import AppHeader from "@/components/app/AppHeader";
@@ -11,14 +11,19 @@ import { ToastContainer } from "@/components/ui/Toast";
 function AppShell({ children }: { children: React.ReactNode }) {
   const { user } = useRole();
   const router = useRouter();
+  const pathname = usePathname();
+
+  const isJoinBypass = pathname.startsWith("/join/");
+  const isMeetingRoomBypass = /^\/meetings\/[^\/]+\/room$/.test(pathname);
+  const bypassAuth = isJoinBypass || isMeetingRoomBypass;
 
   useEffect(() => {
-    if (!user) {
+    if (!user && !bypassAuth) {
       router.replace("/login");
     }
-  }, [user, router]);
+  }, [user, router, bypassAuth]);
 
-  if (!user) return null;
+  if (!user && !bypassAuth) return null;
 
   return (
     <div className="min-h-screen bg-gray-50">

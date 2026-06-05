@@ -13,6 +13,7 @@ import {
   Settings,
   Bell,
   Radio,
+  BookOpen,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useRole } from "@/lib/context/RoleContext";
@@ -31,6 +32,7 @@ const NAV_ITEMS: {
   { href: "/meetings",      label: "Meetings",       icon: Video },
   { href: "/stream",        label: "Live",           icon: Radio },
   { href: "/training",      label: "Training",       icon: GraduationCap },
+  { href: "/programs",      label: "Programs",       icon: BookOpen },
   { href: "/analytics",     label: "Analytics",      icon: BarChart3,    allowedRoles: ["Admin", "Organizer"] },
   { href: "/users",         label: "Users",          icon: Users,         allowedRoles: ["Admin"] },
   { href: "/notifications", label: "Notifs",         icon: Bell },

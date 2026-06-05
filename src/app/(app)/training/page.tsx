@@ -70,8 +70,8 @@ function CreateTrainingModal({ onClose, onCreated, instructorName }: {
       <div className="modal-panel animate-fade-in-up">
         <div className="flex items-center justify-between p-6 border-b border-gray-100">
           <div className="flex items-center gap-3">
-            <div className="w-9 h-9 rounded-xl bg-[#8B1A1A]/10 flex items-center justify-center">
-              <GraduationCap className="w-4 h-4 text-[#8B1A1A]" />
+            <div className="w-9 h-9 rounded-xl bg-[#005691]/10 flex items-center justify-center">
+              <GraduationCap className="w-4 h-4 text-[#005691]" />
             </div>
             <div>
               <h2 className="font-display font-bold text-gray-900 text-base">Create Training</h2>
@@ -128,7 +128,7 @@ function CreateTrainingModal({ onClose, onCreated, instructorName }: {
               Cancel
             </button>
             <button type="submit" disabled={loading}
-              className="flex items-center gap-2 bg-[#8B1A1A] hover:bg-[#7B1414] disabled:opacity-60 text-white text-sm font-semibold px-5 py-2.5 rounded-lg transition-colors shadow-sm">
+              className="flex items-center gap-2 bg-[#005691] hover:bg-[#00406c] disabled:opacity-60 text-white text-sm font-semibold px-5 py-2.5 rounded-lg transition-colors shadow-sm">
               {loading ? <Loader2 className="w-4 h-4 animate-spin" /> : <GraduationCap className="w-4 h-4" />}
               {loading ? "Creating…" : "Create Training"}
             </button>
@@ -157,7 +157,7 @@ function TrainingCard({ training, canManage, isInstructor, onEnroll, onContinue,
       <div className="p-5 flex-1 space-y-4">
         {/* Category + badges */}
         <div className="flex items-start justify-between gap-2">
-          <span className="text-xs font-semibold text-[#8B1A1A] bg-red-50 px-2 py-0.5 rounded-full">
+          <span className="text-xs font-semibold text-[#005691] bg-blue-50 px-2 py-0.5 rounded-full">
             {training.category}
           </span>
           <div className="flex items-center gap-1.5">
@@ -217,7 +217,7 @@ function TrainingCard({ training, canManage, isInstructor, onEnroll, onContinue,
           <>
             <button
               onClick={() => onEdit(training.id)}
-              className="w-full flex items-center justify-center gap-2 bg-[#8B1A1A] hover:bg-[#7B1414] text-white text-sm font-semibold py-2.5 rounded-lg transition-colors">
+              className="w-full flex items-center justify-center gap-2 bg-[#005691] hover:bg-[#00406c] text-white text-sm font-semibold py-2.5 rounded-lg transition-colors">
               <Pencil className="w-3.5 h-3.5" />Edit Course
             </button>
             <button
@@ -229,7 +229,7 @@ function TrainingCard({ training, canManage, isInstructor, onEnroll, onContinue,
         ) : isEnrolled ? (
           <button
             onClick={() => onContinue(training.id)}
-            className="w-full flex items-center justify-center gap-2 bg-[#8B1A1A] hover:bg-[#7B1414] text-white text-sm font-semibold py-2.5 rounded-lg transition-colors">
+            className="w-full flex items-center justify-center gap-2 bg-[#005691] hover:bg-[#00406c] text-white text-sm font-semibold py-2.5 rounded-lg transition-colors">
             {training.completed
               ? <><CheckCircle2 className="w-3.5 h-3.5" />Review Course</>
               : <><Play className="w-3.5 h-3.5" />Continue Learning</>}
@@ -237,7 +237,7 @@ function TrainingCard({ training, canManage, isInstructor, onEnroll, onContinue,
         ) : (
           <button
             onClick={() => onEnroll(training.id)}
-            className="w-full flex items-center justify-center gap-2 border border-[#8B1A1A]/40 bg-[#8B1A1A]/5 hover:bg-[#8B1A1A]/10 text-[#8B1A1A] text-sm font-semibold py-2.5 rounded-lg transition-colors">
+            className="w-full flex items-center justify-center gap-2 border border-[#005691]/40 bg-[#005691]/5 hover:bg-[#005691]/10 text-[#005691] text-sm font-semibold py-2.5 rounded-lg transition-colors">
             <BookOpen className="w-3.5 h-3.5" />Enroll Now
           </button>
         )}
@@ -365,13 +365,13 @@ export default function TrainingPage() {
           {canCreate ? (
             <button
               onClick={() => setShowCreate(true)}
-              className="flex items-center gap-2 bg-[#8B1A1A] hover:bg-[#7B1414] text-white text-sm font-semibold px-4 py-2.5 rounded-lg transition-colors shadow-sm shadow-[#8B1A1A]/20">
+              className="flex items-center gap-2 bg-[#005691] hover:bg-[#00406c] text-white text-sm font-semibold px-4 py-2.5 rounded-lg transition-colors shadow-sm shadow-[#005691]/20">
               <Plus className="w-4 h-4" />Create Training
             </button>
           ) : (
             <button
               onClick={() => showToast("Browse catalog coming soon!", "info")}
-              className="flex items-center gap-2 border border-[#8B1A1A]/30 bg-[#8B1A1A]/5 hover:bg-[#8B1A1A]/10 text-[#8B1A1A] text-sm font-semibold px-4 py-2.5 rounded-lg transition-colors">
+              className="flex items-center gap-2 border border-[#005691]/30 bg-[#005691]/5 hover:bg-[#005691]/10 text-[#005691] text-sm font-semibold px-4 py-2.5 rounded-lg transition-colors">
               <BookOpen className="w-4 h-4" />Browse Catalog
             </button>
           )}
@@ -381,7 +381,7 @@ export default function TrainingPage() {
       {/* Stats strip */}
       <div className="grid grid-cols-3 gap-3">
         {[
-          { label: "In Progress",  count: enrolledCount,  color: "text-[#8B1A1A]",    bg: "bg-red-50 border-red-100",      dot: "bg-[#8B1A1A]" },
+          { label: "In Progress",  count: enrolledCount,  color: "text-[#005691]",    bg: "bg-blue-50 border-blue-100",      dot: "bg-[#005691]" },
           { label: "Completed",    count: completedCount, color: "text-emerald-700",   bg: "bg-emerald-50 border-emerald-100", dot: "bg-emerald-500" },
           { label: "Available",    count: availableCount, color: "text-gray-600",      bg: "bg-gray-50 border-gray-200",    dot: "bg-gray-400" },
         ].map((s) => (
@@ -401,13 +401,13 @@ export default function TrainingPage() {
           <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
           <input type="text" value={search} onChange={(e) => setSearch(e.target.value)}
             placeholder="Search trainings…"
-            className="w-full pl-9 pr-4 py-2 text-sm bg-white border border-gray-200 rounded-lg text-gray-700 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#8B1A1A]/20 focus:border-[#8B1A1A]/30" />
+            className="w-full pl-9 pr-4 py-2 text-sm bg-white border border-gray-200 rounded-lg text-gray-700 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#005691]/20 focus:border-[#005691]/30" />
         </div>
         <div className="flex items-center gap-1">
           {FILTERS.map((f) => (
             <button key={f} onClick={() => setFilter(f)}
               className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-all ${
-                filter === f ? "bg-[#8B1A1A] text-white shadow-sm" : "bg-gray-100 text-gray-600 hover:bg-gray-200"
+                filter === f ? "bg-[#005691] text-white shadow-sm" : "bg-gray-100 text-gray-600 hover:bg-gray-200"
               }`}>
               {f}
             </button>
