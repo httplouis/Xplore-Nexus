@@ -430,7 +430,7 @@ export default function TrainingPage() {
             </h1>
             <p className="text-lg text-blue-50 leading-relaxed">
               Step into your central hub for comprehensive guidance on obtaining your certification.
-              You'll find a wealth of resources to help you prepare, monitor your advancement, and
+              You&apos;ll find a wealth of resources to help you prepare, monitor your advancement, and
               stay on course to achieve your certification goals.
             </p>
           </div>
