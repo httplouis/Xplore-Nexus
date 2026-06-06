@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Image from "next/image";
 import {
   Search, BookOpen, Clock, Users, ArrowRight, X, ChevronRight, CheckCircle,
   Briefcase, Calendar, MapPin, Award, Layers, ShieldCheck, HeartHandshake, Info
@@ -265,9 +266,11 @@ export default function ProgramsPage() {
       <div className="relative rounded-2xl overflow-hidden bg-gradient-to-br from-[#003B73] via-[#005691] to-[#001F3F] border border-[#005691]/40 px-6 py-8 text-white shadow-md flex flex-col md:flex-row items-center justify-between gap-6">
         <div className="relative z-10 space-y-3 max-w-xl">
           <div className="flex items-center gap-3">
-            <img
+            <Image
               src="/informatics-logo-white.png"
               alt="Informatics Logo"
+              width={120}
+              height={40}
               className="h-8 md:h-10 w-auto object-contain select-none pointer-events-none"
             />
             <span className="text-[10px] font-bold uppercase tracking-wider bg-white/10 px-2.5 py-1 rounded-md text-blue-100 border border-white/10">
@@ -282,9 +285,11 @@ export default function ProgramsPage() {
           </p>
         </div>
         <div className="relative z-10 shrink-0 select-none hidden md:block">
-          <img
+          <Image
             src="/teachnology.png"
             alt="Teachnology Programs Logo"
+            width={128}
+            height={128}
             className="h-28 lg:h-32 w-auto object-contain"
           />
         </div>

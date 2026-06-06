@@ -456,7 +456,7 @@ export default function TrainingPage() {
         </div>
         
         <p className="text-sm text-gray-600 mb-6">
-          From your first step down a certification path, you'll have a clear view of all your progress and achievements here.
+          From your first step down a certification path, you&apos;ll have a clear view of all your progress and achievements here.
         </p>
         
         <div className="bg-gradient-to-br from-blue-50 to-indigo-50 border-2 border-blue-100 rounded-xl p-6 flex items-start gap-4">
@@ -465,7 +465,7 @@ export default function TrainingPage() {
           </div>
           <div className="flex-1">
             <div className="text-base font-bold text-gray-900 mb-1">0 certification path(s) in progress</div>
-            <div className="text-sm text-gray-600">You've made great progress! Stay focused, and you're well on your way</div>
+            <div className="text-sm text-gray-600">You&apos;ve made great progress! Stay focused, and you&apos;re well on your way</div>
           </div>
         </div>
       </div>

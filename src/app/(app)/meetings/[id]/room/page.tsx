@@ -204,9 +204,9 @@ export default function MeetingRoomPage({ params }: { params: { id: string } }) 
                   Meeting is active
                 </p>
                 <p className="text-xs text-blue-700">
-                  The video call is running in the {isMinimized ? "bottom-right corner" : "main view"}. 
+                  The video call is running in the {isMinimized ? &quot;bottom-right corner&quot; : &quot;main view&quot;}. 
                   You can navigate to other pages and the meeting will stay connected. 
-                  Click "Leave Meeting" to end the call.
+                  Click &quot;Leave Meeting&quot; to end the call.
                 </p>
               </div>
             </div>
