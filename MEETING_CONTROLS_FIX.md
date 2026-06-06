@@ -10,15 +10,28 @@
 The `endMeeting()` function was disposing the Jitsi API and clearing state, but wasn't explicitly clearing the DOM container. This could leave remnants of the Jitsi iframe even after the meeting ended.
 
 ### Issue #2: Meeting Window Disappearing on Course Page
-The `/course` route was located outside the `(app)` folder structure:
+**TWO problems caused this:**
+
+**Problem 2a**: The `/course` route was located outside the `(app)` folder structure:
 ```
 src/app/course/[lessonId]/page.tsx  ❌ Outside (app) folder
 ```
 
-This meant it was NOT wrapped by the `MeetingProvider` context, so:
-- The meeting state was lost when navigating to course pages
-- The floating meeting window wouldn't render
-- Meeting controls were unavailable
+This meant it was NOT wrapped by the `MeetingProvider` context.
+
+**Problem 2b**: The training page was using `window.location.href` for navigation:
+```tsx
+// ❌ WRONG: This causes full page reload and loses React context
+window.location.href = `/course/${course.id}`;
+```
+
+This caused a **full page reload** which:
+- Unmounted all React components
+- Lost the MeetingProvider context
+- Destroyed the meeting state
+- Removed the Jitsi iframe
+
+Even though we moved the course page into `(app)`, the `window.location.href` was still causing a reload!
 
 ## Fixes Applied
 
@@ -56,13 +69,36 @@ const endMeeting = () => {
 - Adds logging for debugging
 - Ensures the minimized window fully disappears
 
-### Fix #2: Move Course Page into (app) Folder
+### Fix #2: Move Course Page + Fix Navigation
 
-**Moved the course page:**
+**2a. Moved the course page:**
 ```
 FROM: src/app/course/[lessonId]/page.tsx
 TO:   src/app/(app)/course/[lessonId]/page.tsx  ✅
 ```
+
+**2b. Fixed navigation in training page (`src/app/(app)/training/page.tsx`):**
+```tsx
+// ❌ BEFORE: Full page reload
+onClick={() => {
+  window.location.href = `/course/${course.id}`;
+}}
+
+// ✅ AFTER: Next.js client-side navigation
+import { useRouter } from "next/navigation";
+
+const router = useRouter();
+
+onClick={() => {
+  router.push(`/course/${course.id}`);
+}}
+```
+
+**Why this is critical:**
+- `window.location.href` = Full page reload (loses all React state)
+- `router.push()` = Client-side navigation (preserves React context)
+- Next.js maintains the component tree and context providers
+- Meeting state stays intact during navigation
 
 **Why this works:**
 The `(app)` folder has a layout that wraps all child pages with:
@@ -187,6 +223,12 @@ Rendered by `MeetingProvider` at `src/lib/context/MeetingContext.tsx`
 - Inherits `MeetingProvider` from layout
 - Meeting controls now work on course pages
 
+### 3. `src/app/(app)/training/page.tsx` (NAVIGATION FIXED)
+- Added `useRouter` import from `next/navigation`
+- Changed `window.location.href` to `router.push()`
+- Preserves React context during navigation
+- Meeting persists when navigating to course pages
+
 ## Related Components
 
 - `src/app/(app)/layout.tsx` - Wraps app with MeetingProvider
@@ -197,11 +239,18 @@ Rendered by `MeetingProvider` at `src/lib/context/MeetingContext.tsx`
 
 ## Deployment
 
-**Commit**: `9994994` - "Fix meeting controls: ensure proper cleanup when leaving and fix course page meeting persistence"
+**Commit #1**: `9994994` - "Fix meeting controls: ensure proper cleanup when leaving and fix course page meeting persistence"
+- Move course page to (app) folder
+- Enhanced meeting cleanup
+
+**Commit #2**: `149446f` - "Fix: Use Next.js router instead of window.location for course navigation to preserve meeting context"
+- Changed window.location.href to router.push()
+- This was the KEY FIX for meeting persistence
 
 **Changes:**
 - ✅ Meeting cleanup improved
-- ✅ Course page moved to (app) folder
+- ✅ Course page moved to (app) folder  
+- ✅ **Navigation fixed to use Next.js router** (CRITICAL FIX)
 - ✅ All routes updated automatically
 - ✅ No breaking changes
 - ✅ Backward compatible
