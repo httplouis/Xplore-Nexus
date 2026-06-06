@@ -170,16 +170,25 @@ export function MeetingProvider({ children }: { children: React.ReactNode }) {
   };
 
   const endMeeting = () => {
+    console.log("Ending meeting...");
     if (jitsiApiRef.current) {
       try {
         jitsiApiRef.current.dispose();
+        console.log("Jitsi disposed successfully");
       } catch (error) {
         console.error("Error disposing Jitsi:", error);
       }
       jitsiApiRef.current = null;
     }
+    
+    // Clear the container
+    if (containerRef.current) {
+      containerRef.current.innerHTML = '';
+    }
+    
     setActiveMeeting(null);
     setIsMinimized(false);
+    console.log("Meeting ended, state cleared");
   };
 
   const toggleMinimize = () => {
