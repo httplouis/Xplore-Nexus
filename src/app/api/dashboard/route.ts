@@ -15,13 +15,21 @@ export async function GET(request: Request) {
   try {
     const { searchParams } = new URL(request.url);
     const userId = searchParams.get("userId") || "u-001";
+    const userRole = searchParams.get("userRole") || "Participant";
 
-    // 1. Fetch upcoming events
+    // 1. Fetch upcoming events (filtered by role)
+    const eventWhereClause: any = {
+      status: EventStatus.UPCOMING,
+      date: { gte: new Date() },
+    };
+    
+    // If not Admin or Organizer, only show events user organizes or is registered for
+    if (userRole !== "Admin" && userRole !== "Organizer") {
+      eventWhereClause.organizerId = userId;
+    }
+
     const dbUpcomingEvents = await prisma.event.findMany({
-      where: {
-        status: EventStatus.UPCOMING,
-        date: { gte: new Date() },
-      },
+      where: eventWhereClause,
       include: {
         organizer: true,
       },
@@ -54,11 +62,18 @@ export async function GET(request: Request) {
       progressColor: colors[idx % colors.length],
     }));
 
-    // 3. Fetch live session (meeting)
+    // 3. Fetch live session (meeting) - filtered by role
+    const meetingWhereClause: any = {
+      status: MeetingStatus.LIVE,
+    };
+    
+    // If not Admin, only show meetings user hosts
+    if (userRole !== "Admin") {
+      meetingWhereClause.hostId = userId;
+    }
+
     const liveSessionMeeting = await prisma.meeting.findFirst({
-      where: {
-        status: MeetingStatus.LIVE,
-      },
+      where: meetingWhereClause,
       include: {
         host: true,
       },

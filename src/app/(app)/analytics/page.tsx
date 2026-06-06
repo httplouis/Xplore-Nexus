@@ -1,7 +1,7 @@
-import type { Metadata } from "next";
-import { Users, Calendar, TrendingUp, Award, ChevronDown } from "lucide-react";
+"use client";
 
-export const metadata: Metadata = { title: "Analytics | Xplore Nexus" };
+import { Users, Calendar, TrendingUp, Award, ChevronDown } from "lucide-react";
+import RoleGuard from "@/components/auth/RoleGuard";
 
 const kpiCards = [
   { label: "Total Participants", value: "1,284", trend: "+12%", icon: Users },
@@ -141,7 +141,8 @@ function DonutChart() {
 
 export default function AnalyticsPage() {
   return (
-    <div className="space-y-6 animate-fade-in">
+    <RoleGuard allowedRoles={["Admin", "Organizer"]}>
+      <div className="space-y-6 animate-fade-in">
       {/* Header */}
       <div className="flex items-start justify-between">
         <div>
@@ -218,5 +219,6 @@ export default function AnalyticsPage() {
         </div>
       </div>
     </div>
+    </RoleGuard>
   );
 }

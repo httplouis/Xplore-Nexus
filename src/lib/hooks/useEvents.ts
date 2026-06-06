@@ -1,17 +1,21 @@
 "use client";
 
 import { useState, useEffect, useCallback } from "react";
+import { useRole } from "@/lib/context/RoleContext";
 import type { Event } from "@/types";
 
 export function useEvents() {
+  const { user, role } = useRole();
   const [events, setEventsState] = useState<Event[]>([]);
   const [loading, setLoading] = useState(true);
 
-  // Fetch all events from the real database API
+  // Fetch all events from the real database API with user filtering
   const refetch = useCallback(async () => {
+    if (!user || !role) return;
+    
     setLoading(true);
     try {
-      const res = await fetch("/api/events");
+      const res = await fetch(`/api/events?userId=${user.id}&userRole=${role}`);
       const json = await res.json();
       if (json.success) {
         setEventsState(json.data.items ?? []);
@@ -21,7 +25,7 @@ export function useEvents() {
     } finally {
       setLoading(false);
     }
-  }, []);
+  }, [user, role]);
 
   useEffect(() => {
     refetch();

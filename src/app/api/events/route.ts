@@ -20,6 +20,8 @@ export async function GET(request: Request) {
     const status   = searchParams.get("status");
     const type     = searchParams.get("type");
     const joinCode = searchParams.get("joinCode");
+    const userId = searchParams.get("userId") || "u-001"; // Current user ID
+    const userRole = searchParams.get("userRole") || "Participant"; // Current user role
     const page     = Math.max(1, Number(searchParams.get("page") ?? "1"));
     const pageSize = Math.min(50, Math.max(1, Number(searchParams.get("pageSize") ?? "20")));
 
@@ -29,7 +31,7 @@ export async function GET(request: Request) {
         include: { organizer: true },
       });
       if (!event) return err("Event not found", 404);
-      return ok(mapEventToClient(event));
+      return ok(mapEventToClient(event, userId));
     }
 
     let dbStatus: DbEventStatus | undefined;
@@ -48,14 +50,19 @@ export async function GET(request: Request) {
       }
     }
 
+    // Filter events based on user role
+    const whereClause: any = {
+      AND: [
+        dbStatus ? { status: dbStatus } : {},
+        dbType ? { type: dbType } : {},
+        // Only Admin and Organizer can see all events, others see only events they organize
+        (userRole !== "Admin" && userRole !== "Organizer") ? { organizerId: userId } : {},
+      ],
+    };
+
     // Get all matching from DB first
     const dbEvents = await prisma.event.findMany({
-      where: {
-        AND: [
-          dbStatus ? { status: dbStatus } : {},
-          dbType ? { type: dbType } : {},
-        ],
-      },
+      where: whereClause,
       include: {
         organizer: true,
       },

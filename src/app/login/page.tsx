@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 import { Eye, EyeOff, Loader2, ArrowRight } from "lucide-react";
@@ -28,6 +28,14 @@ export default function LoginPage() {
   const [showPw, setShowPw] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+
+  // Redirect if already logged in
+  useEffect(() => {
+    const session = localStorage.getItem("xplore_session");
+    if (session) {
+      router.replace("/dashboard");
+    }
+  }, [router]);
 
   function fillDemo(demoEmail: string) {
     setEmail(demoEmail);

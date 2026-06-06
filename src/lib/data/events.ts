@@ -113,6 +113,21 @@ export function getEventById(id: string): Event | undefined {
   return MOCK_EVENTS.find((e) => e.id === id);
 }
 
+/**
+ * Get events for a specific user
+ * - Admins and Organizers can see all events
+ * - Other users only see events they organize or are registered for
+ */
+export function getEventsByUser(userId: string, userRole: string): Event[] {
+  if (userRole === "Admin" || userRole === "Organizer") {
+    return MOCK_EVENTS; // Admin and Organizer see all events
+  }
+  
+  // Other users only see events they organize
+  // TODO: Add logic to filter by events user is registered for (when we have registrations list)
+  return MOCK_EVENTS.filter((e) => e.organizerId === userId);
+}
+
 export function addEvent(event: Event): void {
   MOCK_EVENTS = [event, ...MOCK_EVENTS];
 }

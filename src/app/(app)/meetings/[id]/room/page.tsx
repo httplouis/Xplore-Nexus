@@ -1,42 +1,16 @@
 "use client";
 
-import { useEffect, useRef, useState, useCallback } from "react";
+import { useEffect, useState } from "react";
 import { useRole } from "@/lib/context/RoleContext";
+import { useMeeting } from "@/lib/context/MeetingContext";
 import {
   Copy, Check, Users, Clock, ArrowLeft,
-  Video, VideoOff, PhoneOff, Shield, Info, ExternalLink, Loader2,
+  PhoneOff, Shield, Info, ExternalLink, Loader2,
+  Minimize2, Maximize2,
 } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import type { Meeting } from "@/types";
-
-// ─── Extend window to include Jitsi API ──────────────────────────────────────
-declare global {
-  interface Window {
-    JitsiMeetExternalAPI: new (domain: string, options: Record<string, unknown>) => JitsiAPI;
-  }
-}
-
-interface JitsiAPI {
-  dispose: () => void;
-  on: (event: string, handler: () => void) => void;
-  executeCommand: (command: string, ...args: unknown[]) => void;
-  isAudioMuted: () => Promise<boolean>;
-  isVideoMuted: () => Promise<boolean>;
-}
-
-// ─── Load Jitsi script once ──────────────────────────────────────────────────
-function loadJitsiScript(): Promise<void> {
-  return new Promise((resolve, reject) => {
-    if (window.JitsiMeetExternalAPI) { resolve(); return; }
-    const s = document.createElement("script");
-    s.src  = "https://meet.jit.si/external_api.js";
-    s.async = true;
-    s.onload  = () => resolve();
-    s.onerror = () => reject(new Error("Failed to load Jitsi API"));
-    document.head.appendChild(s);
-  });
-}
 
 // ─── Build Jitsi room name from meeting id ───────────────────────────────────
 function buildRoom(id: string, title: string) {
@@ -47,307 +21,198 @@ function buildRoom(id: string, title: string) {
 // ─── Page ─────────────────────────────────────────────────────────────────────
 export default function MeetingRoomPage({ params }: { params: { id: string } }) {
   const { user } = useRole();
-  const router   = useRouter();
-  const containerRef = useRef<HTMLDivElement>(null);
-  const apiRef       = useRef<JitsiAPI | null>(null);
+  const router = useRouter();
+  const { activeMeeting, startMeeting, endMeeting, isMinimized, toggleMinimize } = useMeeting();
+  const [meeting, setMeeting] = useState<Meeting | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [copied, setCopied] = useState(false);
 
-  const [meeting,  setMeeting]  = useState<Meeting | null>(null);
-  const [status,   setStatus]   = useState<"loading" | "ready" | "joined" | "left">("loading");
-  const [copied,   setCopied]   = useState(false);
-  const [elapsed,  setElapsed]  = useState(0);
-  const [displayName] = useState(() =>
-    user ? `${user.firstName} ${user.lastName}` : `Guest_${Math.floor(1000 + Math.random() * 9000)}`
-  );
-
-  // ── Look up meeting ────────────────────────────────────────────────────────
+  // ── Load meeting data ──────────────────────────────────────────────────────
   useEffect(() => {
-    async function fetchMeetingDetails() {
-      if (!params.id) return;
+    async function fetchMeeting() {
       try {
         const res = await fetch(`/api/meetings/${params.id}`);
         const json = await res.json();
         if (json.success) {
           setMeeting(json.data);
+          setLoading(false);
         } else {
-          setStatus("left");
-        }
-      } catch (error) {
-        console.error("Failed to load meeting details:", error);
-        setStatus("left");
-      }
-    }
-    fetchMeetingDetails();
-  }, [params.id]);
-
-  // ── Elapsed timer (starts when joined) ────────────────────────────────────
-  useEffect(() => {
-    if (status !== "joined") return;
-    const t = setInterval(() => setElapsed((s) => s + 1), 1000);
-    return () => clearInterval(t);
-  }, [status]);
-
-  // ── Init Jitsi iFrame API ──────────────────────────────────────────────────
-  useEffect(() => {
-    if (!meeting) return;
-    if (status !== "loading") return;
-
-    const roomName = buildRoom(meeting.id, meeting.title);
-    const isHost = user ? (meeting.hostId === user.id || user.role === "Admin" || user.role === "Organizer") : false;
-
-    let mounted = true;
-
-    loadJitsiScript()
-      .then(() => {
-        if (!mounted || !containerRef.current || !window.JitsiMeetExternalAPI) return;
-
-        const api = new window.JitsiMeetExternalAPI("meet.jit.si", {
-          roomName,
-          width:  "100%",
-          height: "100%",
-          parentNode: containerRef.current,
-
-          configOverwrite: {
-            prejoinPageEnabled:        false,
-            startWithAudioMuted:       true,
-            startWithVideoMuted:       false,
-            disableModeratorIndicator: false,
-            enableLobbyChat:           true,
-            // Lobby (waiting room) — only the host can admit guests
-            lobby: { enabled: true },
-            toolbarButtons: [
-              "microphone", "camera", "desktop", "chat",
-              "raisehand",  "tileview", "fullscreen", "hangup",
-            ],
-          },
-
-          interfaceConfigOverwrite: {
-            SHOW_JITSI_WATERMARK:    false,
-            SHOW_WATERMARK_FOR_GUESTS: false,
-            TOOLBAR_ALWAYS_VISIBLE:  true,
-          },
-
-          userInfo: {
-            displayName,
-            email: user?.email ?? "guest@xplore-nexus.local",
-            moderator: isHost,
-          },
-        });
-
-        apiRef.current = api;
-        setStatus("ready");
-
-        api.on("videoConferenceJoined", () => setStatus("joined"));
-        api.on("videoConferenceLeft",   () => setStatus("left"));
-        api.on("readyToClose",          () => router.push("/meetings"));
-      })
-      .catch(() => {
-        if (meeting) {
-          const room = buildRoom(meeting.id, meeting.title);
-          window.open(`https://meet.jit.si/${room}`, "_blank");
           router.push("/meetings");
         }
-      });
-
-    return () => {
-      mounted = false;
-      if (apiRef.current) {
-        apiRef.current.dispose();
-        apiRef.current = null;
+      } catch (error) {
+        console.error("Failed to load meeting:", error);
+        router.push("/meetings");
       }
-    };
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [meeting, user]);
+    }
+    fetchMeeting();
+  }, [params.id, router]);
 
-  // ── Copy invite link (secure app URL — forces login) ──────────────────────
-  const copyLink = useCallback(() => {
+  // ── Start meeting when data loaded ────────────────────────────────────────
+  useEffect(() => {
+    if (!meeting || !user) {
+      console.log("Not starting meeting - missing data:", { meeting: !!meeting, user: !!user });
+      return;
+    }
+    
+    if (activeMeeting?.id === meeting.id) {
+      console.log("Meeting already active:", meeting.id);
+      // If meeting is already active and we're on this page, go back to meetings list
+      router.push("/meetings");
+      return;
+    }
+    
+    console.log("Starting meeting:", meeting.title, "for user:", user.firstName);
+    const displayName = `${user.firstName} ${user.lastName}`;
+    startMeeting(meeting, displayName);
+    
+    // After starting meeting, navigate back to meetings list so user can navigate freely
+    setTimeout(() => {
+      router.push("/meetings");
+    }, 1000);
+  }, [meeting, user, activeMeeting, startMeeting, router]);
+
+  const copyLink = () => {
     if (!meeting) return;
-    // Share the in-app URL so recipients must log in to Xplore Nexus first
     const url = `${window.location.origin}/meetings/${meeting.id}/room`;
-    navigator.clipboard.writeText(url).catch(() => {});
+    navigator.clipboard.writeText(url);
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
-  }, [meeting]);
+  };
 
-  // ── Hangup ─────────────────────────────────────────────────────────────────
-  function hangup() {
-    if (apiRef.current) {
-      apiRef.current.executeCommand("hangup");
-    } else {
-      router.push("/meetings");
-    }
-  }
-
-  function fmtElapsed(s: number) {
-    const h = Math.floor(s / 3600), m = Math.floor((s % 3600) / 60), sec = s % 60;
-    const p = (n: number) => String(n).padStart(2, "0");
-    return h > 0 ? `${h}:${p(m)}:${p(sec)}` : `${p(m)}:${p(sec)}`;
-  }
+  const handleLeave = () => {
+    endMeeting();
+    router.push("/meetings");
+  };
 
   const isHost = Boolean(
     meeting?.hostId === user?.id || user?.role === "Admin" || user?.role === "Organizer"
   );
 
-  // Secure in-app URL (shared via copyLink) — only host gets the direct Jitsi fallback
-  const secureInviteUrl = meeting
-    ? `${typeof window !== "undefined" ? window.location.origin : ""}/meetings/${meeting.id}/room`
-    : "";
-  // Direct Jitsi URL — exposed only to the host as a fallback tab
   const jitsiDirectUrl = meeting
     ? `https://meet.jit.si/${buildRoom(meeting.id, meeting.title)}`
     : "";
 
-  // ── Render ─────────────────────────────────────────────────────────────────
+  if (loading || !meeting) {
+    return (
+      <div className="flex items-center justify-center min-h-screen">
+        <Loader2 className="w-8 h-8 animate-spin text-gray-400" />
+      </div>
+    );
+  }
+
   return (
-    <div className="animate-fade-in -m-6 flex flex-col bg-gray-950" style={{ height: "calc(100vh - 56px)" }}>
-
-      {/* ── Top info bar ──────────────────────────────────────────────── */}
-      <div className="bg-gray-900 border-b border-gray-800 px-5 py-3 flex items-center justify-between flex-shrink-0">
-        <div className="flex items-center gap-3">
-          <Link
-            href="/meetings"
-            className="flex items-center gap-1.5 text-gray-400 hover:text-white text-xs font-medium transition-colors mr-1"
-          >
-            <ArrowLeft className="w-3.5 h-3.5" />
-            Meetings
-          </Link>
-          <div className="w-px h-4 bg-gray-700" />
-          <div>
-            <p className="text-white font-display font-bold text-sm leading-tight">
-              {meeting?.title ?? "Meeting Room"}
-            </p>
-            <p className="text-gray-400 text-[11px]">
-              {isHost ? "You are the host" : `Hosted by ${meeting?.hostName ?? "—"}`}
-            </p>
+    <div className="animate-fade-in">
+      <div className="max-w-4xl">
+        <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+          {/* Meeting Info */}
+          <div className="flex items-start justify-between mb-6">
+            <div>
+              <h1 className="text-2xl font-display font-bold text-gray-900 mb-2">
+                {meeting.title}
+              </h1>
+              <p className="text-gray-600 text-sm">
+                {isHost ? "You are hosting this meeting" : `Hosted by ${meeting.hostName}`}
+              </p>
+            </div>
+            
+            {isHost && (
+              <div className="flex items-center gap-1.5 bg-amber-50 border border-amber-200 text-amber-700 text-xs font-bold px-3 py-1.5 rounded-full">
+                <Shield className="w-3.5 h-3.5" />
+                Host
+              </div>
+            )}
           </div>
-          {/* Live pill */}
-          {status === "joined" && (
-            <span className="flex items-center gap-1.5 bg-red-500/20 border border-red-500/30 text-red-400 text-[10px] font-bold px-2.5 py-1 rounded-full uppercase tracking-wider">
-              <span className="w-1.5 h-1.5 bg-red-400 rounded-full animate-pulse" />
-              LIVE · {fmtElapsed(elapsed)}
-            </span>
-          )}
-        </div>
 
-        <div className="flex items-center gap-2">
-          {/* Host badge */}
-          {isHost && (
-            <div className="flex items-center gap-1.5 bg-amber-500/15 border border-amber-500/30 text-amber-400 text-[10px] font-bold px-3 py-1.5 rounded-full">
-              <Shield className="w-3 h-3" />
-              Host / Moderator
+          {/* Meeting Details */}
+          <div className="grid grid-cols-3 gap-4 mb-6 p-4 bg-gray-50 rounded-lg">
+            <div className="flex items-center gap-2">
+              <Users className="w-4 h-4 text-gray-500" />
+              <div>
+                <p className="text-xs text-gray-500">Participants</p>
+                <p className="text-sm font-semibold text-gray-900">
+                  {meeting.participantCount} / {meeting.maxParticipants}
+                </p>
+              </div>
             </div>
-          )}
 
-          {/* Participant count */}
-          {meeting && (
-            <div className="flex items-center gap-1.5 text-gray-400 text-xs">
-              <Users className="w-3.5 h-3.5" />
-              {meeting.participantCount}
-              {meeting.maxParticipants ? ` / ${meeting.maxParticipants}` : ""} participants
+            <div className="flex items-center gap-2">
+              <Clock className="w-4 h-4 text-gray-500" />
+              <div>
+                <p className="text-xs text-gray-500">Duration</p>
+                <p className="text-sm font-semibold text-gray-900">{meeting.duration} min</p>
+              </div>
             </div>
-          )}
 
-          {/* Duration */}
-          {meeting && (
-            <div className="flex items-center gap-1.5 text-gray-400 text-xs">
-              <Clock className="w-3.5 h-3.5" />
-              {meeting.duration} min
+            <div className="flex items-center gap-2">
+              <Info className="w-4 h-4 text-gray-500" />
+              <div>
+                <p className="text-xs text-gray-500">Status</p>
+                <p className="text-sm font-semibold text-green-600">Active</p>
+              </div>
             </div>
-          )}
+          </div>
 
-          {/* Copy invite link */}
-          <button
-            onClick={copyLink}
-            className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold transition-all ${
-              copied
-                ? "bg-green-500/20 border border-green-500/30 text-green-400"
-                : "bg-gray-800 border border-gray-700 text-gray-300 hover:bg-gray-700"
-            }`}
-          >
-            {copied ? <Check className="w-3.5 h-3.5" /> : <Copy className="w-3.5 h-3.5" />}
-            {copied ? "Link Copied!" : "Copy Invite Link"}
-          </button>
-
-          {/* Open in new tab — only for host (hides raw Jitsi URL from guests) */}
-          {isHost && (
-            <a
-              href={jitsiDirectUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="flex items-center gap-1.5 px-3 py-1.5 bg-gray-800 border border-gray-700 hover:bg-gray-700 text-gray-300 text-xs font-semibold rounded-lg transition-all"
+          {/* Actions */}
+          <div className="flex flex-wrap gap-3">
+            <button
+              onClick={copyLink}
+              className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-semibold transition-all ${
+                copied
+                  ? "bg-green-50 border border-green-200 text-green-700"
+                  : "bg-gray-100 border border-gray-200 text-gray-700 hover:bg-gray-200"
+              }`}
             >
-              <ExternalLink className="w-3.5 h-3.5" />
-              Open in Tab
-            </a>
-          )}
+              {copied ? <Check className="w-4 h-4" /> : <Copy className="w-4 h-4" />}
+              {copied ? "Link Copied!" : "Copy Invite Link"}
+            </button>
 
-          {/* Hang up */}
-          <button
-            onClick={hangup}
-            className="flex items-center gap-1.5 px-4 py-1.5 bg-red-600 hover:bg-red-700 text-white text-xs font-bold rounded-lg transition-all"
-          >
-            <PhoneOff className="w-3.5 h-3.5" />
-            Leave
-          </button>
+            <button
+              onClick={toggleMinimize}
+              className="flex items-center gap-2 px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white text-sm font-semibold rounded-lg transition-all"
+            >
+              {isMinimized ? <Maximize2 className="w-4 h-4" /> : <Minimize2 className="w-4 h-4" />}
+              {isMinimized ? "Expand Meeting" : "Minimize Meeting"}
+            </button>
+
+            {isHost && (
+              <a
+                href={jitsiDirectUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center gap-2 px-4 py-2 bg-gray-100 border border-gray-200 hover:bg-gray-200 text-gray-700 text-sm font-semibold rounded-lg transition-all"
+              >
+                <ExternalLink className="w-4 h-4" />
+                Open in New Tab
+              </a>
+            )}
+
+            <button
+              onClick={handleLeave}
+              className="flex items-center gap-2 px-4 py-2 bg-red-600 hover:bg-red-700 text-white text-sm font-bold rounded-lg transition-all ml-auto"
+            >
+              <PhoneOff className="w-4 h-4" />
+              Leave Meeting
+            </button>
+          </div>
+
+          {/* Info Message */}
+          <div className="mt-6 p-4 bg-blue-50 border border-blue-200 rounded-lg">
+            <div className="flex gap-3">
+              <Info className="w-5 h-5 text-blue-600 flex-shrink-0 mt-0.5" />
+              <div>
+                <p className="text-sm text-blue-900 font-semibold mb-1">
+                  Meeting is active
+                </p>
+                <p className="text-xs text-blue-700">
+                  The video call is running in the {isMinimized ? "bottom-right corner" : "main view"}. 
+                  You can navigate to other pages and the meeting will stay connected. 
+                  Click "Leave Meeting" to end the call.
+                </p>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
-
-      {/* ── Host info notice ──────────────────────────────────────────── */}
-      {isHost && status !== "joined" && (
-        <div className="bg-amber-500/10 border-b border-amber-500/20 px-5 py-2.5 flex items-center gap-3 flex-shrink-0">
-          <Info className="w-4 h-4 text-amber-400 flex-shrink-0" />
-          <p className="text-amber-300 text-xs">
-            <span className="font-bold">You are the host.</span>{" "}
-            Joining as <span className="font-bold">{user ? `${user.firstName} ${user.lastName}` : "Guest"}</span>.
-            {" "}You&apos;ll enter the room directly as moderator since you are the first to open this room.
-            {" "}Share the invite link above for participants to join.
-          </p>
-        </div>
-      )}
-
-      {/* ── Participant notice ──────────────────────────────────────── */}
-      {!isHost && (
-        <div className="bg-blue-500/10 border-b border-blue-500/20 px-5 py-2.5 flex items-center gap-3 flex-shrink-0">
-          <Info className="w-4 h-4 text-blue-400 flex-shrink-0" />
-          <p className="text-blue-300 text-xs">
-            Joining as <span className="font-bold">{user ? `${user.firstName} ${user.lastName}` : displayName}</span>.
-            {" "}The host will admit you once they start the session.
-          </p>
-        </div>
-      )}
-
-      {/* ── Loading overlay ───────────────────────────────────────────── */}
-      {status === "loading" && (
-        <div className="flex-1 flex flex-col items-center justify-center gap-4">
-          <Loader2 className="w-8 h-8 text-gray-500 animate-spin" />
-          <p className="text-gray-400 text-sm">Loading meeting room…</p>
-        </div>
-      )}
-
-      {/* ── Left Room ─────────────────────────────────────────────────── */}
-      {status === "left" && (
-        <div className="flex-1 flex flex-col items-center justify-center gap-5">
-          <div className="w-16 h-16 bg-gray-800 rounded-2xl flex items-center justify-center">
-            <PhoneOff className="w-7 h-7 text-gray-400" />
-          </div>
-          <div className="text-center">
-            <p className="text-white font-bold text-lg">You left the meeting</p>
-            <p className="text-gray-400 text-sm mt-1">{meeting?.title}</p>
-          </div>
-          <Link
-            href="/meetings"
-            className="flex items-center gap-2 bg-[#8B1A1A] hover:bg-[#7B1414] text-white text-sm font-bold px-6 py-2.5 rounded-xl transition-all"
-          >
-            <ArrowLeft className="w-4 h-4" />
-            Back to Meetings
-          </Link>
-        </div>
-      )}
-
-      {/* ── Jitsi container ───────────────────────────────────────────── */}
-      <div
-        ref={containerRef}
-        className={`flex-1 overflow-hidden ${status === "loading" || status === "left" ? "hidden" : "block"}`}
-      />
     </div>
   );
 }

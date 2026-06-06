@@ -1,13 +1,15 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Bell, Calendar, Video, BookOpen, Settings2, CheckCheck, Dot } from "lucide-react";
 import Link from "next/link";
 import type { Metadata } from "next";
+import { useRole } from "@/lib/context/RoleContext";
 import {
-  MOCK_NOTIFICATIONS,
+  getNotificationsByUser,
   markAsRead,
   markAllAsRead,
+  getUnreadCount,
   type AppNotification,
   type NotificationCategory,
 } from "@/lib/data/notifications";
@@ -54,8 +56,17 @@ function timeAgo(iso: string): string {
 }
 
 export default function NotificationsPage() {
-  const [notifications, setNotifications] = useState<AppNotification[]>([...MOCK_NOTIFICATIONS]);
+  const { user } = useRole(); // Get current user
+  const [notifications, setNotifications] = useState<AppNotification[]>([]);
   const [activeTab, setActiveTab] = useState<NotificationCategory | "all">("all");
+
+  // Load user-specific notifications on mount
+  useEffect(() => {
+    if (user) {
+      const userNotifications = getNotificationsByUser(user.id);
+      setNotifications(userNotifications);
+    }
+  }, [user]);
 
   const unreadCount = notifications.filter((n) => !n.read).length;
 
@@ -64,13 +75,15 @@ export default function NotificationsPage() {
     : notifications.filter((n) => n.category === activeTab);
 
   function handleMarkRead(id: string) {
-    markAsRead(id);
-    setNotifications([...MOCK_NOTIFICATIONS]);
+    if (!user) return;
+    markAsRead(id, user.id);
+    setNotifications(getNotificationsByUser(user.id));
   }
 
   function handleMarkAllRead() {
-    markAllAsRead();
-    setNotifications([...MOCK_NOTIFICATIONS]);
+    if (!user) return;
+    markAllAsRead(user.id);
+    setNotifications(getNotificationsByUser(user.id));
   }
 
   return (

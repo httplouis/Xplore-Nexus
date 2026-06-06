@@ -10,6 +10,8 @@ export async function GET(request: Request) {
     const { searchParams } = new URL(request.url);
     const search = searchParams.get("search")?.toLowerCase() ?? "";
     const status = searchParams.get("status");
+    const userId = searchParams.get("userId") || "u-001"; // Current user ID
+    const userRole = searchParams.get("userRole") || "Participant"; // Current user role
     const page = Math.max(1, Number(searchParams.get("page") ?? "1"));
     const pageSize = Math.min(50, Math.max(1, Number(searchParams.get("pageSize") ?? "20")));
 
@@ -21,17 +23,43 @@ export async function GET(request: Request) {
       }
     }
 
-    const dbMeetings = await prisma.meeting.findMany({
+    // Auto-update expired meetings to COMPLETED
+    const now = new Date();
+    const sevenDaysAgo = new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000);
+    
+    // Mark expired meetings as completed
+    await prisma.meeting.updateMany({
       where: {
-        AND: [
-          dbStatus ? { status: dbStatus } : {},
-        ],
+        status: { in: [DbMeetingStatus.UPCOMING, DbMeetingStatus.LIVE] },
+        date: { lt: now },
       },
+      data: { status: DbMeetingStatus.COMPLETED },
+    });
+
+    // Auto-delete very old completed meetings (older than 7 days)
+    await prisma.meeting.deleteMany({
+      where: {
+        status: DbMeetingStatus.COMPLETED,
+        date: { lt: sevenDaysAgo },
+      },
+    });
+
+    // Filter meetings based on user role
+    const whereClause: any = {
+      AND: [
+        dbStatus ? { status: dbStatus } : {},
+        // Only Admin can see all meetings, others see only meetings they host
+        userRole !== "Admin" ? { hostId: userId } : {},
+      ],
+    };
+
+    const dbMeetings = await prisma.meeting.findMany({
+      where: whereClause,
       include: {
         host: true,
       },
       orderBy: {
-        date: 'asc',
+        date: 'desc',
       },
     });
 
@@ -52,7 +80,7 @@ export async function GET(request: Request) {
     const totalPages = Math.ceil(total / pageSize);
 
     // Map to client schema
-    const items = paginated.map((m) => mapMeetingToClient(m));
+    const items = paginated.map((m) => mapMeetingToClient(m, userId));
 
     const payload: PaginatedResponse<Meeting> = { items, total, page, pageSize, totalPages };
     return NextResponse.json({ success: true, data: payload });

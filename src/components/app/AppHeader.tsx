@@ -84,12 +84,7 @@ function useClickOutside(ref: React.RefObject<HTMLElement | null>, cb: () => voi
 // ─── Main Component ───────────────────────────────────────────────────────────
 export default function AppHeader() {
   const router = useRouter();
-  const { user, role, setRole, logout } = useRole();
-
-  // ── Role switcher ──
-  const [roleOpen, setRoleOpen] = useState(false);
-  const roleRef = useRef<HTMLDivElement>(null);
-  useClickOutside(roleRef, useCallback(() => setRoleOpen(false), []));
+  const { user, role, logout } = useRole();
 
   // ── User dropdown ──
   const [userOpen, setUserOpen] = useState(false);
@@ -105,12 +100,6 @@ export default function AppHeader() {
   const unreadCount = notifications.filter((n) => !n.read).length;
 
   // ── Actions ──
-  function handleRoleChange(newRole: UserRole) {
-    setRole(newRole);
-    setRoleOpen(false);
-    showToast(`Role switched to ${newRole}`, "info");
-  }
-
   function handleLogout() {
     logout();
     showToast("Logged out successfully.", "success");
@@ -280,56 +269,6 @@ export default function AppHeader() {
           </div>
         </div>
       </header>
-
-      {/* ── Role switcher (bottom-right, demo only) ─────────────────────────── */}
-      <div ref={roleRef} className="fixed bottom-5 right-5 z-50">
-        {roleOpen && (
-          <div className="mb-2 bg-white rounded-xl shadow-xl border border-gray-100 overflow-hidden animate-fade-in-up w-52">
-            <div className="px-3 py-2 border-b border-gray-100">
-              <p className="text-[10px] font-semibold text-gray-400 uppercase tracking-wider">Switch Role (Demo)</p>
-              <p className="text-[10px] text-gray-400 mt-0.5">Switches to that role&apos;s demo account</p>
-            </div>
-            {ROLES.map((r) => {
-              const demoUser = DEMO_ACCOUNTS.find((a) => a.role === r);
-              return (
-                <button
-                  key={r}
-                  onClick={() => handleRoleChange(r)}
-                  className={`w-full flex items-center justify-between px-3 py-2.5 text-sm
-                              transition-colors hover:bg-gray-50
-                              ${r === currentRole ? "text-[#8B1A1A] font-semibold" : "text-gray-700"}`}
-                >
-                  <div className="text-left">
-                    <span className="block">{r}</span>
-                    {demoUser && (
-                      <span className="text-[10px] text-gray-400 font-normal">{demoUser.email}</span>
-                    )}
-                  </div>
-                  {r === currentRole && (
-                    <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full ${ROLE_COLORS[r]}`}>
-                      Active
-                    </span>
-                  )}
-                </button>
-              );
-            })}
-          </div>
-        )}
-
-        <button
-          id="role-switcher-btn"
-          onClick={() => setRoleOpen((p) => !p)}
-          className="flex items-center gap-2 bg-[#1a0505] text-white text-xs font-semibold
-                     px-3 py-2 rounded-lg border border-[#3d1515] shadow-lg hover:bg-[#2d0a0a]
-                     transition-all"
-        >
-          Switch Role
-          <span className={`text-[10px] font-bold px-2 py-0.5 rounded-md ${ROLE_COLORS[currentRole as UserRole]}`}>
-            {currentRole}
-          </span>
-          <RefreshCw className={`w-3 h-3 text-red-400 transition-transform ${roleOpen ? "rotate-180" : ""}`} />
-        </button>
-      </div>
     </>
   );
 }

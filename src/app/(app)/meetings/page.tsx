@@ -5,6 +5,7 @@ import {
   Video, Calendar, Clock, Users, Plus, X,
   VideoIcon, Shield, Mic,
   Radio, CheckCircle2, Timer, ChevronRight, Loader2,
+  Link2, Check,
 } from "lucide-react";
 import Link from "next/link";
 import type { Meeting, CreateMeetingPayload, MeetingStatus } from "@/types";
@@ -61,6 +62,37 @@ function MeetingCard({ m }: { m: Meeting }) {
   const isLive = m.status === "Live";
   const isDone = m.status === "Completed";
   const isHost = m.isHost || role === "Admin" || role === "Organizer";
+  const [copied, setCopied] = useState(false);
+  const [elapsedMinutes, setElapsedMinutes] = useState(0);
+
+  // Calculate elapsed time for live meetings
+  useEffect(() => {
+    if (!isLive) return;
+
+    const updateElapsed = () => {
+      const startTime = new Date(m.date).getTime();
+      const now = Date.now();
+      const diffMs = now - startTime;
+      const diffMins = Math.max(0, Math.floor(diffMs / (1000 * 60)));
+      setElapsedMinutes(diffMins);
+    };
+
+    updateElapsed(); // Initial calculation
+    const interval = setInterval(updateElapsed, 60000); // Update every minute
+
+    return () => clearInterval(interval);
+  }, [isLive, m.date]);
+
+  const copyInviteLink = () => {
+    const url = `${window.location.origin}/meetings/${m.id}/room`;
+    navigator.clipboard.writeText(url).then(() => {
+      setCopied(true);
+      showToast("Invite link copied to clipboard!", "success");
+      setTimeout(() => setCopied(false), 2000);
+    }).catch(() => {
+      showToast("Failed to copy link", "error");
+    });
+  };
 
   return (
     <div className={`relative flex flex-col rounded-2xl shadow-sm border transition-all duration-200
@@ -108,7 +140,12 @@ function MeetingCard({ m }: { m: Meeting }) {
             { icon: <Calendar className="w-3.5 h-3.5 text-gray-400 shrink-0" />, text: formatDate(m.date) },
             { icon: <Clock className="w-3.5 h-3.5 text-gray-400 shrink-0" />, text: formatTime(m.date) },
             { icon: <Users className="w-3.5 h-3.5 text-gray-400 shrink-0" />, text: `${m.participantCount}${m.maxParticipants ? ` / ${m.maxParticipants}` : ""}` },
-            { icon: <Timer className="w-3.5 h-3.5 text-gray-400 shrink-0" />, text: formatDuration(m.duration) },
+            { 
+              icon: <Timer className="w-3.5 h-3.5 text-gray-400 shrink-0" />, 
+              text: isLive && elapsedMinutes > 0 
+                ? `${elapsedMinutes} min elapsed` 
+                : formatDuration(m.duration)
+            },
           ].map((item, i) => (
             <div key={i} className="flex items-center gap-1.5 text-xs text-gray-500 bg-gray-50 rounded-lg px-2.5 py-1.5">
               {item.icon}
@@ -130,6 +167,28 @@ function MeetingCard({ m }: { m: Meeting }) {
 
         {/* ── Actions ── */}
         <div className="flex flex-col gap-2 mt-auto">
+
+          {/* Copy Invite Link */}
+          {!isDone && (
+            <button
+              onClick={copyInviteLink}
+              className="w-full flex items-center justify-center gap-2 py-2 rounded-xl
+                         border border-gray-200 bg-white hover:bg-gray-50
+                         text-gray-700 text-xs font-semibold transition-all active:scale-[0.98]"
+            >
+              {copied ? (
+                <>
+                  <Check className="w-3.5 h-3.5 text-green-600" />
+                  <span className="text-green-600">Link Copied!</span>
+                </>
+              ) : (
+                <>
+                  <Link2 className="w-3.5 h-3.5" />
+                  Copy Invite Link
+                </>
+              )}
+            </button>
+          )}
 
           {/* LIVE meeting */}
           {isLive && (
@@ -315,15 +374,18 @@ function ScheduleMeetingModal({ onClose, onCreated }: {
 
 // ─── Main Page ────────────────────────────────────────────────────────────────
 export default function MeetingsPage() {
+  const { user, role } = useRole(); // Get current user and role
   const [meetings, setMeetings]         = useState<Meeting[]>([]);
   const [loading, setLoading]           = useState(true);
   const [showSchedule, setShowSchedule] = useState(false);
-  const [filter, setFilter]             = useState<"All" | MeetingStatus>("All");
+  const [filter, setFilter]             = useState<"All" | MeetingStatus>("Upcoming"); // Changed default to Upcoming
 
   useEffect(() => {
     async function loadMeetings() {
+      if (!user || !role) return; // Wait for user to be loaded
+      
       try {
-        const res = await fetch("/api/meetings");
+        const res = await fetch(`/api/meetings?userId=${user.id}&userRole=${role}`);
         const json = await res.json();
         if (json.success) {
           setMeetings(json.data.items);
@@ -335,14 +397,22 @@ export default function MeetingsPage() {
       }
     }
     loadMeetings();
-  }, []);
+  }, [user, role]); // Re-fetch when user or role changes
 
   const handleCreated = (m: Meeting) => setMeetings((prev) => [m, ...prev]);
 
   const liveCount      = meetings.filter((m) => m.status === "Live").length;
   const upcomingCount  = meetings.filter((m) => m.status === "Upcoming").length;
   const completedCount = meetings.filter((m) => m.status === "Completed").length;
-  const filtered       = filter === "All" ? meetings : meetings.filter((m) => m.status === filter);
+  
+  // Show only recent completed meetings (last 3 days) to reduce clutter
+  const threeDaysAgo = new Date(Date.now() - 3 * 24 * 60 * 60 * 1000);
+  let filtered = filter === "All" 
+    ? meetings 
+    : filter === "Completed"
+      ? meetings.filter((m) => m.status === filter && new Date(m.date) > threeDaysAgo)
+      : meetings.filter((m) => m.status === filter);
+  
   const FILTERS: Array<"All" | MeetingStatus> = ["All", "Live", "Upcoming", "Completed"];
 
   if (loading) {
@@ -375,15 +445,55 @@ export default function MeetingsPage() {
               · No downloads required
             </p>
           </div>
-          <button
-            onClick={() => setShowSchedule(true)}
-            className="flex items-center gap-2 bg-[#8B1A1A] hover:bg-[#7B1414] active:scale-95
-                       text-white text-sm font-bold px-4 py-2.5 rounded-xl transition-all
-                       shadow-md shadow-[#8B1A1A]/25 shrink-0"
-          >
-            <Plus className="w-4 h-4" />
-            Schedule Meeting
-          </button>
+          <div className="flex items-center gap-3 shrink-0">
+            <button
+              onClick={async () => {
+                setLoading(true);
+                try {
+                  const now = new Date();
+                  const res = await fetch("/api/meetings", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({
+                      title: `Quick Meeting ${now.toLocaleTimeString("en-PH", { hour: "2-digit", minute: "2-digit" })}`,
+                      description: "Instant meeting started",
+                      date: now.toISOString(),
+                      duration: 60,
+                    }),
+                  });
+                  const json = await res.json();
+                  if (json.success) {
+                    handleCreated(json.data);
+                    showToast("Instant meeting created!", "success");
+                    // Navigate to meeting room (embedded Jitsi)
+                    window.location.href = `/meetings/${json.data.id}/room`;
+                  } else {
+                    showToast(json.error ?? "Failed to create meeting", "error");
+                  }
+                } catch {
+                  showToast("Network error", "error");
+                } finally {
+                  setLoading(false);
+                }
+              }}
+              disabled={loading}
+              className="flex items-center gap-2 bg-white hover:bg-gray-50 border border-gray-200
+                         text-gray-700 text-sm font-bold px-4 py-2.5 rounded-xl transition-all
+                         shadow-sm active:scale-95 disabled:opacity-60"
+            >
+              <Radio className="w-4 h-4" />
+              Instant Meeting
+            </button>
+            <button
+              onClick={() => setShowSchedule(true)}
+              className="flex items-center gap-2 bg-[#8B1A1A] hover:bg-[#7B1414] active:scale-95
+                         text-white text-sm font-bold px-4 py-2.5 rounded-xl transition-all
+                         shadow-md shadow-[#8B1A1A]/25"
+            >
+              <Plus className="w-4 h-4" />
+              Schedule Meeting
+            </button>
+          </div>
         </div>
 
         {/* Stats strip */}
@@ -417,22 +527,20 @@ export default function MeetingsPage() {
         </div>
 
         {/* Filter tabs */}
-        <div className="flex items-center gap-2">
-          {FILTERS.map((f) => (
-            <button
-              key={f}
-              onClick={() => setFilter(f)}
-              className={`px-3.5 py-1.5 rounded-lg text-xs font-semibold transition-all
-                          ${filter === f ? "bg-[#8B1A1A] text-white shadow-sm" : "bg-gray-100 text-gray-600 hover:bg-gray-200"}`}
-            >
-              {f}
-              {f === "Live" && liveCount > 0 && (
-                <span className="ml-1.5 inline-flex items-center justify-center w-4 h-4
-                                 rounded-full bg-white/30 text-[10px] font-bold">{liveCount}</span>
-              )}
-            </button>
-          ))}
-          <span className="ml-auto text-xs text-gray-400">
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-2">
+            {FILTERS.map((f) => (
+              <button
+                key={f}
+                onClick={() => setFilter(f)}
+                className={`px-3.5 py-1.5 rounded-lg text-xs font-semibold transition-all
+                            ${filter === f ? "bg-[#8B1A1A] text-white shadow-sm" : "bg-gray-100 text-gray-600 hover:bg-gray-200"}`}
+              >
+                {f}
+              </button>
+            ))}
+          </div>
+          <span className="text-xs text-gray-400">
             {filtered.length} meeting{filtered.length !== 1 ? "s" : ""}
           </span>
         </div>

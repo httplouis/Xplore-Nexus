@@ -274,10 +274,10 @@ export default function ProgramsPage() {
               Technology Programs
             </span>
           </div>
-          <h1 className="text-3xl font-display font-bold text-white tracking-tight">
+          <h1 className="text-4xl font-display font-bold text-white tracking-tight">
             Informatics Technology Programs
           </h1>
-          <p className="text-sm text-blue-100/90 leading-relaxed font-normal">
+          <p className="text-base text-blue-100/90 leading-relaxed font-normal">
             Equipping educators, leaders, and staff with modern educational technology, generative AI strategies, DepEd Order compliance, and practical productivity pathways.
           </p>
         </div>
@@ -298,7 +298,7 @@ export default function ProgramsPage() {
             <button
               key={cat}
               onClick={() => setActiveCategory(cat)}
-              className={`px-4 py-2 rounded-lg text-xs font-semibold transition-all duration-200 ${
+              className={`px-5 py-2.5 rounded-lg text-sm font-semibold transition-all duration-200 ${
                 activeCategory === cat
                   ? "bg-[#005691] text-white shadow-sm"
                   : "bg-gray-50 text-gray-600 hover:bg-gray-100"
@@ -336,8 +336,8 @@ export default function ProgramsPage() {
           <div className="w-16 h-16 rounded-2xl bg-blue-50 flex items-center justify-center mb-4">
             <BookOpen className="w-8 h-8 text-[#005691]/60" />
           </div>
-          <h3 className="text-gray-700 font-bold text-lg">No programs found</h3>
-          <p className="text-gray-400 text-sm mt-1 max-w-sm">
+          <h3 className="text-gray-700 font-bold text-xl">No programs found</h3>
+          <p className="text-gray-500 text-base mt-2 max-w-sm">
             Try resetting your filters or typing a different keyword in the search bar.
           </p>
         </div>
@@ -351,38 +351,38 @@ export default function ProgramsPage() {
               {/* Top Details */}
               <div className="p-6 space-y-4">
                 <div className="flex items-center justify-between gap-3">
-                  <span className="text-[10px] font-bold tracking-wider text-white bg-[#005691] px-2.5 py-1 rounded-md uppercase">
+                  <span className="text-xs font-bold tracking-wider text-white bg-[#005691] px-3 py-1.5 rounded-md uppercase">
                     {program.code}
                   </span>
-                  <span className="text-[11px] font-semibold text-amber-700 bg-amber-50 px-2.5 py-1 rounded-md border border-amber-100">
+                  <span className="text-xs font-semibold text-amber-700 bg-amber-50 px-3 py-1.5 rounded-md border border-amber-100">
                     Category: {program.category}
                   </span>
                 </div>
 
-                <div className="space-y-1.5">
-                  <h3 className="font-display font-extrabold text-gray-900 text-lg leading-snug">
+                <div className="space-y-2">
+                  <h3 className="font-display font-extrabold text-gray-900 text-xl leading-snug">
                     {program.title}
                   </h3>
-                  <p className="text-xs text-gray-500 line-clamp-3 leading-relaxed">
+                  <p className="text-sm text-gray-600 line-clamp-3 leading-relaxed">
                     {program.overview}
                   </p>
                 </div>
 
                 {/* Micro Details (Outlines Preview) */}
                 <div className="pt-3 border-t border-gray-50 space-y-2">
-                  <h4 className="text-xs font-bold text-gray-700 flex items-center gap-1.5">
-                    <Layers className="w-3.5 h-3.5 text-[#005691]" />
+                  <h4 className="text-sm font-bold text-gray-700 flex items-center gap-1.5">
+                    <Layers className="w-4 h-4 text-[#005691]" />
                     Module Outline Highlights:
                   </h4>
-                  <ul className="grid grid-cols-1 sm:grid-cols-2 gap-1.5">
+                  <ul className="grid grid-cols-1 sm:grid-cols-2 gap-2">
                     {program.outline.slice(0, 4).map((mod, idx) => (
-                      <li key={idx} className="text-xs text-gray-500 flex items-start gap-1">
-                        <ChevronRight className="w-3.5 h-3.5 text-[#005691] shrink-0 mt-0.5" />
+                      <li key={idx} className="text-sm text-gray-600 flex items-start gap-1.5">
+                        <ChevronRight className="w-4 h-4 text-[#005691] shrink-0 mt-0.5" />
                         <span className="truncate">{mod.replace(/^Module \d+:\s*/, "")}</span>
                       </li>
                     ))}
                     {program.outline.length > 4 && (
-                      <li className="text-xs text-[#005691] font-semibold">
+                      <li className="text-sm text-[#005691] font-semibold">
                         + {program.outline.length - 4} more modules
                       </li>
                     )}
@@ -392,19 +392,19 @@ export default function ProgramsPage() {
 
               {/* Action Area */}
               <div className="bg-gray-50/70 border-t border-gray-50 px-6 py-4 flex items-center justify-between gap-4">
-                <div className="flex items-center gap-4 text-xs text-gray-500">
-                  <span className="flex items-center gap-1 font-medium">
-                    <Clock className="w-3.5 h-3.5 text-gray-400" />
+                <div className="flex items-center gap-4 text-sm text-gray-600">
+                  <span className="flex items-center gap-1.5 font-medium">
+                    <Clock className="w-4 h-4 text-gray-400" />
                     {program.modes[0]?.duration}
                   </span>
-                  <span className="flex items-center gap-1 font-semibold text-gray-700">
+                  <span className="flex items-center gap-1.5 font-bold text-gray-800">
                     {program.modes[0]?.price}
                   </span>
                 </div>
 
                 <button
                   onClick={() => setSelectedProgram(program)}
-                  className="flex items-center gap-1.5 text-[#005691] hover:text-[#003F6C] font-semibold text-xs transition-colors group"
+                  className="flex items-center gap-2 text-[#005691] hover:text-[#003F6C] font-semibold text-sm transition-colors group"
                 >
                   View Full Details
                   <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-0.5" />

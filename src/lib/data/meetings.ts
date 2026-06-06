@@ -83,6 +83,21 @@ export function getMeetingById(id: string): Meeting | undefined {
   return MOCK_MEETINGS.find((m) => m.id === id);
 }
 
+/**
+ * Get meetings for a specific user
+ * - Admins can see all meetings
+ * - Other users only see meetings they host or are invited to
+ */
+export function getMeetingsByUser(userId: string, userRole: string): Meeting[] {
+  if (userRole === "Admin") {
+    return MOCK_MEETINGS; // Admin sees all meetings
+  }
+  
+  // Other users only see meetings they host
+  // TODO: Add logic to filter by meetings user is invited to (when we have attendees list)
+  return MOCK_MEETINGS.filter((m) => m.hostId === userId);
+}
+
 export function addMeeting(meeting: Meeting): void {
   MOCK_MEETINGS = [meeting, ...MOCK_MEETINGS];
 }

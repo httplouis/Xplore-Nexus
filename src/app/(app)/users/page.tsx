@@ -7,6 +7,7 @@ import {
 } from "lucide-react";
 import { MOCK_USERS } from "@/lib/data/users";
 import { showToast } from "@/components/ui/Toast";
+import RoleGuard from "@/components/auth/RoleGuard";
 import type { User, UserRole, UserStatus } from "@/types";
 
 const ROLES: UserRole[] = ["Admin", "Organizer", "Instructor", "Participant"];
@@ -144,7 +145,8 @@ export default function UsersPage() {
   }
 
   return (
-    <div className="space-y-6 animate-fade-in">
+    <RoleGuard allowedRoles={["Admin"]}>
+      <div className="space-y-6 animate-fade-in">
       {/* Drawer */}
       {selectedUser && (
         <UserDrawer user={selectedUser} onClose={() => setSelectedUser(null)} />
@@ -328,5 +330,6 @@ export default function UsersPage() {
         </div>
       </div>
     </div>
+    </RoleGuard>
   );
 }

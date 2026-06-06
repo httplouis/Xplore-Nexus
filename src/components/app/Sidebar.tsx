@@ -27,16 +27,61 @@ const NAV_ITEMS: {
   icon: React.ElementType;
   allowedRoles?: UserRole[];
 }[] = [
-  { href: "/dashboard",     label: "Dashboard",     icon: LayoutDashboard },
-  { href: "/events",        label: "Events",         icon: Calendar },
-  { href: "/meetings",      label: "Meetings",       icon: Video },
-  { href: "/stream",        label: "Live",           icon: Radio },
-  { href: "/training",      label: "Training",       icon: GraduationCap },
-  { href: "/programs",      label: "Programs",       icon: BookOpen },
-  { href: "/analytics",     label: "Analytics",      icon: BarChart3,    allowedRoles: ["Admin", "Organizer"] },
-  { href: "/users",         label: "Users",          icon: Users,         allowedRoles: ["Admin"] },
-  { href: "/notifications", label: "Notifs",         icon: Bell },
-  { href: "/settings",      label: "Settings",       icon: Settings },
+  { 
+    href: "/dashboard", 
+    label: "Dashboard", 
+    icon: LayoutDashboard 
+  },
+  { 
+    href: "/events", 
+    label: "Events", 
+    icon: Calendar,
+    allowedRoles: ["Admin", "Organizer"] // Only admin and organizer can manage events
+  },
+  { 
+    href: "/meetings", 
+    label: "Meetings", 
+    icon: Video,
+    allowedRoles: ["Admin", "Organizer", "Instructor"] // Admin, organizer, instructor can host meetings
+  },
+  { 
+    href: "/stream", 
+    label: "Live", 
+    icon: Radio,
+    allowedRoles: ["Admin", "Organizer", "Instructor"] // Only hosts can stream
+  },
+  { 
+    href: "/training", 
+    label: "Training", 
+    icon: GraduationCap // All users can access training
+  },
+  { 
+    href: "/programs", 
+    label: "Programs", 
+    icon: BookOpen // All users can view programs
+  },
+  { 
+    href: "/analytics", 
+    label: "Analytics", 
+    icon: BarChart3, 
+    allowedRoles: ["Admin", "Organizer"] // Admin and organizer can view analytics
+  },
+  { 
+    href: "/users", 
+    label: "Users", 
+    icon: Users, 
+    allowedRoles: ["Admin"] // Only admin can manage users
+  },
+  { 
+    href: "/notifications", 
+    label: "Notifs", 
+    icon: Bell // All users get notifications
+  },
+  { 
+    href: "/settings", 
+    label: "Settings", 
+    icon: Settings // All users have settings
+  },
 ];
 
 export default function Sidebar() {
