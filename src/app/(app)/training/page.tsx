@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 import {
   Search, BookOpen, Clock, Users, ArrowRight, X, ChevronRight, CheckCircle,
   Award, Layers, Info, Play, Lock, CheckCircle2, PlayCircle, Trophy,
@@ -194,6 +195,7 @@ const EXCEL_MODULES: CourseModule[] = [
 ];
 
 export default function TrainingPage() {
+  const router = useRouter();
   const [view, setView] = useState<"browse" | "certification">("browse");
   const [selectedCertification, setSelectedCertification] = useState<Certification | null>(null);
   const [search, setSearch] = useState("");
@@ -361,8 +363,8 @@ export default function TrainingPage() {
                       <button
                         key={course.id}
                         onClick={() => {
-                          // Navigate to course player
-                          window.location.href = `/course/${course.id}`;
+                          // Navigate to course player using Next.js router to preserve context
+                          router.push(`/course/${course.id}`);
                         }}
                         className="w-full px-5 py-3 flex items-center justify-between hover:bg-white transition-colors border-b border-gray-100 last:border-b-0 text-left cursor-pointer"
                       >
