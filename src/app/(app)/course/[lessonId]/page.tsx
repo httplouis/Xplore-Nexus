@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, Fragment } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
@@ -62,10 +62,28 @@ export default function CoursePlayerPage({ params }: { params: { lessonId: strin
   const [showSamplesPanel, setShowSamplesPanel] = useState(false);
   const [currentLesson, setCurrentLesson] = useState("overview");
 
+  // Map lessons to video files
+  const lessonVideoMap: { [key: string]: string } = {
+    "overview": "/vids/1.mp4",
+    "exploring": "/vids/2.mp4",
+    "editing": "/vids/3.mp4",
+    "saving": "/vids/4.mp4",
+    "adding": "/vids/5.mp4",
+    "undoing": "/vids/6.mp4",
+    "finding": "/vids/7.mp4",
+    "templates": "/vids/8.mp4",
+    "customizing": "/vids/9.mp4",
+    "sharing": "/vids/10.mp4"
+  };
+
+  // Check if current lesson has a video
+  const hasVideo = currentLesson in lessonVideoMap;
+  const currentVideoSrc = lessonVideoMap[currentLesson] || "/vids/1.mp4";
+
   useEffect(() => {
     if (params.lessonId) {
       setCurrentLesson(params.lessonId);
-      if (params.lessonId === "samples") {
+      if (params.lessonId === "samples" || params.lessonId === "exercise") {
         setShowSamplesPanel(true);
       } else {
         setShowSamplesPanel(false);
@@ -259,23 +277,59 @@ export default function CoursePlayerPage({ params }: { params: { lessonId: strin
                 <span className={`text-xs ${currentLesson === "customizing" ? "text-blue-200" : "text-gray-500"}`}>5m 4s</span>
               </button>
 
-              <button onClick={() => handleLessonChange("sharing", false)} className={`w-full text-left px-3 py-2 rounded text-sm transition-colors ${currentLesson === "sharing" ? "bg-[#005691] text-white" : "hover:bg-gray-800 text-gray-300"}`}>
-                <div className="flex items-center gap-2 mb-1">
-                  <Play className="w-3 h-3" />
-                  <span className="font-medium">Sharing workbooks in Excel 365</span>
+              {/* Video 10 - Sharing workbooks in Excel 365 */}
+              <button onClick={() => handleLessonChange("sharing", false)} className={`w-full text-left px-3 py-2.5 rounded text-sm transition-colors ${currentLesson === "sharing" ? "bg-[#005691] text-white" : "hover:bg-gray-800 text-gray-300"}`}>
+                <div className="flex items-center justify-between gap-3">
+                  <div className="flex items-center gap-2 min-w-0 flex-1">
+                    <CheckCircle2 className="w-3.5 h-3.5 text-green-400 shrink-0" />
+                    <span className="font-medium truncate">Sharing workbooks in Excel 365</span>
+                  </div>
+                  <span className={`text-xs shrink-0 ${currentLesson === "sharing" ? "text-blue-200" : "text-gray-500"}`}>4m 46s</span>
                 </div>
-                <span className={`text-xs ${currentLesson === "sharing" ? "text-blue-200" : "text-gray-500"}`}>4m 46s</span>
+              </button>
+
+              {/* Zip File - Exercise: Getting started in Excel 365 */}
+              <button onClick={() => handleLessonChange("exercise", true)} className={`w-full text-left px-3 py-2.5 rounded text-sm transition-colors ${currentLesson === "exercise" ? "bg-[#005691] text-white" : "hover:bg-gray-800 text-gray-300"}`}>
+                <div className="flex items-center gap-2 min-w-0">
+                  <FileText className="w-3.5 h-3.5 shrink-0" />
+                  <span className="font-medium truncate flex-1">Exercise: Getting started in Excel 365</span>
+                </div>
+                <div className={`text-xs mt-1 ml-6 ${currentLesson === "exercise" ? "text-blue-200" : "text-gray-500"}`}>Zip File</div>
+              </button>
+
+              {/* Knowledge Check 2 */}
+              <button onClick={() => handleLessonChange("knowledge-check-2", false)} className={`w-full text-left px-3 py-2.5 rounded text-sm transition-colors ${currentLesson === "knowledge-check-2" ? "bg-[#005691] text-white" : "hover:bg-gray-800 text-gray-300"}`}>
+                <div className="flex items-center gap-2 min-w-0">
+                  <FileQuestion className="w-3.5 h-3.5 shrink-0 text-gray-400" />
+                  <span className="font-medium truncate flex-1">Knowledge Check: Using tools in Excel 365 (2023)</span>
+                </div>
+              </button>
+
+              {/* Retake Test */}
+              <button onClick={() => handleLessonChange("retake-test", false)} className={`w-full text-left px-3 py-2.5 rounded text-sm transition-colors ${currentLesson === "retake-test" ? "bg-[#005691] text-white" : "hover:bg-gray-800 text-gray-300"}`}>
+                <div className="flex items-center gap-2 min-w-0">
+                  <CheckCircle2 className="w-3.5 h-3.5 text-green-400 shrink-0" />
+                  <span className="font-medium truncate flex-1">Retake Test</span>
+                </div>
+              </button>
+
+              {/* Reflection */}
+              <button onClick={() => handleLessonChange("reflection", false)} className={`w-full text-left px-3 py-2.5 rounded text-sm transition-colors ${currentLesson === "reflection" ? "bg-[#005691] text-white" : "hover:bg-gray-800 text-gray-300"}`}>
+                <div className="flex items-center gap-2 min-w-0">
+                  <FileQuestion className="w-3.5 h-3.5 shrink-0 text-gray-400" />
+                  <span className="font-medium truncate flex-1">Reflection: Reflect on what you've learned</span>
+                </div>
               </button>
             </div>
           </div>
           )}
 
           <div className="flex-1 flex flex-col overflow-hidden">
-            {!showSamplesPanel && (
+            {!showSamplesPanel && hasVideo && (
             <div className="bg-black flex items-center justify-center" style={{ height: "40vh" }}>
               <div className="relative w-full h-full">
-                <video className="w-full h-full object-contain" controls controlsList="nodownload">
-                  <source src="/vids/1.mp4" type="video/mp4" />
+                <video key={currentVideoSrc} className="w-full h-full object-contain" controls controlsList="nodownload">
+                  <source src={currentVideoSrc} type="video/mp4" />
                   Your browser does not support the video tag.
                 </video>
               </div>
@@ -302,34 +356,60 @@ export default function CoursePlayerPage({ params }: { params: { lessonId: strin
               <div className="flex-1 overflow-y-auto">
                 {showSamplesPanel ? (
                   <div className="h-full">
-                    <div className="bg-gradient-to-br from-gray-50 to-gray-100">
-                      <div className="max-w-4xl mx-auto px-8 py-16">
-                        <div className="text-center mb-12">
-                          <div className="flex items-center justify-center gap-3 mb-3">
-                            <ExcelIcon className="w-10 h-10" />
-                            <h1 className="text-3xl font-bold text-gray-900">Getting started in Excel 365 Samples</h1>
-                          </div>
-                          <p className="text-base text-gray-500 font-medium">Zip File</p>
-                        </div>
-                        
-                        <div className="bg-white rounded-2xl shadow-lg border border-gray-200 p-10 mb-8">
-                          <div className="text-center mb-10">
-                            <p className="text-gray-700 leading-relaxed text-base max-w-2xl mx-auto">
-                              Download the .ZIP file and extract the sample files to follow along with the videos for this 
-                              course. Samples are available for all videos that require a sample file. File names correspond to 
-                              video titles.
-                            </p>
-                          </div>
+                    {currentLesson === "samples" ? (
+                      // Samples - with gray background
+                      <Fragment>
+                        <div className="bg-gradient-to-br from-gray-50 to-gray-100">
+                          <div className="max-w-4xl mx-auto px-8 py-16">
+                            <div className="text-center mb-12">
+                              <div className="flex items-center justify-center gap-3 mb-3">
+                                <ExcelIcon className="w-10 h-10" />
+                                <h1 className="text-3xl font-bold text-gray-900">Getting started in Excel 365 Samples</h1>
+                              </div>
+                              <p className="text-base text-gray-500 font-medium">Zip File</p>
+                            </div>
+                            
+                            <div className="bg-white rounded-2xl shadow-lg border border-gray-200 p-10 mb-8">
+                              <div className="text-center mb-10">
+                                <p className="text-gray-700 leading-relaxed text-base max-w-2xl mx-auto">
+                                  Download the .ZIP file and extract the sample files to follow along with the videos for this 
+                                  course. Samples are available for all videos that require a sample file. File names correspond to 
+                                  video titles.
+                                </p>
+                              </div>
 
-                          <div className="flex justify-center mb-6">
-                            <a href="/1zip/Getting+started+in+Excel+365_Samples.zip" download="Getting started in Excel 365 Samples.zip" className="inline-flex items-center gap-3 px-8 py-3.5 bg-[#005691] hover:bg-[#004070] text-white text-base font-semibold rounded-lg shadow-md hover:shadow-lg transition-all duration-200 transform hover:scale-105">
-                              <Download className="w-5 h-5" />
-                              Download
-                            </a>
+                              <div className="flex justify-center mb-6">
+                                <a href="/1zip/Getting+started+in+Excel+365_Samples.zip" download="Getting started in Excel 365 Samples.zip" className="inline-flex items-center gap-3 px-8 py-3.5 bg-[#005691] hover:bg-[#004070] text-white text-base font-semibold rounded-lg shadow-md hover:shadow-lg transition-all duration-200 transform hover:scale-105">
+                                  <Download className="w-5 h-5" />
+                                  Download
+                                </a>
+                              </div>
+                            </div>
                           </div>
                         </div>
-                      </div>
-                    </div>
+                      </Fragment>
+                    ) : (
+                      // Exercise - simple white background
+                      <Fragment>
+                        <div className="bg-white">
+                          <div className="max-w-4xl mx-auto px-8 py-16">
+                            <div className="text-center mb-12">
+                              <h1 className="text-3xl font-bold text-gray-900 mb-3">Exercise: Getting started in Excel 365</h1>
+                              <p className="text-base text-gray-500 font-medium">Zip File</p>
+                            </div>
+                            
+                            <div className="text-center mb-10 max-w-2xl mx-auto">
+                              <p className="text-gray-700 leading-relaxed text-base">
+                                Download the .ZIP file and extract the exercise files to practice what you've learned.
+                              </p>
+                              <p className="text-gray-600 text-sm mt-2">
+                                <a href="#" className="text-[#005691] hover:underline">Download</a>
+                              </p>
+                            </div>
+                          </div>
+                        </div>
+                      </Fragment>
+                    )}
 
                     <div className="border-b border-gray-200 bg-white">
                       <div className="flex">
@@ -507,7 +587,153 @@ export default function CoursePlayerPage({ params }: { params: { lessonId: strin
                   </div>
                 ) : (
                   <div className="p-6 min-h-[500px]">
-                    {activeTab === "overview" && (
+                    {/* Knowledge Checks and Assessments */}
+                    {(currentLesson === "knowledge-check-1" || currentLesson === "knowledge-check-2") && (
+                      <Fragment>
+                        <div className="bg-white border-b border-gray-200 py-16">
+                          <div className="max-w-4xl mx-auto px-8 text-center">
+                            <div className="inline-block px-4 py-1.5 bg-gray-100 text-gray-600 text-xs font-semibold uppercase tracking-wider rounded-full mb-4">
+                              Knowledge Check
+                            </div>
+                            <h1 className="text-3xl font-bold text-gray-900 mb-4">
+                              Review your knowledge of {currentLesson === "knowledge-check-1" 
+                                ? "Getting started in Excel 365 (2023)"
+                                : "Using tools in Excel 365 (2023)"}
+                            </h1>
+                            <p className="text-gray-600 mb-2">
+                              Let's see how much you've learned before you continue or take the course test!
+                            </p>
+                            <p className="text-gray-500 text-sm mb-8">
+                              Knowledge checks allow you to practice, and are not scored.
+                            </p>
+                            <button className="px-8 py-3 bg-white hover:bg-gray-50 border-2 border-[#005691] text-[#005691] font-semibold rounded-lg transition-colors shadow-sm">
+                              Check your learning
+                            </button>
+                          </div>
+                        </div>
+
+                        {/* Tabs for Knowledge Check */}
+                        <div className="border-b border-gray-200 bg-white">
+                          <div className="flex">
+                            {tabs.map((tab) => {
+                              const Icon = tab.icon;
+                              return (
+                                <button key={tab.id} onClick={() => setActiveTab(tab.id)} className={`flex items-center gap-2 px-6 py-3 text-sm font-medium border-b-2 transition-colors ${activeTab === tab.id ? "border-[#005691] text-[#005691]" : "border-transparent text-gray-500 hover:text-gray-700"}`}>
+                                  <Icon className="w-4 h-4" />
+                                  {tab.label}
+                                </button>
+                              );
+                            })}
+                          </div>
+                        </div>
+                      </Fragment>
+                    )}
+
+                    {/* Retake Test */}
+                    {currentLesson === "retake-test" && (
+                      <Fragment>
+                        <div className="bg-white border-b border-gray-200 py-16">
+                          <div className="max-w-4xl mx-auto px-8 text-center">
+                            <h1 className="text-3xl font-bold text-gray-900 mb-4">Great job!</h1>
+                            <p className="text-gray-600 text-base">
+                              You have passed the test and completed the course.
+                            </p>
+                          </div>
+                        </div>
+
+                        {/* Tabs for Retake Test */}
+                        <div className="border-b border-gray-200 bg-white">
+                          <div className="flex">
+                            {tabs.map((tab) => {
+                              const Icon = tab.icon;
+                              return (
+                                <button key={tab.id} onClick={() => setActiveTab(tab.id)} className={`flex items-center gap-2 px-6 py-3 text-sm font-medium border-b-2 transition-colors ${activeTab === tab.id ? "border-[#005691] text-[#005691]" : "border-transparent text-gray-500 hover:text-gray-700"}`}>
+                                  <Icon className="w-4 h-4" />
+                                  {tab.label}
+                                </button>
+                              );
+                            })}
+                          </div>
+                        </div>
+                      </Fragment>
+                    )}
+
+                    {/* Reflection */}
+                    {currentLesson === "reflection" && (
+                      <Fragment>
+                        <div className="bg-white border-b border-gray-200 py-16">
+                          <div className="max-w-4xl mx-auto px-8">
+                            <div className="text-center mb-12">
+                              <h1 className="text-2xl font-bold text-gray-900 mb-3">Reflect on what you've learned (optional)</h1>
+                              <p className="text-gray-600 text-sm mb-2">
+                                Your private reflections allow only to you and no one else. Access them later from your{" "}
+                                <a href="#" className="text-[#005691] hover:underline">Notes</a> and{" "}
+                                <a href="#" className="text-[#005691] hover:underline">Reflections</a> page.
+                              </p>
+                              <p className="text-gray-500 text-xs italic">
+                                Marking complete depends on completing and/or your reflection to be enumerable
+                              </p>
+                            </div>
+                            
+                            <div className="max-w-2xl mx-auto space-y-4 text-left mb-8">
+                              <div>
+                                <p className="text-sm font-medium text-gray-900">1. What was the most important, relevant thing you learned from taking this course?</p>
+                              </div>
+                              <div>
+                                <p className="text-sm font-medium text-gray-900">2. What are some ways you can apply what you've learned?</p>
+                              </div>
+                              <div>
+                                <p className="text-sm font-medium text-gray-900">3. What's one thing this course inspired you to do differently moving forward?</p>
+                              </div>
+                              <div>
+                                <p className="text-sm font-medium text-gray-900 mb-3">4. How does what you learned fit in with what you already know? How is it new or different?</p>
+                                
+                                <div className="space-y-3">
+                                  <textarea 
+                                    className="w-full px-4 py-3 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#005691]/20 focus:border-[#005691]/30 resize-none"
+                                    rows={3}
+                                    placeholder="Your reflections"
+                                  ></textarea>
+                                  <textarea 
+                                    className="w-full px-4 py-3 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#005691]/20 focus:border-[#005691]/30 resize-none"
+                                    rows={3}
+                                    placeholder="Add your thoughts..."
+                                  ></textarea>
+                                </div>
+                                
+                                <p className="text-xs text-gray-500 italic mt-3">
+                                  * Automate find your reflection in 4800 characters (remaining: 4,000). Use AI Assistant to compose...
+                                </p>
+                              </div>
+                            </div>
+
+                            <div className="flex justify-center">
+                              <button className="px-8 py-2.5 bg-gray-200 hover:bg-gray-300 text-gray-700 font-semibold rounded-lg transition-colors">
+                                Add reflection
+                              </button>
+                            </div>
+                          </div>
+                        </div>
+
+                        {/* Tabs for Reflection */}
+                        <div className="border-b border-gray-200 bg-white">
+                          <div className="flex">
+                            {tabs.map((tab) => {
+                              const Icon = tab.icon;
+                              return (
+                                <button key={tab.id} onClick(() => setActiveTab(tab.id)} className={`flex items-center gap-2 px-6 py-3 text-sm font-medium border-b-2 transition-colors ${activeTab === tab.id ? "border-[#005691] text-[#005691]" : "border-transparent text-gray-500 hover:text-gray-700"}`}>
+                                  <Icon className="w-4 h-4" />
+                                  {tab.label}
+                                </button>
+                              );
+                            })}
+                          </div>
+                        </div>
+                      </Fragment>
+                    )}
+
+                    {/* Regular video lessons */}
+                    {hasVideo && activeTab === "overview" && (
                       <div className="max-w-4xl space-y-6">
                         <div>
                           <p className="text-gray-700 text-sm leading-relaxed mb-4">{COURSE_DATA.description}</p>
@@ -549,7 +775,7 @@ export default function CoursePlayerPage({ params }: { params: { lessonId: strin
                       </div>
                     )}
 
-                    {activeTab === "qa" && (
+                    {hasVideo && activeTab === "qa" && (
                       <div className="max-w-4xl">
                         <h2 className="text-lg font-semibold text-gray-900 mb-4">Questions and Answers</h2>
                         <div className="bg-gray-50 border border-gray-200 rounded-lg p-8 text-center">
@@ -559,7 +785,7 @@ export default function CoursePlayerPage({ params }: { params: { lessonId: strin
                       </div>
                     )}
 
-                    {activeTab === "notes" && (
+                    {hasVideo && activeTab === "notes" && (
                       <div className="max-w-4xl">
                         <h2 className="text-lg font-semibold text-gray-900 mb-4">Notes</h2>
                         <div className="bg-gray-50 border border-gray-200 rounded-lg p-8 text-center">
@@ -569,7 +795,7 @@ export default function CoursePlayerPage({ params }: { params: { lessonId: strin
                       </div>
                     )}
 
-                    {activeTab === "transcript" && (
+                    {hasVideo && activeTab === "transcript" && (
                       <div className="max-w-4xl space-y-4">
                         <h2 className="text-lg font-semibold text-gray-900 mb-4">Transcript</h2>
                         <div className="prose prose-sm max-w-none">
