@@ -1,0 +1,800 @@
+OVERVIEW: ENTERING DATA IN EXCEL 365 (2023)
+
+Before you can begin analyzing data in Excel, you need to know how to input it into a worksheet. This course explores a variety of tools and techniques for adding and arranging data in Excel 365.
+
+In this course, you will discover how to:
+- Copy, paste, and cut items with the Office Clipboard
+- Use Paste options and Paste Special to paste values, formats, and more
+- Use AutoFill to copy data and complete a series
+- Complete a series using advanced Fill Series options
+- Use Flash Fill to fill in data following a pattern
+- Create and remove drop-down lists
+- Group multiple worksheets to edit them simultaneously
+- Import data from a text or CSV file
+- Import data from online sources
+- Import data from a picture file in Excel 365
+
+This course aligns with the objectives of Exams MO-210: Microsoft Excel (Microsoft 365 Apps) and MO-211: Microsoft Excel Expert (Microsoft 365 Apps).
+
+Duration: 42 minutes 23 seconds
+Expertise Level: Beginner
+NASBA CPE Credits: 1.5 credits
+
+USING THE CLIPBOARD TOOLS IN EXCEL 365
+
+The Clipboard in Excel is an essential tool that allows you to copy and move data efficiently within your worksheets and across different workbooks. In this video, we'll explore how to use the Clipboard tools including Cut, Copy, and Paste commands.
+
+First, let's understand what the Clipboard is. The Clipboard is a temporary storage area that holds the data you cut or copy. It allows you to transfer information from one location to another within Excel or between different applications.
+
+To copy data, select the cell or range of cells you want to copy. Then, you have several options:
+1. Go to the Home tab, then to the Clipboard section, and click on the Copy button
+2. Right-click on the selected cells and choose Copy from the context menu
+3. Use the keyboard shortcut Ctrl + C
+
+When you copy data, you'll notice a moving dotted border around the selected cells, indicating that the data is now stored in the Clipboard.
+
+To paste the copied data, select the destination cell where you want to place the data. Then you can:
+1. Go to the Home tab, then to the Clipboard section, and click on the Paste button
+2. Right-click on the destination cell and choose Paste from the context menu
+3. Use the keyboard shortcut Ctrl + V
+
+The data from the Clipboard will now appear in the selected location.
+
+Now let's learn about the Cut command. The Cut command is similar to Copy, but instead of leaving the original data in place, it removes it from the original location. To cut data:
+1. Select the cell or range of cells you want to cut
+2. Go to the Home tab, then to the Clipboard section, and click on the Cut button
+3. Or right-click and choose Cut from the context menu
+4. Or use the keyboard shortcut Ctrl + X
+
+You'll see a moving dotted border around the cut cells. When you paste the data to a new location, the original data will be removed from its initial position.
+
+Excel 365 also features a Clipboard pane that can store multiple items. To access the Clipboard pane:
+1. Go to the Home tab
+2. In the Clipboard section, click on the dialog box launcher (the small arrow in the bottom right corner)
+
+The Clipboard pane will appear on the left side of your screen. This pane can store up to 24 items, allowing you to copy multiple pieces of data and paste them as needed. Each item in the Clipboard pane shows a preview of the copied content.
+
+To paste an item from the Clipboard pane:
+1. Click on the destination cell where you want to paste the data
+2. In the Clipboard pane, click on the item you want to paste
+
+You can also paste all items at once by clicking the "Paste All" button at the top of the Clipboard pane.
+
+To clear items from the Clipboard pane, you can:
+1. Hover over an individual item and click the dropdown arrow, then select Delete
+2. Click "Clear All" at the top of the Clipboard pane to remove all items
+
+The Clipboard is a powerful tool that enhances productivity by allowing you to quickly move and duplicate data throughout your Excel workbooks.
+
+In this video, you have learned how to use the essential Clipboard tools in Excel 365, including Cut, Copy, Paste, and the Clipboard pane feature.
+
+
+APPLYING SPECIAL PASTE OPTIONS IN EXCEL 365
+
+When working with data in Excel, sometimes you need more control over what gets pasted into your cells. The Paste Special feature gives you advanced options beyond the basic paste command. In this video, we'll explore the various Paste Special options available in Excel 365.
+
+First, let's access Paste Special. After copying data using Ctrl + C or the Copy command, select the destination cell where you want to paste. Then you can access Paste Special in several ways:
+1. Go to the Home tab, click the dropdown arrow under the Paste button, and select Paste Special
+2. Right-click on the destination cell and select Paste Special from the context menu
+3. Use the keyboard shortcut Ctrl + Alt + V
+
+The Paste Special dialog box will appear, displaying various paste options. Let's explore the most commonly used options:
+
+**Paste All** - This is the default option that pastes everything: values, formulas, formats, comments, and validation.
+
+**Formulas** - Pastes only the formulas from the copied cells, without any formatting. The destination cells will show the calculated results of the formulas.
+
+**Values** - This is one of the most useful options. It pastes only the values (results) of the copied cells, not the formulas or formatting. This is perfect when you want to paste calculated results without keeping the underlying formulas.
+
+**Formats** - Pastes only the formatting from the copied cells, such as font style, colors, borders, and number formats, without changing the existing data in the destination cells.
+
+**Comments** - Pastes only the comments attached to the copied cells.
+
+**Validation** - Pastes only the data validation rules from the copied cells.
+
+Now let's look at some advanced Paste Special operations:
+
+**Transpose** - This option flips your data from rows to columns or columns to rows. For example, if you have data in a horizontal row, using Transpose will paste it as a vertical column, and vice versa.
+
+**Operation options** - In the Paste Special dialog box, you'll see operation options including:
+- None: Pastes data as-is
+- Add: Adds the copied values to the existing values in the destination cells
+- Subtract: Subtracts the copied values from the existing values
+- Multiply: Multiplies the existing values by the copied values
+- Divide: Divides the existing values by the copied values
+
+These mathematical operations are extremely useful for bulk calculations. For example, if you want to increase all prices in a column by 10%, you can copy a cell containing 1.1, select your price range, use Paste Special with the Multiply operation.
+
+**Skip Blanks** - When this option is checked, blank cells in the copied range will not overwrite existing data in the destination range. This is useful when you want to paste data but preserve existing entries where the source has blanks.
+
+**Paste Link** - This option creates a link between the source and destination cells. When you paste with this option, the destination cells will contain formulas that reference the source cells. Any changes to the source data will automatically update in the destination cells.
+
+Excel 365 also provides quick access to common Paste Special options through Paste Options buttons:
+1. After pasting data, you'll see a small Paste Options button appear near the pasted cells
+2. Click this button to see quick paste options like:
+   - Keep Source Formatting
+   - Use Destination Formatting
+   - Values Only
+   - Formulas Only
+   - And more
+
+You can also access these options by clicking the dropdown arrow under the Paste button on the Home tab, which shows live preview icons for different paste options.
+
+Paste Special is an incredibly powerful feature that gives you precise control over how data is transferred in your worksheets. Understanding these options will significantly improve your efficiency when working with Excel data.
+
+In this video, you have learned how to use Paste Special and its various options to paste values, formats, formulas, and perform mathematical operations in Excel 365.
+
+
+USING AUTOFILL IN EXCEL 365
+
+AutoFill is one of Excel's most powerful time-saving features. It allows you to quickly fill cells with data that follows a pattern, such as a series of numbers, dates, or repeated text. In this video, we'll explore how to use AutoFill to work more efficiently.
+
+The AutoFill feature uses the fill handle, which is the small square that appears at the bottom-right corner of the active cell or selected range. When you hover your mouse over the fill handle, the cursor changes to a black crosshair.
+
+Let's start with a simple example of copying data. Enter a value in a cell, for example, "Monday" in cell A1. Now, click on the cell to select it. Position your cursor over the fill handle at the bottom-right corner of the cell until you see the black crosshair. Click and drag the fill handle down or across to the cells where you want to copy the data. When you release the mouse button, Excel will copy the value to all the selected cells.
+
+Now let's explore AutoFill's ability to recognize patterns. Excel can automatically detect and continue series of numbers, dates, times, and other patterns.
+
+**Number Series**: If you enter two numbers that establish a pattern, such as 1 in A1 and 2 in A2, select both cells, then drag the fill handle down. Excel will continue the series: 3, 4, 5, and so on.
+
+**Date Series**: Enter a date in a cell, for example, 1/1/2024. Select the cell and drag the fill handle down. Excel will automatically continue the date series: 1/2/2024, 1/3/2024, and so on, incrementing by one day.
+
+**Day Names**: Enter "Monday" in a cell and drag the fill handle. Excel recognizes day names and will continue with Tuesday, Wednesday, Thursday, and so on.
+
+**Month Names**: Similarly, if you enter "January" and drag the fill handle, Excel will continue with February, March, April, etc.
+
+**Custom Lists**: Excel also recognizes custom lists like Q1, Q2, Q3, Q4 for quarters.
+
+After using AutoFill, you'll notice the AutoFill Options button appears near the filled cells. Click this button to see different fill options:
+
+- **Copy Cells**: Copies the exact content without creating a series
+- **Fill Series**: Continues the pattern or series (default for recognized patterns)
+- **Fill Formatting Only**: Copies only the formatting, not the content
+- **Fill Without Formatting**: Fills the series but doesn't copy the formatting
+- **Flash Fill**: We'll cover this in a later video
+
+You can also use AutoFill by double-clicking the fill handle. This is particularly useful when you have data in an adjacent column. For example, if you have a list of names in column A and you want to add a formula in column B that applies to all rows, enter the formula in B1, then double-click the fill handle. Excel will automatically fill the formula down to match the length of the data in column A.
+
+AutoFill also works horizontally. You can drag the fill handle to the right to fill data across columns.
+
+**Working with formulas**: When you use AutoFill with formulas, Excel automatically adjusts cell references. For example, if cell B1 contains the formula =A1*2, and you drag the fill handle down to B2, B3, and B4, Excel will adjust the formulas to =A2*2, =A3*2, and =A4*2 respectively. This is because Excel uses relative cell references by default.
+
+**Pro tip**: If you want to copy a formula without adjusting the cell references, you can use absolute references by adding dollar signs (like $A$1) before dragging the fill handle.
+
+AutoFill is an essential tool that can save you hours of manual data entry. Once you master it, you'll find countless applications in your daily Excel work.
+
+In this video, you have learned how to use AutoFill to quickly copy data and complete series in Excel 365.
+
+
+USING THE FILL SERIES COMMAND
+
+While AutoFill is great for simple patterns, the Fill Series command gives you even more control over how series are created. This feature allows you to specify the type of series, the step value, and the stop value. In this video, we'll explore the advanced Fill Series options in Excel 365.
+
+To access the Fill Series command, first enter a starting value in a cell. Then select the range where you want the series to appear, starting with the cell containing your initial value. Go to the Home tab, then to the Editing section, click on Fill, and select Series from the dropdown menu.
+
+The Series dialog box will appear with several options:
+
+**Series in**: This determines the direction of your series
+- **Rows**: Fills the series horizontally across columns
+- **Columns**: Fills the series vertically down rows
+
+**Type**: This determines what kind of series Excel creates
+- **Linear**: Creates a series by adding the step value to each subsequent cell (e.g., 2, 4, 6, 8)
+- **Growth**: Creates a series by multiplying each value by the step value (e.g., 2, 4, 8, 16)
+- **Date**: Creates a date series based on the selected unit (Day, Weekday, Month, or Year)
+- **AutoFill**: Uses Excel's automatic pattern recognition
+
+**Date unit** (only available when Type is set to Date):
+- **Day**: Increments by the specified number of days
+- **Weekday**: Increments by weekdays only, skipping weekends
+- **Month**: Increments by the specified number of months
+- **Year**: Increments by the specified number of years
+
+**Step value**: This is the increment between each value in the series. For example:
+- A step value of 1 creates: 1, 2, 3, 4...
+- A step value of 5 creates: 5, 10, 15, 20...
+- For growth series with a step value of 2: 2, 4, 8, 16...
+
+**Stop value**: This is the maximum value Excel will use to end the series. Once Excel reaches or exceeds this value, it stops filling cells.
+
+Let's look at some practical examples:
+
+**Example 1 - Linear number series**: Enter 10 in cell A1. Select the range A1:A10. Go to Home > Fill > Series. Choose Columns for direction, Linear for type, enter 5 as the step value. Click OK. Excel will create the series: 10, 15, 20, 25, 30, 35, 40, 45, 50, 55.
+
+**Example 2 - Growth series**: Enter 2 in cell A1. Select the range A1:A8. Go to Home > Fill > Series. Choose Columns, Growth for type, and enter 2 as the step value. Click OK. Excel creates: 2, 4, 8, 16, 32, 64, 128, 256.
+
+**Example 3 - Weekday series**: Enter a date like 1/1/2024 (make sure it's a weekday, say Monday). Select the range A1:A10. Go to Home > Fill > Series. Choose Columns, Date for type, and select Weekday. Set step value to 1. Click OK. Excel will fill only weekdays, automatically skipping Saturdays and Sundays.
+
+**Example 4 - Monthly series**: Enter a date in A1. Select your range. Go to Home > Fill > Series. Choose Columns, Date, and Month. Set step value to 1. Excel will increment by one month: 1/1/2024, 2/1/2024, 3/1/2024, etc.
+
+**Using Stop Value**: If you enter a stop value, Excel will only fill cells until it reaches that value, even if you've selected more cells. For example, if you select A1:A20, enter 1 as your starting value, 5 as your step value, and 50 as your stop value, Excel will only fill up to 50 and leave the remaining cells empty.
+
+The Fill Series command also offers a **Trend** checkbox option. When checked, Excel creates a linear or growth trend based on the values in the selected range. This is useful when you have multiple starting values and want Excel to calculate the best-fit trend line.
+
+The Fill Series command is perfect for situations where you need precise control over your data series. It's especially useful for financial projections, date schedules, and any scenario where simple AutoFill doesn't provide enough control.
+
+In this video, you have learned how to use the Fill Series command to create customized linear, growth, and date series with specific step and stop values.
+
+
+USING FLASH FILL IN EXCEL 365
+
+Flash Fill is one of the most impressive and intelligent features in Excel 365. It automatically detects patterns in your data and fills in values accordingly, saving you time and effort. In this video, we'll explore how to use Flash Fill to transform and manipulate your data.
+
+Flash Fill was introduced in Excel 2013 and has been continuously improved in Excel 365. Unlike AutoFill, which works with simple series, Flash Fill analyzes examples you provide and intelligently completes the rest of your data based on the patterns it recognizes.
+
+Here's how Flash Fill works:
+
+First, let's look at a simple example. Suppose you have a list of full names in column A, like "John Smith", "Jane Doe", "Robert Johnson". You want to extract just the first names into column B.
+
+In cell B1, type the first name from A1, which is "John". Press Enter and move to cell B2. Now, instead of typing the next name, go to the Home tab, then to the Editing section, and click on Fill, then select Flash Fill. Alternatively, you can use the keyboard shortcut Ctrl + E.
+
+Excel will analyze the pattern from your example and automatically fill the rest of column B with the first names extracted from column A: "Jane", "Robert", etc.
+
+Flash Fill becomes even more powerful with more complex patterns. Let's explore some common use cases:
+
+**Combining Text**: Suppose you have first names in column A and last names in column B, and you want to create full names in column C. In C1, type the full name manually, for example "John Smith". Press Enter. In C2, start typing the next full name, and after a few characters, Excel may suggest completing the rest with a preview in gray text. Press Enter to accept the suggestion, or press Ctrl + E to trigger Flash Fill.
+
+**Extracting Text**: You can extract specific parts of text. For example, if you have email addresses and want to extract just the domain names, type one or two examples manually, then use Flash Fill to complete the rest.
+
+**Formatting Text**: Flash Fill can change text formatting. If you have names in all caps like "JOHN SMITH" and you want proper case like "John Smith", provide an example and let Flash Fill do the rest.
+
+**Reformatting Dates**: If you have dates in one format like "2024-01-15" and want them as "January 15, 2024", type one or two examples in the desired format, then use Flash Fill.
+
+**Combining and Extracting Numbers**: Flash Fill works with numbers too. You can extract area codes from phone numbers, combine separate number fields, or reformat number patterns.
+
+**Adding Text**: You can add prefixes or suffixes to existing data. For example, if you have employee IDs and want to add "EMP-" before each, provide examples and use Flash Fill.
+
+Some important tips for using Flash Fill effectively:
+
+1. **Provide clear examples**: The more consistent and clear your examples, the better Flash Fill will understand the pattern. Sometimes one example is enough, but for complex patterns, provide two or three examples.
+
+2. **Data should be in adjacent columns**: Flash Fill works best when the source data is in columns next to where you want the Flash Fill results.
+
+3. **Check the results**: Always review the Flash Fill results to ensure accuracy, especially with complex patterns. Flash Fill may occasionally misinterpret patterns.
+
+4. **Edit if needed**: If Flash Fill doesn't get it quite right, you can manually correct an entry, and Flash Fill will update the pattern based on your correction.
+
+5. **Flash Fill is automatic**: By default, Excel has automatic Flash Fill enabled. As you type, Excel watches for patterns and may automatically suggest completions. You can accept these by pressing Enter or trigger Flash Fill manually with Ctrl + E.
+
+6. **Undo if needed**: If Flash Fill produces unexpected results, simply press Ctrl + Z to undo and try again with different examples.
+
+**Enabling/Disabling Automatic Flash Fill**: If you want to control Flash Fill settings, go to File > Options > Advanced. Scroll down to the Editing options section, and you'll find a checkbox for "Automatically Flash Fill". You can uncheck this if you prefer to trigger Flash Fill manually every time.
+
+Flash Fill is not formula-based, which means the results are static values, not formulas. If your source data changes, the Flash Fill results won't automatically update. You would need to run Flash Fill again.
+
+Let's look at one more advanced example: Suppose you have addresses with city, state, and ZIP code all in one cell like "Seattle, WA 98101", and you want to split them into separate columns. In the first column, type "Seattle" (the city from the first address). In the second column, type "WA" (the state). In the third column, type "98101" (the ZIP code). Now use Flash Fill (Ctrl + E) in each column, and Excel will intelligently split all the remaining addresses.
+
+Flash Fill is incredibly versatile and can save hours of manual data manipulation. It's especially useful when importing data from external sources that need reformatting or when preparing data for analysis.
+
+In this video, you have learned how to use Flash Fill to automatically fill data by recognizing patterns, extract and combine text, and reformat data in Excel 365.
+
+
+CREATING DROP-DOWN LISTS IN EXCEL 365
+
+Drop-down lists are an excellent way to ensure data consistency and make data entry faster and more accurate. They allow users to select from a predefined list of values rather than typing entries manually. In this video, we'll learn how to create, modify, and remove drop-down lists in Excel 365.
+
+Drop-down lists, also known as data validation lists, restrict what users can enter into specific cells. This helps prevent errors and maintains data integrity throughout your workbook.
+
+Let's start by creating a simple drop-down list. First, decide what values you want in your list. For example, let's create a drop-down list for department names: Sales, Marketing, IT, HR, Finance.
+
+There are two ways to provide the list of values:
+
+**Method 1 - Type the list directly**:
+1. Select the cell or range of cells where you want the drop-down list to appear, for example, cell B2.
+2. Go to the Data tab on the ribbon.
+3. In the Data Tools section, click on Data Validation.
+4. In the Data Validation dialog box, on the Settings tab, in the "Allow" dropdown, select "List".
+5. In the "Source" field, type your list values separated by commas: Sales,Marketing,IT,HR,Finance
+6. Make sure the "In-cell dropdown" checkbox is checked.
+7. Click OK.
+
+Now when you click on cell B2, you'll see a dropdown arrow appear. Click it to see your list of options and select one.
+
+**Method 2 - Reference a range**:
+This method is more flexible because you can easily update the list by changing the values in the source range.
+
+1. First, create your list of values in a separate area of your worksheet or on another sheet. For example, type your department names in cells E1:E5.
+2. Select the cell where you want the drop-down list, such as B2.
+3. Go to Data > Data Validation.
+4. Set "Allow" to "List".
+5. In the "Source" field, click the range selector button, then select the cells containing your list (E1:E5).
+6. Alternatively, you can type the range reference: =$E$1:$E$5 (using absolute references with $ signs).
+7. Click OK.
+
+The advantage of Method 2 is that if you need to add or change items in the drop-down list, you simply update the source range, and the drop-down automatically reflects those changes.
+
+**Applying drop-down lists to multiple cells**: You can apply the same drop-down list to multiple cells at once. Simply select the entire range of cells where you want the drop-down list (for example, B2:B20), then follow the same Data Validation steps. All selected cells will now have the same drop-down list.
+
+**Customizing your drop-down list**: The Data Validation dialog box offers additional customization options:
+
+On the **Input Message** tab:
+- You can create a message that appears when users select a cell with a drop-down list.
+- Check "Show input message when cell is selected".
+- Enter a title and input message, such as "Select Department" and "Choose a department from the list".
+- This message helps guide users on what to enter.
+
+On the **Error Alert** tab:
+- You can customize what happens when users try to enter data that's not in the list.
+- Check "Show error alert after invalid data is entered".
+- Choose a style: Stop (prevents invalid entries), Warning (warns but allows entry), or Information (informs but allows entry).
+- Enter a title and error message, such as "Invalid Entry" and "Please select a department from the drop-down list".
+
+**Copying drop-down lists**: If you've created a drop-down list in one cell and want to copy it to other cells:
+1. Select the cell with the drop-down list.
+2. Copy it (Ctrl + C).
+3. Select the destination cells.
+4. Paste (Ctrl + V). The drop-down list will be copied along with any other cell formatting.
+
+Alternatively, you can use the Format Painter:
+1. Select the cell with the drop-down list.
+2. Click Format Painter in the Home tab (Clipboard section).
+3. Click and drag over the cells where you want to apply the drop-down list.
+
+**Creating dependent drop-down lists**: You can create drop-down lists that change based on another cell's value. For example, a list of cities that changes based on the selected state. This requires using named ranges and the INDIRECT function, which is a more advanced technique.
+
+**Removing a drop-down list**: To remove a drop-down list from cells:
+1. Select the cells containing the drop-down list.
+2. Go to Data > Data Validation.
+3. In the Data Validation dialog box, click "Clear All".
+4. Click OK.
+
+The drop-down list will be removed, but any data that was previously selected will remain in the cells.
+
+**Allowing free-form text**: By default, if you set the Error Alert style to "Stop", users cannot enter anything except values from the list. If you want users to be able to choose from the list OR enter their own values:
+1. In the Data Validation dialog box, go to the Error Alert tab.
+2. Uncheck "Show error alert after invalid data is entered".
+3. Or change the Style to "Warning" or "Information".
+
+Drop-down lists are invaluable for forms, surveys, databases, and any situation where you need controlled, consistent data entry. They improve data quality and user experience significantly.
+
+In this video, you have learned how to create, customize, and remove drop-down lists using Data Validation in Excel 365.
+
+
+EDITING MULTIPLE WORKSHEETS AT ONCE IN EXCEL 365
+
+When you need to make the same changes to multiple worksheets, editing them one at a time can be tedious and time-consuming. Excel 365 provides a powerful feature called worksheet grouping that allows you to edit multiple worksheets simultaneously. In this video, we'll explore how to group, edit, and ungroup worksheets.
+
+Worksheet grouping is particularly useful when you have similar worksheets that need the same structure, formatting, or data. For example, if you have monthly sales sheets for each month of the year and want to add the same header or formula to all of them, grouping makes this task much easier.
+
+**Grouping worksheets**: There are several ways to group worksheets in Excel:
+
+**Method 1 - Selecting adjacent worksheets**:
+1. Click on the first worksheet tab you want to include in the group.
+2. Hold down the Shift key.
+3. Click on the last worksheet tab you want to include.
+4. All worksheets between the first and last will be selected and grouped.
+
+**Method 2 - Selecting non-adjacent worksheets**:
+1. Click on the first worksheet tab you want to include.
+2. Hold down the Ctrl key.
+3. Click on each additional worksheet tab you want to include in the group.
+4. Only the sheets you specifically clicked will be grouped.
+
+**Method 3 - Selecting all worksheets**:
+1. Right-click on any worksheet tab.
+2. Select "Select All Sheets" from the context menu.
+3. All worksheets in the workbook will be grouped.
+
+When worksheets are grouped, you'll notice that the worksheet tabs appear highlighted or with a white background, and the title bar at the top of the Excel window will display "[Group]" next to the filename. This indicates that you're in group mode.
+
+**What you can do with grouped worksheets**: When worksheets are grouped, any action you perform on the active sheet will be applied to all sheets in the group. This includes:
+
+- **Entering data**: Type a value in a cell, and it will appear in the same cell on all grouped sheets.
+- **Entering formulas**: Create a formula, and it will be copied to all grouped sheets.
+- **Formatting**: Apply font formatting, cell colors, borders, number formats, etc., and they will apply to all grouped sheets.
+- **Inserting or deleting rows and columns**: Add or remove rows and columns, and the change will affect all grouped sheets.
+- **Adjusting column widths and row heights**: Resize columns or rows, and the dimensions will match across all grouped sheets.
+- **Adding headers and footers**: Create page setup elements that will appear on all sheets.
+- **Copying and pasting**: Copy data or formatting to a location, and it will paste to the same location on all grouped sheets.
+
+Let's look at a practical example:
+
+Suppose you have four worksheets named Q1, Q2, Q3, and Q4, representing quarterly sales data. You want to add the same header row with column titles: Date, Product, Quantity, Price, Total.
+
+1. First, select all four worksheets by clicking on Q1, holding Shift, and clicking on Q4.
+2. Verify that [Group] appears in the title bar.
+3. Click on cell A1 in the active sheet.
+4. Type "Date" and press Tab.
+5. Type "Product" and press Tab.
+6. Continue entering "Quantity", "Price", and "Total".
+7. Apply bold formatting to the header row by selecting A1:E1 and clicking the Bold button.
+8. Change the fill color to a light blue.
+
+Now, ungroup the sheets (we'll explain how in a moment) and check each worksheet. You'll see that all four worksheets now have the same formatted header row.
+
+**Important warnings about grouped worksheets**:
+
+⚠️ **Be careful**: Any changes you make will affect ALL grouped worksheets. This includes deleting data, clearing cells, or making structural changes. Always double-check that you want the changes applied to all sheets before proceeding.
+
+⚠️ **Data loss risk**: If you delete content or clear cells while sheets are grouped, that content will be deleted from all grouped sheets. This can result in significant data loss if done accidentally.
+
+⚠️ **Visual indicator**: Always check for the [Group] indicator in the title bar before making major changes. It's easy to forget that sheets are grouped.
+
+**What you CANNOT do with grouped worksheets**: Some operations don't work or behave differently when sheets are grouped:
+- You cannot insert charts or PivotTables to grouped sheets.
+- You cannot apply conditional formatting to grouped sheets (though manually applied formatting works).
+- Some advanced features may require ungrouping first.
+
+**Ungrouping worksheets**: It's important to know how to ungroup worksheets when you're done editing. There are several ways:
+
+**Method 1 - Click on any ungrouped sheet**:
+If you have sheets that aren't part of the group, simply click on any ungrouped sheet tab. This will ungroup the sheets and switch to the sheet you clicked.
+
+**Method 2 - Right-click and ungroup**:
+1. Right-click on any grouped worksheet tab.
+2. Select "Ungroup Sheets" from the context menu.
+
+**Method 3 - Click a grouped sheet with Shift or Ctrl**:
+1. Hold down Shift or Ctrl.
+2. Click on any grouped worksheet tab.
+3. This will ungroup all sheets.
+
+After ungrouping, the [Group] indicator will disappear from the title bar, and the worksheet tabs will return to their normal appearance.
+
+**Best practices for working with grouped worksheets**:
+
+1. **Group intentionally**: Only group sheets when you specifically need to make identical changes to multiple sheets.
+
+2. **Verify before editing**: Before making changes, verify which sheets are grouped and that the [Group] indicator is visible.
+
+3. **Ungroup immediately after**: As soon as you've finished making your grouped changes, ungroup the sheets to prevent accidental modifications.
+
+4. **Use consistent structure**: Worksheet grouping works best when the worksheets have similar or identical structures. If sheets have different layouts, grouping may produce unexpected results.
+
+5. **Test with a copy**: If you're unsure about how a change will affect grouped sheets, create a backup copy of your workbook first or test with dummy data.
+
+6. **Document your work**: If you're creating a template or workbook that others will use, document any grouped operations in instructions or comments.
+
+**Practical use cases**: Worksheet grouping is particularly useful for:
+- Creating monthly or quarterly reports with consistent formatting
+- Setting up budget worksheets for different departments
+- Applying the same formulas across multiple data sheets
+- Creating consistent page layouts for printing
+- Setting up worksheets for different regions or products with the same structure
+
+Grouping worksheets is a powerful productivity tool when used correctly. It can save significant time when you need to apply the same changes to multiple sheets, but always remember to ungroup when you're done to avoid unintended modifications.
+
+In this video, you have learned how to group multiple worksheets, edit them simultaneously, and ungroup them safely in Excel 365.
+
+
+IMPORTING DATA FROM A TEXT OR CSV FILE IN EXCEL 365
+
+Excel is not just for entering data manually – it's also excellent at importing data from external sources. One of the most common import formats is text files, including CSV (Comma-Separated Values) files. In this video, we'll learn how to import data from text and CSV files into Excel 365.
+
+Text and CSV files are plain text files that store data in a structured format. CSV files use commas (or other delimiters) to separate values, making them easy to import into spreadsheet applications. They're commonly used for data exports from databases, websites, and other applications.
+
+**Opening a CSV file directly**: The simplest way to work with a CSV file is to open it directly:
+
+1. Go to File > Open, or press Ctrl + O.
+2. Navigate to the location of your CSV file.
+3. In the file type dropdown, select "All Files" or "Text Files" if CSV files aren't showing.
+4. Select your CSV file and click Open.
+
+Excel will automatically open the CSV file and attempt to parse the data into columns. For many well-formatted CSV files, this works perfectly, and the data will be properly separated into columns.
+
+However, for more control over how the data is imported, especially with complex files, you should use the Get Data feature.
+
+**Using Get Data (Power Query)**: This method gives you more control over the import process:
+
+1. Go to the Data tab on the ribbon.
+2. In the Get & Transform Data section, click on "Get Data".
+3. Select "From File", then choose "From Text/CSV".
+4. Navigate to your file and select it, then click "Import".
+
+A preview window will appear showing how Excel interprets your data. This is the Power Query Editor preview. Here you can see:
+
+- **File Origin**: The character encoding of the file (usually UTF-8 or Windows-1252).
+- **Delimiter**: Excel attempts to detect the delimiter automatically. Common delimiters include:
+  - Comma (,) for CSV files
+  - Tab for TSV (Tab-Separated Values) files
+  - Semicolon (;) used in some European regions
+  - Pipe (|) or other custom delimiters
+  
+If the automatic detection is incorrect, you can click the dropdown to select the correct delimiter.
+
+- **Data Type Detection**: Excel attempts to identify whether columns contain text, numbers, dates, etc.
+
+At the bottom of the preview window, you have two options:
+
+**Load**: This will import the data directly into a new worksheet in your workbook.
+
+**Transform Data**: This opens the Power Query Editor, where you can clean, transform, and shape your data before loading it into Excel. This is useful for:
+- Removing unwanted columns
+- Filtering rows
+- Changing data types
+- Splitting columns
+- Removing duplicates
+- And much more
+
+Let's explore the Transform Data option:
+
+When you click "Transform Data", the Power Query Editor opens. This powerful tool allows you to manipulate your data with point-and-click operations. Here are some common transformations:
+
+**Removing columns**: Right-click on a column header and select "Remove" to delete columns you don't need.
+
+**Changing data types**: Click on the data type icon (ABC, 123, or calendar icon) in the column header to change how Excel interprets the data.
+
+**Filtering data**: Click the dropdown arrow in any column header to filter or sort data.
+
+**Splitting columns**: If a column contains multiple pieces of information (like a full name with first and last name), you can split it. Select the column, go to the Transform tab, and click "Split Column" with options like "By Delimiter" or "By Position".
+
+**Replacing values**: Right-click on a value and select "Replace Values" to find and replace text throughout the column.
+
+After you've made all your transformations, click "Close & Load" in the Home tab of the Power Query Editor. Your data will be loaded into a new worksheet, and a query will be created in the Queries & Connections pane.
+
+**Working with fixed-width text files**: Some text files don't use delimiters but instead use fixed column widths. For these files:
+
+1. Use Get Data > From Text/CSV to open the file.
+2. In the preview window, change the delimiter to "Fixed Width".
+3. Excel will attempt to detect column boundaries, showing vertical lines in the preview.
+4. You can adjust these boundaries by clicking and dragging the lines, or add new boundaries by clicking in the ruler area.
+5. Once the columns are correctly defined, click Load or Transform Data.
+
+**Benefits of using Power Query**: One major advantage of importing data through Power Query (Get Data) rather than simply opening the file is that Excel maintains a connection to the source file. This means:
+
+- If the source file is updated, you can refresh your Excel data by right-clicking the query in the Queries & Connections pane and selecting "Refresh", or by clicking "Refresh All" in the Data tab.
+- All your transformations are saved as steps, so refreshing will automatically reapply them to the new data.
+- This is perfect for regularly updated data sources, like daily sales reports or monthly exports.
+
+**Handling common import issues**:
+
+**Problem: Data appears in a single column**
+- Solution: The delimiter is incorrect. Try changing it in the import preview or check the actual file to see what delimiter is used.
+
+**Problem: Special characters appear garbled**
+- Solution: The file encoding is incorrect. Try changing the File Origin setting to UTF-8 or a different encoding.
+
+**Problem: Numbers are imported as text**
+- Solution: Change the data type in Power Query Editor by clicking the column header icon and selecting the appropriate type (Whole Number, Decimal Number, etc.).
+
+**Problem: Dates are not recognized correctly**
+- Solution: Change the data type to Date in Power Query, or use the Transform tab to parse dates with a specific format.
+
+**Problem: Leading zeros are removed from numbers** (like ZIP codes: 00501 becomes 501)
+- Solution: Change the data type to Text before loading the data, which preserves leading zeros.
+
+**Tips for successful imports**:
+
+1. **Preview your data**: Always preview the import before loading to ensure it's formatted correctly.
+
+2. **Choose the right delimiter**: Make sure the delimiter matches what's actually in the file.
+
+3. **Check data types**: Verify that numbers are numbers, dates are dates, and text is text.
+
+4. **Use Power Query for repeated imports**: If you'll be importing updated versions of the same file, use Get Data instead of directly opening the file.
+
+5. **Clean data in Power Query**: It's better to clean and transform data in Power Query than to do it manually in Excel after import, especially for recurring imports.
+
+6. **Document your steps**: Power Query saves all transformation steps, which serves as documentation of what you've done to the data.
+
+Importing data from text and CSV files is a fundamental skill for working with external data in Excel. Power Query makes this process powerful and repeatable, saving you time and reducing errors.
+
+In this video, you have learned how to import data from text and CSV files using both direct opening and the Power Query Get Data feature in Excel 365.
+
+
+IMPORTING DATA FROM ONLINE SOURCES IN EXCEL 365
+
+Excel 365 isn't limited to working with data stored on your computer. You can import data directly from online sources including web pages, SharePoint sites, and online services. In this video, we'll explore how to import data from the web and other online sources.
+
+**Importing data from a web page**: Many websites display data in tables that you can import into Excel. This is useful for getting stock prices, sports statistics, weather data, and more.
+
+To import data from a web page:
+
+1. Go to the Data tab on the ribbon.
+2. In the Get & Transform Data section, click on "Get Data".
+3. Select "From Other Sources", then choose "From Web".
+4. The "From Web" dialog box will appear with two tabs: Basic and Advanced.
+
+For most situations, you'll use the **Basic** tab:
+1. Enter the URL of the web page containing the data you want to import.
+2. Click OK.
+
+Excel will connect to the website and analyze it for tables and data. The Navigator window will appear, showing all the tables that Excel found on that web page. The Navigator typically shows:
+- A list of tables on the left side, often labeled as Table 0, Table 1, Table 2, etc.
+- A preview of the selected table on the right side
+
+You can click through each table to preview its contents and find the one you want. Once you've found the right table:
+- Click "Load" to import it directly into a new worksheet, or
+- Click "Transform Data" to open Power Query Editor for cleaning and transforming the data first
+
+**Using the Advanced tab**: The Advanced tab offers more options:
+- **URL parts**: You can construct a URL from multiple parts, useful for dynamic URLs.
+- **HTTP request headers**: You can add custom headers if the website requires authentication or specific parameters.
+
+**Web authentication**: Some websites require authentication to access data. If prompted:
+1. Choose the authentication method (Anonymous, Windows, Basic, Web API, or Organizational account).
+2. For anonymous public websites, select "Anonymous".
+3. For sites requiring login credentials, select the appropriate method and enter your credentials.
+4. Click Connect.
+
+**Refreshing web data**: One of the powerful features of web imports is that you can refresh the data to get updates from the website:
+
+1. Click anywhere in the imported data table.
+2. Go to the Data tab or the Query tab.
+3. Click "Refresh" or "Refresh All".
+
+Excel will reconnect to the website and update your data with the latest information. This is perfect for data that changes regularly, like stock prices or sports scores.
+
+You can also set up automatic refresh:
+1. Right-click on the query in the Queries & Connections pane.
+2. Select "Properties".
+3. In the Query Properties dialog, check "Refresh every" and set the interval (e.g., 60 minutes).
+4. You can also check "Refresh data when opening the file".
+
+**Importing from SharePoint**: If your organization uses SharePoint, you can import data from SharePoint lists:
+
+1. Go to Data > Get Data > From Online Services > From SharePoint Online List.
+2. Enter the SharePoint site URL (not the specific list URL, just the main site URL).
+3. Click OK.
+4. If prompted, sign in with your Microsoft 365 credentials.
+5. The Navigator will show all lists available on that SharePoint site.
+6. Select the list you want to import and click Load or Transform Data.
+
+**Importing from other online services**: Excel 365 supports many other online data sources through the Get Data menu:
+
+- **From Online Services** includes options like:
+  - SharePoint Online List
+  - Microsoft Exchange
+  - Dynamics 365
+  - Salesforce
+  - And many other business applications
+
+The process is similar for most of these:
+1. Select the appropriate source from Get Data > From Online Services.
+2. Provide authentication credentials if required.
+3. Navigate through the available data sources.
+4. Select what you want to import.
+5. Load or transform the data.
+
+**Best practices for importing online data**:
+
+1. **Check website terms of service**: Before scraping data from a website, make sure it's allowed. Some websites prohibit automated data extraction.
+
+2. **Be mindful of refresh frequency**: Don't set automatic refresh intervals that are too short, as this can overload the website's servers or trigger rate limits.
+
+3. **Test with small datasets first**: When importing from a new source, test with a small sample before importing large amounts of data.
+
+4. **Use authentication carefully**: Never share authentication credentials. If multiple people need access to the data, consider creating a shared file with refreshable queries rather than sharing credentials.
+
+5. **Monitor for changes**: Websites can change their structure, which may break your import. Test your connections periodically.
+
+6. **Consider data privacy**: Be aware of any sensitive or confidential data you're importing and handle it appropriately.
+
+**Troubleshooting common issues**:
+
+**Problem: Excel cannot find any tables on the web page**
+- Solution: The data may not be in a proper HTML table format. Some websites use dynamic content that Excel can't detect. You might need to try a different approach or manually copy the data.
+
+**Problem: Connection times out**
+- Solution: The website may be slow or temporarily unavailable. Try again later or check your internet connection.
+
+**Problem: Data loads incorrectly or is garbled**
+- Solution: Use Transform Data to open Power Query Editor and manually adjust data types, remove unwanted columns, or clean the data.
+
+**Problem: Refresh fails after initial import**
+- Solution: The website structure may have changed, or you may have lost access. Check the website manually and verify your authentication if required.
+
+**Advantages of online data import**:
+
+1. **Real-time or near-real-time data**: Get the most current data directly from the source.
+
+2. **Automatic updates**: Set up refresh schedules to keep your data current without manual intervention.
+
+3. **Single source of truth**: Instead of manually downloading and importing files, connect directly to the source.
+
+4. **Reduced errors**: Eliminates manual copy-paste errors and ensures data consistency.
+
+5. **Time savings**: Automates data collection that would otherwise require manual effort.
+
+Importing data from online sources expands Excel's capabilities far beyond a simple spreadsheet application, turning it into a powerful data integration and analysis tool that can connect to virtually any online data source.
+
+In this video, you have learned how to import data from web pages, SharePoint sites, and other online sources, as well as how to refresh that data to keep it current in Excel 365.
+
+
+IMPORTING DATA FROM A PICTURE IN EXCEL 365
+
+One of the most innovative features in Excel 365 is the ability to import data directly from pictures. This uses AI and optical character recognition (OCR) to convert images of data tables into editable Excel data. In this video, we'll explore how to use this powerful feature.
+
+The Data from Picture feature is incredibly useful when you have data in a format that's difficult to type manually, such as:
+- Printed tables or reports that you've photographed
+- Data in PDF files or documents
+- Screenshots of tables from other applications
+- Data displayed on presentations or boards
+
+To use this feature, you need data that's clearly visible and structured in rows and columns, similar to a table format.
+
+**Importing data from a picture file**:
+
+1. Go to the Data tab on the ribbon.
+2. In the Get & Transform Data section, click on "Get Data".
+3. Select "From Picture", then choose "Picture From File".
+4. Navigate to the location of your image file (supported formats include JPG, PNG, BMP, and others).
+5. Select the image and click Open.
+
+Excel will upload the image to Microsoft's cloud service where AI and OCR technology analyze it. After a few moments, a preview window will appear showing:
+- The original image on the left or top
+- The extracted data in a table format on the right or bottom
+
+The preview shows Excel's interpretation of the data. You'll notice that Excel has attempted to:
+- Identify rows and columns
+- Recognize text and numbers
+- Organize the data into a structured table
+
+**Reviewing and correcting the data**: Before importing, you should review the extracted data for accuracy. The preview window allows you to:
+
+1. **Check for errors**: OCR isn't perfect. Look for misread characters, especially:
+   - Numbers that may be confused (0 vs O, 1 vs l, 5 vs S)
+   - Similar-looking letters
+   - Special characters
+
+2. **Review ignored data**: If Excel couldn't confidently read some data, it will show items marked with a red icon indicating issues. You can click on these to see what Excel ignored and manually correct them.
+
+3. **Fix detected issues**: Click on any cell that has an issue, and you can:
+   - Accept Excel's suggestion
+   - Edit the value manually
+   - Provide the correct data
+
+Once you're satisfied with the data:
+- Click "Insert Data" to insert the table into your current worksheet, or
+- Click "Open in Power Query" (if available) to further transform the data before importing
+
+**Importing data from a picture using your camera or clipboard**:
+
+Excel also allows you to capture data directly using your camera or from your clipboard:
+
+**From Camera** (mainly on mobile devices):
+1. Go to Data > Get Data > From Picture > Picture From Camera (or use the Excel mobile app).
+2. Take a photo of the printed data table.
+3. Excel will process the image and extract the data.
+
+**From Clipboard**:
+1. Take a screenshot of a table or copy an image containing data to your clipboard (Ctrl + C or use the Snipping Tool).
+2. Go to Data > Get Data > From Picture > Picture From Clipboard.
+3. Excel will process the image currently in your clipboard.
+
+**Tips for best results**:
+
+1. **Good image quality**: Use clear, high-resolution images. Blurry or low-quality images will produce poor results.
+
+2. **Good lighting**: For photographed documents, ensure good, even lighting without glare or shadows.
+
+3. **Straight alignment**: Keep the camera or scanner aligned straight with the document. Skewed or angled images are harder to process accurately.
+
+4. **Clear table structure**: The data should be clearly organized in rows and columns with visible boundaries.
+
+5. **Standard fonts**: Printed text in standard, clear fonts works best. Handwriting or decorative fonts may not be recognized accurately.
+
+6. **High contrast**: Dark text on a light background (or vice versa) produces better results than low-contrast images.
+
+7. **Minimal background**: Frame your photo to include just the data table, minimizing extraneous background elements.
+
+8. **Review before inserting**: Always carefully review the extracted data before inserting it into your worksheet. Correct any OCR errors.
+
+**Limitations**:
+
+- **Internet connection required**: This feature requires an internet connection as the image processing happens in Microsoft's cloud.
+
+- **Accuracy varies**: OCR accuracy depends on image quality, font clarity, and data complexity. Always review results.
+
+- **Table format required**: The feature works best with data clearly organized in table format. Free-form text or complex layouts may not import well.
+
+- **Language support**: The feature primarily works with Latin-based alphabets. Support for other character sets may be limited.
+
+**Practical use cases**:
+
+1. **Converting printed reports**: Quickly digitize printed financial reports, sales data, or inventory lists.
+
+2. **Extracting data from PDFs**: When you can't copy data from a PDF, take a screenshot and use Data from Picture.
+
+3. **Capturing whiteboard data**: After a meeting where data was written on a whiteboard, photograph it and import it into Excel.
+
+4. **Digitizing old records**: Convert legacy printed records into digital format for analysis.
+
+5. **Working with data from other applications**: Capture data from applications that don't allow easy export.
+
+The Data from Picture feature represents a significant leap forward in making data entry easier and faster. While it's not 100% accurate and requires review, it can save enormous amounts of time compared to manually typing data from printed sources.
+
+In this video, you have learned how to import data from pictures using Excel 365's AI-powered OCR technology, including how to review and correct the extracted data for accuracy.
+
+
+This completes the Entering Data in Excel 365 course. You've learned essential techniques for efficiently inputting and organizing data, from basic clipboard operations to advanced features like Flash Fill and importing from various sources. These skills form the foundation for effective data analysis in Excel 365.

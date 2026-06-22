@@ -67,15 +67,15 @@ export default function Course2PlayerPage({ params }: { params: { lessonId: stri
   const lessonVideoMap: { [key: string]: string } = {
     "overview-2": "/vids/entering data/e1.mp4",
     "clipboard": "/vids/entering data/e2.mp4",
-    "paste-options": "/vids/c2-3.mp4",
-    "autofill": "/vids/c2-4.mp4",
-    "fill-series": "/vids/c2-5.mp4",
-    "flash-fill": "/vids/c2-6.mp4",
-    "dropdown-lists": "/vids/c2-7.mp4",
-    "edit-multiple": "/vids/c2-8.mp4",
-    "import-text": "/vids/c2-9.mp4",
-    "import-online": "/vids/c2-10.mp4",
-    "import-picture": "/vids/c2-11.mp4"
+    "paste-options": "/vids/entering data/e3.mp4",
+    "autofill": "/vids/entering data/e4.mp4",
+    "fill-series": "/vids/entering data/e5.mp4",
+    "flash-fill": "/vids/entering data/e6.mp4",
+    "dropdown-lists": "/vids/entering data/e7.mp4",
+    "edit-multiple": "/vids/entering data/e8.mp4",
+    "import-text": "/vids/entering data/e9.mp4",
+    "import-online": "/vids/entering data/e10.mp4",
+    "import-picture": "/vids/entering data/e11.mp4"
   };
 
   const hasVideo = lessonVideoMap[currentLesson] !== undefined;
