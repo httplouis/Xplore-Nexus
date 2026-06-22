@@ -7,7 +7,7 @@ import Image from "next/image";
 import {
   ArrowLeft, Play, CheckCircle2, BookOpen,
   FileText, MessageSquare, List, Download, Calendar,
-  Users, BarChart3, GraduationCap, Settings, ChevronLeft, ChevronRight, FileQuestion,
+  Users, BarChart3, GraduationCap, Settings, ChevronLeft, ChevronRight,
   LayoutDashboard, Video, Radio, Bell, SkipForward
 } from "lucide-react";
 import { MicrosoftIcon, ExcelIcon } from "@/components/icons/MicrosoftIcon";
@@ -26,34 +26,35 @@ interface CourseData {
 }
 
 const COURSE_DATA: CourseData = {
-  id: "l1-1",
-  title: "Getting started in Excel 365 (2023)",
-  duration: "43m 30s",
-  description: `Microsoft Excel 365 is a powerful spreadsheet application that can help you organize, analyze, and present data. This course introduces you to the fundamental skills you need to start using the app. First, you will see how to open Excel and navigate its interface. You will also learn how to input and edit worksheet data, as well as insert and remove worksheets, columns, rows, and cells. Next, the course teaches you how to save your work and open saved spreadsheets. In addition, you will learn how to remove data from a worksheet, as well as how to undo and redo actions as you edit. Finally, discover how to find and use basic functions to manipulate spreadsheet data. See also how to create a worksheet from a template, customize the application interface, and share your worksheets with other users.
+  id: "course-1-2",
+  title: "Entering data in Excel 365 (2023)",
+  duration: "38m 45s",
+  description: `Before you can begin analyzing data in Excel, you need to know how to input it into a worksheet. This course explores a variety of tools and techniques for adding and arranging data in Excel 365. The first part of this course introduces you to working with the Clipboard, which you can use to copy and paste data and take advantage of special paste options. Next, discover how to use the AutoFill and Flash Fill features to save time when copying repeated values or patterns. Learn how to create drop-down lists and edit multiple worksheets at once. Finally, learn how to import data from a variety of external sources, including text and CSV files, online sources, and even pictures.
 
 This course aligns with the objectives of Exam MO-210: Microsoft Excel (Microsoft 365 Apps).
 
 In order to practice what you have learned, you will find practice exercises and samples in the Course Contents pane.`,
   objectives: [
-    "discover the key concepts covered in the Getting started in Excel 365 course",
-    "open Excel in a new workbook and navigate the interface",
-    "enter, edit, and remove spreadsheet data",
-    "save and open workbooks",
-    "insert and delete worksheets, columns, rows, and cells",
-    "undo, redo, and repeat actions while editing a spreadsheet",
-    "insert functions using the Function Library and Insert Function tool",
-    "find, open, and use Office online templates",
-    "configure user interface tools and customize the Status Bar",
-    "share workbooks via OneDrive and send a copy by email"
+    "discover the key concepts covered in the Entering data in Excel 365 course",
+    "copy and paste data using the Clipboard",
+    "use special paste options to paste values, formatting, and formulas",
+    "use AutoFill to copy data and create series",
+    "use the Fill Series command to create custom series",
+    "use Flash Fill to extract and combine data automatically",
+    "create drop-down lists for data entry",
+    "edit multiple worksheets simultaneously",
+    "import data from text and CSV files",
+    "import data from online sources",
+    "import data from pictures using OCR"
   ],
-  transcript: `Excel is a useful tool that will save your time and effort. This video outlines the fundamentals covered in the Getting Started in Excel 365 course to help you navigate and explore the user-friendly interface in Excel.`,
-  prerequisites: "None",
+  transcript: `This video covers the essential techniques for entering and managing data in Excel 365, including clipboard operations, AutoFill, Flash Fill, and data import options.`,
+  prerequisites: "Basic familiarity with Excel interface",
   level: "Beginner",
-  code: "ds_m365ex_01_enus",
+  code: "ds_m365ex_02_enus",
   lastUpdated: "March 11, 2026"
 };
 
-export default function CoursePlayerPage({ params }: { params: { lessonId: string } }) {
+export default function Course2PlayerPage({ params }: { params: { lessonId: string } }) {
   const router = useRouter();
   const [activeTab, setActiveTab] = useState("overview");
   const [showSidebar, setShowSidebar] = useState(true);
@@ -61,30 +62,32 @@ export default function CoursePlayerPage({ params }: { params: { lessonId: strin
   const [fullTranscript, setFullTranscript] = useState("");
   const [showSamplesPanel, setShowSamplesPanel] = useState(false);
   const [currentLesson, setCurrentLesson] = useState("overview");
-  // Video mapping for lessons 1-10
+  
+  // Video mapping for course 2 lessons
   const lessonVideoMap: { [key: string]: string } = {
-    "overview": "/vids/1.mp4",
-    "exploring": "/vids/2.mp4",
-    "editing": "/vids/3.mp4",
-    "saving": "/vids/4.mp4",
-    "adding": "/vids/5.mp4",
-    "undoing": "/vids/6.mp4",
-    "finding": "/vids/7.mp4",
-    "templates": "/vids/8.mp4",
-    "customizing": "/vids/9.mp4",
-    "sharing": "/vids/10.mp4"
+    "overview-2": "/vids/entering data/e1.mp4",
+    "clipboard": "/vids/entering data/e2.mp4",
+    "paste-options": "/vids/c2-3.mp4",
+    "autofill": "/vids/c2-4.mp4",
+    "fill-series": "/vids/c2-5.mp4",
+    "flash-fill": "/vids/c2-6.mp4",
+    "dropdown-lists": "/vids/c2-7.mp4",
+    "edit-multiple": "/vids/c2-8.mp4",
+    "import-text": "/vids/c2-9.mp4",
+    "import-online": "/vids/c2-10.mp4",
+    "import-picture": "/vids/c2-11.mp4"
   };
 
   const hasVideo = lessonVideoMap[currentLesson] !== undefined;
-  const videoSource = lessonVideoMap[currentLesson] || "/vids/1.mp4";
-
+  const videoSource = lessonVideoMap[currentLesson] || "/vids/c2-1.mp4";
 
   useEffect(() => {
     if (params.lessonId) {
       setCurrentLesson(params.lessonId);
-      if (params.lessonId === "samples" || params.lessonId === "exercise" || 
-          params.lessonId === "knowledge-check-1" || params.lessonId === "knowledge-check-2" ||
-          params.lessonId === "retake-test" || params.lessonId === "reflection") {
+      if (params.lessonId === "samples-2" || params.lessonId === "exercise-2" || 
+          params.lessonId === "knowledge-check-2-1" || params.lessonId === "knowledge-check-2-2" ||
+          params.lessonId === "knowledge-check-2-3" || params.lessonId === "take-test-2" || 
+          params.lessonId === "reflection-2") {
         setShowSamplesPanel(true);
       } else {
         setShowSamplesPanel(false);
@@ -94,14 +97,14 @@ export default function CoursePlayerPage({ params }: { params: { lessonId: strin
 
   const handleLessonChange = (lessonId: string, isSamples: boolean = false) => {
     setCurrentLesson(lessonId);
-    const specialPanelLessons = ["samples", "exercise", "knowledge-check-1", "knowledge-check-2", "retake-test", "reflection"];
+    const specialPanelLessons = ["samples-2", "exercise-2", "knowledge-check-2-1", "knowledge-check-2-2", "knowledge-check-2-3", "take-test-2", "reflection-2"];
     setShowSamplesPanel(isSamples || specialPanelLessons.includes(lessonId));
     setActiveTab("overview");
-    router.push(`/course/${lessonId}`);
+    router.push(`/course2/${lessonId}`);
   };
 
   useEffect(() => {
-    fetch('/transcript/1.txt')
+    fetch('/transcript/2.txt')
       .then(response => response.text())
       .then(data => setFullTranscript(data))
       .catch(error => console.error('Error loading transcript:', error));
@@ -174,10 +177,10 @@ export default function CoursePlayerPage({ params }: { params: { lessonId: strin
               Microsoft Excel 365
             </Link>
             <ChevronRight className="w-3.5 h-3.5 text-gray-600" />
-            <span className="text-gray-300">Getting started in Excel 365</span>
+            <span className="text-gray-300">Entering data in Excel 365</span>
           </div>
           <div className="flex items-center gap-3">
-            <span className="text-xs text-gray-400">8/15</span>
+            <span className="text-xs text-gray-400">0/17</span>
             <button className="flex items-center gap-2 bg-[#005691] hover:bg-[#004070] text-white text-xs font-semibold px-4 py-2 rounded transition-colors">
               Next Item
               <SkipForward className="w-3.5 h-3.5" />
@@ -193,129 +196,178 @@ export default function CoursePlayerPage({ params }: { params: { lessonId: strin
             </div>
             
             <div className="p-3 space-y-1">
-              <button onClick={() => handleLessonChange("overview", false)} className={`w-full text-left px-3 py-2 rounded text-sm transition-colors ${currentLesson === "overview" ? "bg-[#005691] text-white" : "hover:bg-gray-800 text-gray-300"}`}>
-                <div className="flex items-center gap-2 mb-1">
-                  <CheckCircle2 className="w-3 h-3 text-green-400" />
-                  <span className="font-medium">Overview: Getting started in Excel 365 (2023)</span>
-                </div>
-                <span className={`text-xs ${currentLesson === "overview" ? "text-blue-200" : "text-gray-500"}`}>55s</span>
-              </button>
-
-              <button onClick={() => handleLessonChange("samples", true)} className={`w-full text-left px-3 py-2 rounded text-sm transition-colors ${currentLesson === "samples" ? "bg-[#005691] text-white" : "hover:bg-gray-800 text-gray-300"}`}>
-                <div className="flex items-center gap-2 mb-1">
-                  <CheckCircle2 className="w-3 h-3 text-green-400" />
-                  <span className="font-medium">Getting started in Excel 365 Samples</span>
-                </div>
-              </button>
-
-              <button onClick={() => handleLessonChange("exploring", false)} className={`w-full text-left px-3 py-2 rounded text-sm transition-colors ${currentLesson === "exploring" ? "bg-[#005691] text-white" : "hover:bg-gray-800 text-gray-300"}`}>
-                <div className="flex items-center gap-2 mb-1">
-                  <CheckCircle2 className="w-3 h-3 text-green-400" />
-                  <span className="font-medium">Exploring the interface in Excel 365</span>
-                </div>
-                <span className={`text-xs ${currentLesson === "exploring" ? "text-blue-200" : "text-gray-500"}`}>4m 46s</span>
-              </button>
-
-              <button onClick={() => handleLessonChange("editing", false)} className={`w-full text-left px-3 py-2 rounded text-sm transition-colors ${currentLesson === "editing" ? "bg-[#005691] text-white" : "hover:bg-gray-800 text-gray-300"}`}>
-                <div className="flex items-center gap-2 mb-1">
-                  <div className="w-3 h-3 rounded-full border-2 border-blue-400 flex items-center justify-center shrink-0">
-                    <div className="w-1.5 h-1.5 rounded-full bg-blue-400"></div>
+              {/* Overview */}
+              <button onClick={() => handleLessonChange("overview-2", false)} className={`w-full text-left px-3 py-2 rounded text-sm transition-colors ${currentLesson === "overview-2" ? "bg-[#005691] text-white" : "hover:bg-gray-800 text-gray-300"}`}>
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-2">
+                    <Play className="w-3 h-3 shrink-0" />
+                    <span className="font-medium">Overview: Entering data in Excel 365 (2023)</span>
                   </div>
-                  <span className="font-medium">Editing worksheets in Excel 365</span>
-                </div>
-                <span className={`text-xs ${currentLesson === "editing" ? "text-blue-200" : "text-gray-500"}`}>4m 41s</span>
-              </button>
-
-              <button onClick={() => handleLessonChange("saving", false)} className={`w-full text-left px-3 py-2 rounded text-sm transition-colors ${currentLesson === "saving" ? "bg-[#005691] text-white" : "hover:bg-gray-800 text-gray-300"}`}>
-                <div className="flex items-center gap-2 mb-1">
-                  <div className="w-3 h-3 rounded-full border-2 border-blue-400 flex items-center justify-center shrink-0">
-                    <div className="w-1.5 h-1.5 rounded-full bg-blue-400"></div>
-                  </div>
-                  <span className="font-medium">Saving & opening workbooks in Excel 365</span>
-                </div>
-                <span className={`text-xs ${currentLesson === "saving" ? "text-blue-200" : "text-gray-500"}`}>4m 45s</span>
-              </button>
-
-              <button onClick={() => handleLessonChange("adding", false)} className={`w-full text-left px-3 py-2 rounded text-sm transition-colors ${currentLesson === "adding" ? "bg-[#005691] text-white" : "hover:bg-gray-800 text-gray-300"}`}>
-                <div className="flex items-center gap-2 mb-1">
-                  <div className="w-3 h-3 rounded-full border-2 border-blue-400 flex items-center justify-center shrink-0">
-                    <div className="w-1.5 h-1.5 rounded-full bg-blue-400"></div>
-                  </div>
-                  <span className="font-medium">Adding & removing workbook elements in Excel 365</span>
-                </div>
-                <span className={`text-xs ${currentLesson === "adding" ? "text-blue-200" : "text-gray-500"}`}>4m 35s</span>
-              </button>
-
-              <button onClick={() => handleLessonChange("knowledge-check-1", false)} className={`w-full text-left px-3 py-2 rounded text-sm transition-colors ${currentLesson === "knowledge-check-1" ? "bg-[#005691] text-white" : "hover:bg-gray-800 text-gray-300"}`}>
-                <div className="flex items-center gap-2 mb-1">
-                  <div className="w-3 h-3 rounded-full border-2 border-gray-400 shrink-0"></div>
-                  <span className="font-medium">Knowledge Check: Getting started in Excel 365 (2023)</span>
+                  <span className={`text-xs ${currentLesson === "overview-2" ? "text-blue-200" : "text-gray-500"}`}>1m</span>
                 </div>
               </button>
 
-              <button onClick={() => handleLessonChange("undoing", false)} className={`w-full text-left px-3 py-2 rounded text-sm transition-colors ${currentLesson === "undoing" ? "bg-[#005691] text-white" : "hover:bg-gray-800 text-gray-300"}`}>
-                <div className="flex items-center gap-2 mb-1">
-                  <Play className="w-3 h-3" />
-                  <span className="font-medium">Undoing and redoing actions in Excel 365</span>
-                </div>
-                <span className={`text-xs ${currentLesson === "undoing" ? "text-blue-200" : "text-gray-500"}`}>4m 8s</span>
-              </button>
-
-              <button onClick={() => handleLessonChange("finding", false)} className={`w-full text-left px-3 py-2 rounded text-sm transition-colors ${currentLesson === "finding" ? "bg-[#005691] text-white" : "hover:bg-gray-800 text-gray-300"}`}>
-                <div className="flex items-center gap-2 mb-1">
-                  <Play className="w-3 h-3" />
-                  <span className="font-medium">Finding functions in Excel 365</span>
-                </div>
-                <span className={`text-xs ${currentLesson === "finding" ? "text-blue-200" : "text-gray-500"}`}>5m 3s</span>
-              </button>
-
-              <button onClick={() => handleLessonChange("templates", false)} className={`w-full text-left px-3 py-2 rounded text-sm transition-colors ${currentLesson === "templates" ? "bg-[#005691] text-white" : "hover:bg-gray-800 text-gray-300"}`}>
-                <div className="flex items-center gap-2 mb-1">
-                  <Play className="w-3 h-3" />
-                  <span className="font-medium">Using Office templates in Excel 365</span>
-                </div>
-                <span className={`text-xs ${currentLesson === "templates" ? "text-blue-200" : "text-gray-500"}`}>4m 48s</span>
-              </button>
-
-              <button onClick={() => handleLessonChange("customizing", false)} className={`w-full text-left px-3 py-2 rounded text-sm transition-colors ${currentLesson === "customizing" ? "bg-[#005691] text-white" : "hover:bg-gray-800 text-gray-300"}`}>
-                <div className="flex items-center gap-2 mb-1">
-                  <Play className="w-3 h-3" />
-                  <span className="font-medium">Customizing interface tools in Excel 365</span>
-                </div>
-                <span className={`text-xs ${currentLesson === "customizing" ? "text-blue-200" : "text-gray-500"}`}>5m 4s</span>
-              </button>
-
-              <button onClick={() => handleLessonChange("sharing", false)} className={`w-full text-left px-3 py-2 rounded text-sm transition-colors ${currentLesson === "sharing" ? "bg-[#005691] text-white" : "hover:bg-gray-800 text-gray-300"}`}>
-                <div className="flex items-center gap-2 mb-1">
-                  <CheckCircle2 className="w-3 h-3 text-green-400" />
-                  <span className="font-medium">Sharing workbooks in Excel 365</span>
-                </div>
-                <span className={`text-xs ${currentLesson === "sharing" ? "text-blue-200" : "text-gray-500"}`}>4m 46s</span>
-              </button>
-
-              <button onClick={() => handleLessonChange("exercise", true)} className={`w-full text-left px-3 py-2 rounded text-sm transition-colors ${currentLesson === "exercise" ? "bg-[#005691] text-white" : "hover:bg-gray-800 text-gray-300"}`}>
-                <div className="flex items-center gap-2 mb-1">
+              {/* Samples */}
+              <button onClick={() => handleLessonChange("samples-2", true)} className={`w-full text-left px-3 py-2 rounded text-sm transition-colors ${currentLesson === "samples-2" ? "bg-[#005691] text-white" : "hover:bg-gray-800 text-gray-300"}`}>
+                <div className="flex items-center gap-2">
                   <FileText className="w-3 h-3 shrink-0" />
-                  <span className="font-medium">Exercise: Getting started in Excel 365</span>
+                  <span className="font-medium">Entering data in Excel 365 Samples</span>
                 </div>
               </button>
 
-              <button onClick={() => handleLessonChange("knowledge-check-2", false)} className={`w-full text-left px-3 py-2 rounded text-sm transition-colors ${currentLesson === "knowledge-check-2" ? "bg-[#005691] text-white" : "hover:bg-gray-800 text-gray-300"}`}>
-                <div className="flex items-center gap-2 mb-1">
+              {/* Using the Clipboard tools */}
+              <button onClick={() => handleLessonChange("clipboard", false)} className={`w-full text-left px-3 py-2 rounded text-sm transition-colors ${currentLesson === "clipboard" ? "bg-[#005691] text-white" : "hover:bg-gray-800 text-gray-300"}`}>
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-2">
+                    <div className="w-3 h-3 rounded-full border-2 border-gray-400 shrink-0"></div>
+                    <span className="font-medium">Using the Clipboard tools in Excel 365</span>
+                  </div>
+                  <span className={`text-xs ${currentLesson === "clipboard" ? "text-blue-200" : "text-gray-500"}`}>4m 28s</span>
+                </div>
+              </button>
+
+              {/* Applying special paste options */}
+              <button onClick={() => handleLessonChange("paste-options", false)} className={`w-full text-left px-3 py-2 rounded text-sm transition-colors ${currentLesson === "paste-options" ? "bg-[#005691] text-white" : "hover:bg-gray-800 text-gray-300"}`}>
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-2">
+                    <div className="w-3 h-3 rounded-full border-2 border-gray-400 shrink-0"></div>
+                    <span className="font-medium">Applying special paste options in Excel 365</span>
+                  </div>
+                  <span className={`text-xs ${currentLesson === "paste-options" ? "text-blue-200" : "text-gray-500"}`}>5m 3s</span>
+                </div>
+              </button>
+
+              {/* Knowledge Check 1 */}
+              <button onClick={() => handleLessonChange("knowledge-check-2-1", false)} className={`w-full text-left px-3 py-2 rounded text-sm transition-colors ${currentLesson === "knowledge-check-2-1" ? "bg-[#005691] text-white" : "hover:bg-gray-800 text-gray-300"}`}>
+                <div className="flex items-center gap-2">
                   <div className="w-3 h-3 rounded-full border-2 border-gray-400 shrink-0"></div>
-                  <span className="font-medium">Knowledge Check: Using tools in Excel 365 (2023)</span>
+                  <span className="font-medium">Knowledge Check: Clipboard in Excel 365 (2023)</span>
                 </div>
               </button>
 
-              <button onClick={() => handleLessonChange("retake-test", false)} className={`w-full text-left px-3 py-2 rounded text-sm transition-colors ${currentLesson === "retake-test" ? "bg-[#005691] text-white" : "hover:bg-gray-800 text-gray-300"}`}>
-                <div className="flex items-center gap-2 mb-1">
-                  <CheckCircle2 className="w-3 h-3 text-green-400 shrink-0" />
-                  <span className="font-medium">Retake Test</span>
+              {/* Using AutoFill */}
+              <button onClick={() => handleLessonChange("autofill", false)} className={`w-full text-left px-3 py-2 rounded text-sm transition-colors ${currentLesson === "autofill" ? "bg-[#005691] text-white" : "hover:bg-gray-800 text-gray-300"}`}>
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-2">
+                    <div className="w-3 h-3 rounded-full border-2 border-gray-400 shrink-0"></div>
+                    <span className="font-medium">Using AutoFill in Excel 365</span>
+                  </div>
+                  <span className={`text-xs ${currentLesson === "autofill" ? "text-blue-200" : "text-gray-500"}`}>4m 47s</span>
                 </div>
               </button>
 
-              <button onClick={() => handleLessonChange("reflection", false)} className={`w-full text-left px-3 py-2 rounded text-sm transition-colors ${currentLesson === "reflection" ? "bg-[#005691] text-white" : "hover:bg-gray-800 text-gray-300"}`}>
-                <div className="flex items-center gap-2 mb-1">
+              {/* Using the Fill Series command */}
+              <button onClick={() => handleLessonChange("fill-series", false)} className={`w-full text-left px-3 py-2 rounded text-sm transition-colors ${currentLesson === "fill-series" ? "bg-[#005691] text-white" : "hover:bg-gray-800 text-gray-300"}`}>
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-2">
+                    <div className="w-3 h-3 rounded-full border-2 border-gray-400 shrink-0"></div>
+                    <span className="font-medium">Using the Fill Series command</span>
+                  </div>
+                  <span className={`text-xs ${currentLesson === "fill-series" ? "text-blue-200" : "text-gray-500"}`}>4m 2s</span>
+                </div>
+              </button>
+
+              {/* Using Flash Fill */}
+              <button onClick={() => handleLessonChange("flash-fill", false)} className={`w-full text-left px-3 py-2 rounded text-sm transition-colors ${currentLesson === "flash-fill" ? "bg-[#005691] text-white" : "hover:bg-gray-800 text-gray-300"}`}>
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-2">
+                    <div className="w-3 h-3 rounded-full border-2 border-gray-400 shrink-0"></div>
+                    <span className="font-medium">Using Flash Fill in Excel 365</span>
+                  </div>
+                  <span className={`text-xs ${currentLesson === "flash-fill" ? "text-blue-200" : "text-gray-500"}`}>3m 58s</span>
+                </div>
+              </button>
+
+              {/* Knowledge Check 2 */}
+              <button onClick={() => handleLessonChange("knowledge-check-2-2", false)} className={`w-full text-left px-3 py-2 rounded text-sm transition-colors ${currentLesson === "knowledge-check-2-2" ? "bg-[#005691] text-white" : "hover:bg-gray-800 text-gray-300"}`}>
+                <div className="flex items-center gap-2">
+                  <div className="w-3 h-3 rounded-full border-2 border-gray-400 shrink-0"></div>
+                  <span className="font-medium">Knowledge Check: Filling data in Excel 365 (2023)</span>
+                </div>
+              </button>
+
+              {/* Creating drop-down lists */}
+              <button onClick={() => handleLessonChange("dropdown-lists", false)} className={`w-full text-left px-3 py-2 rounded text-sm transition-colors ${currentLesson === "dropdown-lists" ? "bg-[#005691] text-white" : "hover:bg-gray-800 text-gray-300"}`}>
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-2">
+                    <div className="w-3 h-3 rounded-full border-2 border-gray-400 shrink-0"></div>
+                    <span className="font-medium">Creating drop-down lists in Excel 365</span>
+                  </div>
+                  <span className={`text-xs ${currentLesson === "dropdown-lists" ? "text-blue-200" : "text-gray-500"}`}>4m 50s</span>
+                </div>
+              </button>
+
+              {/* Editing multiple worksheets */}
+              <button onClick={() => handleLessonChange("edit-multiple", false)} className={`w-full text-left px-3 py-2 rounded text-sm transition-colors ${currentLesson === "edit-multiple" ? "bg-[#005691] text-white" : "hover:bg-gray-800 text-gray-300"}`}>
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-2">
+                    <div className="w-3 h-3 rounded-full border-2 border-gray-400 shrink-0"></div>
+                    <span className="font-medium">Editing multiple worksheets at once in Excel 365</span>
+                  </div>
+                  <span className={`text-xs ${currentLesson === "edit-multiple" ? "text-blue-200" : "text-gray-500"}`}>3m 30s</span>
+                </div>
+              </button>
+
+              {/* Importing data from text or CSV */}
+              <button onClick={() => handleLessonChange("import-text", false)} className={`w-full text-left px-3 py-2 rounded text-sm transition-colors ${currentLesson === "import-text" ? "bg-[#005691] text-white" : "hover:bg-gray-800 text-gray-300"}`}>
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-2">
+                    <div className="w-3 h-3 rounded-full border-2 border-gray-400 shrink-0"></div>
+                    <span className="font-medium">Importing data from a text or CSV file in Excel 365</span>
+                  </div>
+                  <span className={`text-xs ${currentLesson === "import-text" ? "text-blue-200" : "text-gray-500"}`}>3m 28s</span>
+                </div>
+              </button>
+
+              {/* Importing data from online sources */}
+              <button onClick={() => handleLessonChange("import-online", false)} className={`w-full text-left px-3 py-2 rounded text-sm transition-colors ${currentLesson === "import-online" ? "bg-[#005691] text-white" : "hover:bg-gray-800 text-gray-300"}`}>
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-2">
+                    <div className="w-3 h-3 rounded-full border-2 border-gray-400 shrink-0"></div>
+                    <span className="font-medium">Importing data from online sources in Excel 365</span>
+                  </div>
+                  <span className={`text-xs ${currentLesson === "import-online" ? "text-blue-200" : "text-gray-500"}`}>3m 43s</span>
+                </div>
+              </button>
+
+              {/* Importing data from a picture */}
+              <button onClick={() => handleLessonChange("import-picture", false)} className={`w-full text-left px-3 py-2 rounded text-sm transition-colors ${currentLesson === "import-picture" ? "bg-[#005691] text-white" : "hover:bg-gray-800 text-gray-300"}`}>
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-2">
+                    <div className="w-3 h-3 rounded-full border-2 border-gray-400 shrink-0"></div>
+                    <span className="font-medium">Importing data from a picture in Excel 365</span>
+                  </div>
+                  <span className={`text-xs ${currentLesson === "import-picture" ? "text-blue-200" : "text-gray-500"}`}>3m 34s</span>
+                </div>
+              </button>
+
+              {/* Exercise */}
+              <button onClick={() => handleLessonChange("exercise-2", true)} className={`w-full text-left px-3 py-2 rounded text-sm transition-colors ${currentLesson === "exercise-2" ? "bg-[#005691] text-white" : "hover:bg-gray-800 text-gray-300"}`}>
+                <div className="flex items-center gap-2">
+                  <FileText className="w-3 h-3 shrink-0" />
+                  <span className="font-medium">Exercise: Entering data in Excel 365</span>
+                </div>
+              </button>
+
+              {/* Knowledge Check 3 */}
+              <button onClick={() => handleLessonChange("knowledge-check-2-3", false)} className={`w-full text-left px-3 py-2 rounded text-sm transition-colors ${currentLesson === "knowledge-check-2-3" ? "bg-[#005691] text-white" : "hover:bg-gray-800 text-gray-300"}`}>
+                <div className="flex items-center gap-2">
+                  <div className="w-3 h-3 rounded-full border-2 border-gray-400 shrink-0"></div>
+                  <span className="font-medium">Knowledge Check: Advanced data features in Excel 365 (2023)</span>
+                </div>
+              </button>
+
+              {/* Take Test */}
+              <button onClick={() => handleLessonChange("take-test-2", false)} className={`w-full text-left px-3 py-2 rounded text-sm transition-colors ${currentLesson === "take-test-2" ? "bg-[#005691] text-white" : "hover:bg-gray-800 text-gray-300"}`}>
+                <div className="flex items-center gap-2">
+                  <div className="w-3 h-3 rounded-full border-2 border-gray-400 shrink-0"></div>
+                  <span className="font-medium">Take Test</span>
+                </div>
+              </button>
+
+              {/* Reflection */}
+              <button onClick={() => handleLessonChange("reflection-2", false)} className={`w-full text-left px-3 py-2 rounded text-sm transition-colors ${currentLesson === "reflection-2" ? "bg-[#005691] text-white" : "hover:bg-gray-800 text-gray-300"}`}>
+                <div className="flex items-center gap-2">
                   <div className="w-3 h-3 rounded-full border-2 border-gray-400 shrink-0"></div>
                   <span className="font-medium">Reflection: Reflect on what you've learned</span>
                 </div>
@@ -357,13 +409,13 @@ export default function CoursePlayerPage({ params }: { params: { lessonId: strin
                 {showSamplesPanel ? (
                   <div className="h-full">
                     {/* Samples Panel */}
-                    {currentLesson === "samples" && (
+                    {currentLesson === "samples-2" && (
                       <div className="bg-gradient-to-br from-gray-50 to-gray-100">
                         <div className="max-w-4xl mx-auto px-8 py-16">
                           <div className="text-center mb-12">
                             <div className="flex items-center justify-center gap-3 mb-3">
                               <ExcelIcon className="w-10 h-10" />
-                              <h1 className="text-3xl font-bold text-gray-900">Getting started in Excel 365 Samples</h1>
+                              <h1 className="text-3xl font-bold text-gray-900">Entering data in Excel 365 Samples</h1>
                             </div>
                             <p className="text-base text-gray-500 font-medium">Zip File</p>
                           </div>
@@ -378,7 +430,7 @@ export default function CoursePlayerPage({ params }: { params: { lessonId: strin
                             </div>
 
                             <div className="flex justify-center mb-6">
-                              <a href="/1zip/Getting+started+in+Excel+365_Samples.zip" download="Getting started in Excel 365 Samples.zip" className="inline-flex items-center gap-3 px-8 py-3.5 bg-[#005691] hover:bg-[#004070] text-white text-base font-semibold rounded-lg shadow-md hover:shadow-lg transition-all duration-200 transform hover:scale-105">
+                              <a href="/1zip/Entering+data+in+Excel+365_Samples.zip" download="Entering data in Excel 365 Samples.zip" className="inline-flex items-center gap-3 px-8 py-3.5 bg-[#005691] hover:bg-[#004070] text-white text-base font-semibold rounded-lg shadow-md hover:shadow-lg transition-all duration-200 transform hover:scale-105">
                                 <Download className="w-5 h-5" />
                                 Download
                               </a>
@@ -389,20 +441,20 @@ export default function CoursePlayerPage({ params }: { params: { lessonId: strin
                     )}
 
                     {/* Exercise Panel */}
-                    {currentLesson === "exercise" && (
+                    {currentLesson === "exercise-2" && (
                       <div className="bg-white">
                         <div className="max-w-4xl mx-auto px-8 py-16">
                           <div className="text-center mb-12">
                             <div className="flex items-center justify-center gap-3 mb-3">
                               <ExcelIcon className="w-10 h-10" />
-                              <h1 className="text-3xl font-bold text-gray-900">Exercise: Getting started in Excel 365</h1>
+                              <h1 className="text-3xl font-bold text-gray-900">Exercise: Entering data in Excel 365</h1>
                             </div>
                             <p className="text-base text-gray-500 font-medium">Zip File</p>
                           </div>
                           
                           <div className="bg-gray-50 rounded-2xl shadow-lg border border-gray-200 p-10 mb-8">
                             <div className="flex justify-center mb-6">
-                              <a href="/1zip/Exercise_Getting_started_in_Excel_365.zip" download="Exercise Getting started in Excel 365.zip" className="inline-flex items-center gap-3 px-8 py-3.5 bg-[#005691] hover:bg-[#004070] text-white text-base font-semibold rounded-lg shadow-md hover:shadow-lg transition-all duration-200 transform hover:scale-105">
+                              <a href="/1zip/Exercise_Entering_data_in_Excel_365.zip" download="Exercise Entering data in Excel 365.zip" className="inline-flex items-center gap-3 px-8 py-3.5 bg-[#005691] hover:bg-[#004070] text-white text-base font-semibold rounded-lg shadow-md hover:shadow-lg transition-all duration-200 transform hover:scale-105">
                                 <Download className="w-5 h-5" />
                                 Download
                               </a>
@@ -412,15 +464,15 @@ export default function CoursePlayerPage({ params }: { params: { lessonId: strin
                       </div>
                     )}
 
-                    {/* Knowledge Check 1 Panel */}
-                    {currentLesson === "knowledge-check-1" && (
+                    {/* Knowledge Check 1 - Clipboard */}
+                    {currentLesson === "knowledge-check-2-1" && (
                       <div className="bg-white">
                         <div className="max-w-4xl mx-auto px-8 py-12">
                           <div className="mb-8">
                             <p className="text-sm font-semibold text-gray-600 uppercase tracking-wider mb-3">KNOWLEDGE CHECK</p>
-                            <h1 className="text-3xl font-bold text-gray-900 mb-4">Review your knowledge of Getting started in Excel 365 (2023)</h1>
+                            <h1 className="text-3xl font-bold text-gray-900 mb-4">Review your knowledge of Clipboard in Excel 365 (2023)</h1>
                             <p className="text-base text-gray-600 leading-relaxed">
-                              Let's see how much you've learned before you continue or retake the course test! Knowledge checks allow you to practice, and are not scored.
+                              Let's see how much you've learned about using Clipboard tools! Knowledge checks allow you to practice, and are not scored.
                             </p>
                           </div>
                           
@@ -432,15 +484,15 @@ export default function CoursePlayerPage({ params }: { params: { lessonId: strin
                       </div>
                     )}
 
-                    {/* Knowledge Check 2 Panel */}
-                    {currentLesson === "knowledge-check-2" && (
+                    {/* Knowledge Check 2 - Filling data */}
+                    {currentLesson === "knowledge-check-2-2" && (
                       <div className="bg-white">
                         <div className="max-w-4xl mx-auto px-8 py-12">
                           <div className="mb-8">
                             <p className="text-sm font-semibold text-gray-600 uppercase tracking-wider mb-3">KNOWLEDGE CHECK</p>
-                            <h1 className="text-3xl font-bold text-gray-900 mb-4">Review your knowledge of Using tools in Excel 365 (2023)</h1>
+                            <h1 className="text-3xl font-bold text-gray-900 mb-4">Review your knowledge of Filling data in Excel 365 (2023)</h1>
                             <p className="text-base text-gray-600 leading-relaxed">
-                              Let's see how much you've learned before you continue or retake the course test! Knowledge checks allow you to practice, and are not scored.
+                              Let's see how much you've learned about AutoFill and Flash Fill! Knowledge checks allow you to practice, and are not scored.
                             </p>
                           </div>
                           
@@ -452,28 +504,49 @@ export default function CoursePlayerPage({ params }: { params: { lessonId: strin
                       </div>
                     )}
 
-                    {/* Retake Test Panel */}
-                    {currentLesson === "retake-test" && (
+                    {/* Knowledge Check 3 - Advanced features */}
+                    {currentLesson === "knowledge-check-2-3" && (
                       <div className="bg-white">
                         <div className="max-w-4xl mx-auto px-8 py-12">
                           <div className="mb-8">
-                            <p className="text-sm font-semibold text-green-600 uppercase tracking-wider mb-3">TEST COMPLETED</p>
-                            <h1 className="text-3xl font-bold text-gray-900 mb-4">Retake Test</h1>
+                            <p className="text-sm font-semibold text-gray-600 uppercase tracking-wider mb-3">KNOWLEDGE CHECK</p>
+                            <h1 className="text-3xl font-bold text-gray-900 mb-4">Review your knowledge of Advanced data features in Excel 365 (2023)</h1>
                             <p className="text-base text-gray-600 leading-relaxed">
-                              You have successfully completed the course test. You can retake the test to improve your score or review the course materials.
+                              Let's see how much you've learned about importing data and advanced features! Knowledge checks allow you to practice, and are not scored.
                             </p>
                           </div>
                           
-                          <div className="bg-green-50 border border-green-200 rounded-xl p-8">
-                            <div className="flex items-center gap-4 mb-4">
-                              <CheckCircle2 className="w-12 h-12 text-green-600" />
-                              <div>
-                                <h3 className="text-lg font-semibold text-gray-900">Congratulations!</h3>
-                                <p className="text-sm text-gray-600">You have completed this course</p>
-                              </div>
+                          <div className="bg-gray-50 border border-gray-200 rounded-xl p-12 text-center">
+                            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#005691] mx-auto mb-4"></div>
+                            <p className="text-gray-600">Loading quiz content...</p>
+                          </div>
+                        </div>
+                      </div>
+                    )}
+
+                    {/* Take Test Panel */}
+                    {currentLesson === "take-test-2" && (
+                      <div className="bg-white">
+                        <div className="max-w-4xl mx-auto px-8 py-12">
+                          <div className="mb-8">
+                            <p className="text-sm font-semibold text-blue-600 uppercase tracking-wider mb-3">COURSE TEST</p>
+                            <h1 className="text-3xl font-bold text-gray-900 mb-4">Take Test</h1>
+                            <p className="text-base text-gray-600 leading-relaxed">
+                              Test your knowledge of entering data in Excel 365. You must score 70% or higher to pass and receive credit.
+                            </p>
+                          </div>
+                          
+                          <div className="bg-blue-50 border border-blue-200 rounded-xl p-8">
+                            <div className="mb-6">
+                              <h3 className="text-lg font-semibold text-gray-900 mb-3">Test Information:</h3>
+                              <ul className="space-y-2 text-sm text-gray-700">
+                                <li className="flex gap-2"><span>•</span> Multiple choice questions</li>
+                                <li className="flex gap-2"><span>•</span> Minimum passing score: 70%</li>
+                                <li className="flex gap-2"><span>•</span> You can retake the test if needed</li>
+                              </ul>
                             </div>
-                            <button className="mt-4 bg-[#005691] hover:bg-[#004070] text-white text-sm font-semibold px-6 py-3 rounded-lg transition-colors">
-                              Retake Test
+                            <button className="bg-[#005691] hover:bg-[#004070] text-white text-sm font-semibold px-6 py-3 rounded-lg transition-colors">
+                              Start Test
                             </button>
                           </div>
                         </div>
@@ -481,7 +554,7 @@ export default function CoursePlayerPage({ params }: { params: { lessonId: strin
                     )}
 
                     {/* Reflection Panel */}
-                    {currentLesson === "reflection" && (
+                    {currentLesson === "reflection-2" && (
                       <div className="bg-white">
                         <div className="max-w-4xl mx-auto px-8 py-12">
                           <div className="mb-8">
@@ -548,7 +621,7 @@ export default function CoursePlayerPage({ params }: { params: { lessonId: strin
                               <div>
                                 <h3 className="text-sm font-semibold text-gray-900 mb-2">Duration</h3>
                                 <p className="text-sm text-gray-600">{COURSE_DATA.duration}</p>
-                                <p className="text-xs text-gray-500">43 minutes 30 seconds</p>
+                                <p className="text-xs text-gray-500">38 minutes 45 seconds</p>
                               </div>
                               <div>
                                 <h3 className="text-sm font-semibold text-gray-900 mb-2">Prerequisites</h3>
@@ -564,7 +637,7 @@ export default function CoursePlayerPage({ params }: { params: { lessonId: strin
                               </div>
                               <div>
                                 <h3 className="text-sm font-semibold text-gray-900 mb-2">Field of Study</h3>
-                                <p className="text-sm text-gray-600">Computer Software & Applications ΓÇô Non-technical</p>
+                                <p className="text-sm text-gray-600">Computer Software & Applications – Non-technical</p>
                               </div>
                               <div>
                                 <h3 className="text-sm font-semibold text-gray-900 mb-2">Last Updated</h3>
@@ -578,8 +651,8 @@ export default function CoursePlayerPage({ params }: { params: { lessonId: strin
                             <div className="mb-4">
                               <h4 className="text-sm font-semibold text-gray-900 mb-2">NASBA Course Navigation & Resources:</h4>
                               <ul className="space-y-1 text-sm text-gray-600 ml-4">
-                                <li>ΓÇó Course Index: See the Transcript tab above to navigate or search the course.</li>
-                                <li>ΓÇó Glossary: See the Resources tab above to view or print a copy.</li>
+                                <li>• Course Index: See the Transcript tab above to navigate or search the course.</li>
+                                <li>• Glossary: See the Resources tab above to view or print a copy.</li>
                               </ul>
                             </div>
                             <div className="mb-4">
@@ -595,9 +668,9 @@ export default function CoursePlayerPage({ params }: { params: { lessonId: strin
                               <p className="text-sm text-gray-700 mb-2">1.5 credits</p>
                               <p className="text-sm text-gray-600 mb-3">To qualify for CPE credits:</p>
                               <ul className="space-y-1 text-sm text-gray-600 ml-4">
-                                <li>ΓÇó Complete all videos and Knowledge Checks</li>
-                                <li>ΓÇó Receive a minimum passing score of 70%</li>
-                                <li>ΓÇó Complete course within one year of starting it</li>
+                                <li>• Complete all videos and Knowledge Checks</li>
+                                <li>• Receive a minimum passing score of 70%</li>
+                                <li>• Complete course within one year of starting it</li>
                               </ul>
                             </div>
                           </div>

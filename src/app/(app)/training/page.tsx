@@ -364,7 +364,12 @@ export default function TrainingPage() {
                         key={course.id}
                         onClick={() => {
                           // Navigate to course player using Next.js router to preserve context
-                          router.push(`/course/${course.id}`);
+                          // Route to different course pages based on course ID
+                          if (course.id === "course-1-2") {
+                            router.push(`/course2/overview-2`);
+                          } else {
+                            router.push(`/course/${course.id}`);
+                          }
                         }}
                         className="w-full px-5 py-3 flex items-center justify-between hover:bg-white transition-colors border-b border-gray-100 last:border-b-0 text-left cursor-pointer"
                       >

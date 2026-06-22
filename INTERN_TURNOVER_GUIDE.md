@@ -41,7 +41,15 @@ Based on the codebase analysis and setup guide:
    - Zoom/Jitsi meeting integration (partial - needs completion)
 
 ### 🔧 Current Development Focus
-According to the proposal and recent commits, the **video meeting features (Zoom integration)** are the primary focus for completion before the internship ends.
+According to the proposal and recent commits, the **video meeting features (Zoom integration)** are the primary focus for completion before the internship ends.### 🚨 Prototype Scope & Incomplete / Non-Functional Features
+> [!IMPORTANT]
+> **Prototype Status:** The current system is in a **foundational prototype / MVP stage**. While the visual layout files, routing, and database models are fully structured, many features are simulated and not fully integrated with a production database.
+>
+> * **localStorage Dependency:** Most frontend dashboards, payments, reports, and events pages run on client-side `localStorage` (Demo Mode) for testing. They need to be switched to utilize the Prisma database API endpoints (`/api/*`).
+> * **Training Module Limitation:** Currently, **only exactly one training course module** (Microsoft Office Specialist: Excel Associate) is functional in the UI. Sourcing, course creation, syllabus editing, and lesson uploads are static placeholders and not yet connected to the PostgreSQL database.
+> * **Jitsi Demonstration Limit:** Embedded Jitsi iframe calls are limited to **5 minutes per meeting** on the free public server (`meet.jit.si`). Upgrade to a paid 8x8 account or set up a self-hosted Jitsi Meet server for unlimited meeting lengths.
+> * **Zoom Integration (Non-Functional):** The Zoom scheduler lacks active OAuth credentials and needs S2S Helper library completion.
+> * **Security Gaps:** Plain-text credentials are used in demo modes. Hashing (bcryptjs) and protected JWT middleware are not fully enforced in the backend.
 
 ## Technical Stack Summary
 - **Frontend**: Next.js 14.2.3 (TypeScript), Tailwind CSS
@@ -111,6 +119,19 @@ pnpm run db:studio
 pnpm dev
 # App available at http://localhost:3000
 ```
+
+### 5. Test User Accounts & Credentials
+For local development testing, user acceptance testing (UAT), and rapid prototyping, the application database (and demo localStorage) contains several pre-configured test user accounts representing different roles.
+
+| Role / Account Name | Email Address / Username | Password Placeholder | Access Rights & Notes |
+| :--- | :--- | :--- | :--- |
+| **Admin** | `john@xplore.com` | `[ENTER ADMIN PASSWORD MANUALLY]` | Full administrative access. Authorized to manage events, schedule meetings, create training courses, view global reporting dashboards, and configure system settings. |
+| **Participant / User** | `sarah@xplore.com` | `[ENTER PARTICIPANT PASSWORD MANUALLY]` | Standard participant access. Authorized to browse the course catalog, register for events, enroll in classes, join Jitsi meetings, download issued certificates, and test Stripe checkout simulation. |
+| **Instructor** | `instructor@xplore.com` | `[ENTER INSTRUCTOR PASSWORD MANUALLY]` | Instructor portal access. Authorized to manage assigned training syllabi, upload course content modules, track student enrollment progress, and schedule training classes. |
+| **Event Organizer** | `organizer@xplore.com` | `[ENTER ORGANIZER PASSWORD MANUALLY]` | Event coordinator access. Authorized to create and manage seminars/events, track registrations, schedule meeting links, and generate attendance reports. |
+
+> [!CAUTION]
+> **Credential Exposure Warning:** To ensure system security, the actual passwords for these test accounts are left blank. The developer/owner must fill them in manually. Since these accounts may grant administrative access to the development and staging environments, **DO NOT** commit the populated credentials file to GitHub or any public version control systems. Always list `.env.local` and production documentation folders in your `.gitignore`.
 
 ## 🎯 Primary Focus: Video Meeting Features Completion
 
@@ -199,6 +220,22 @@ Based on the proposal and code analysis, the **Zoom integration for meeting feat
 - `PROJECT PROPOSAL (Final).docx` - Original requirements (reference)
 - `xplore_nexus_timeline.md` - Development timeline
 
+## 🎥 Percipio Skillsoft Video Sourcing Guide
+Sourcing high-quality video content is essential to expanding the course catalog on Xplore Nexus. Since direct API integrations with Percipio's private video delivery network are not part of the current MVP scope, the following step-by-step procedure is used for manually downloading training videos from Percipio Skillsoft and uploading them to the platform's training modules:
+
+1. **Install Browser Extension (Video DownloadHelper):**
+   Open Google Chrome or Mozilla Firefox and search for the browser extension named **"Video DownloadHelper"**. Add the extension to your browser. Once installed, its icon (three colored spheres) will appear in your browser's toolbar/extension list.
+2. **Access Percipio and Locate Certification:**
+   Log in to your Percipio Skillsoft account. Go to the **Certification Center** and search/browse for the certification program you wish to source (for example, `vendorLogoMO-210: Microsoft Office Specialist: Excel Associate (Microsoft 365 Apps)`).
+3. **Open Certification Syllabus & Course:**
+   Click **Find** and select the certification page to view the syllabus tree. Click on any specific course in the syllabus list to open the video player with the lesson contents on the side panel.
+4. **Play Video and Download Chapters:**
+   Start playing the lesson video. While it is playing, click the **Video DownloadHelper** extension icon in your browser toolbar. The extension will highlight the active video stream. Click on it, select **Download**, and choose a folder on your computer to save the file.
+5. **Integrate with Xplore Nexus:**
+   Once the video files are saved locally, copy the lesson titles/descriptions and upload the video files to your cloud storage bucket (e.g., Supabase Storage). Link the public/authenticated URLs to the corresponding training modules in the Xplore Nexus Admin Training Portal. Repeat this workflow for each video in the syllabus.
+6. **Alternative Sourcing Methods:**
+   This manual process is currently the only tested workflow for securing offline course chapters. However, this is completely optional; developers are free to use any legitimate media downloader or alternative tools they prefer.
+
 ## 🔍 Code Quality & Standards
 
 ### Naming Conventions
@@ -239,6 +276,9 @@ Based on the proposal and code analysis, the **Zoom integration for meeting feat
    
 5. **Rate Limiting**: Implement rate limiting on auth endpoints
    - **Status**: Not implemented
+   
+6. **Jitsi Demonstration Limit**: In the demo/prototype configuration, the public Jitsi Meet iframe API (meet.jit.si) limits embedded meeting sessions to exactly 5 minutes per session.
+   - **Action needed**: For production, upgrade to Jitsi's paid enterprise tier (via 8x8 Developer Platform) or set up a self-hosted private Jitsi Meet server. (Note: The 5-minute cap only applies to embedded iframe calls, not standard browser redirects to the public room URL via "Open in New Tab").
 
 ### Technical Debt Items:
 - [ ] Password security (bcrypt implementation)

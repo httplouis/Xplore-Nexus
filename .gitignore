@@ -38,3 +38,43 @@ Thumbs.db
 *.njsproj
 *.sln
 *.sw?
+
+# Personal files & journals (moved to _personal/)
+/_personal/
+/journal/
+COMBINED_WEEKLY_JOURNAL*.md
+COMBINED_WEEKLY_JOURNAL*.docx
+WEEKLY_JOURNAL*.md
+Dev_Changes_Log.docx
+Progress-report-table.docx
+INFORMATICS TEACHNOLOGY PROGRAMS.pdf
+Xplore_Nexus_Documentation.docx
+Xplore_Nexus_Intern_Turnover_Documentation*.docx
+Copy of PROJECT PROPOSAL*.docx
+PROJECT PROPOSAL*.docx
+
+# One-off utility scripts (moved to _scripts/)
+/_scripts/
+
+# Extracted text outputs
+extracted_*.txt
+
+# Temp/test files
+temp_original.tsx
+test-component.tsx
+
+# Implementation/fix notes (redundant with turnover guide)
+BUILD_FIX.md
+DEPLOYMENT_FIX.md
+IMPLEMENTATION_CHECKLIST.md
+IMPLEMENTATION_COMPLETE.md
+IMPLEMENTATION_SUMMARY.md
+COURSE_CONTENT_UPDATE_SUMMARY.md
+MEETINGS_IMPROVEMENTS.md
+MEETINGS_UPDATE_SUMMARY.md
+MEETING_CONTROLS_FIX.md
+NON_VIDEO_LAYOUT_UPDATE.md
+VIDEO_MAPPING_FIX_SUMMARY.md
+
+# Agents
+.agents/
