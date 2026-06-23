@@ -369,7 +369,7 @@ export default function Course2PlayerPage({ params }: { params: { lessonId: stri
               <button onClick={() => handleLessonChange("reflection-2", false)} className={`w-full text-left px-3 py-2 rounded text-sm transition-colors ${currentLesson === "reflection-2" ? "bg-[#005691] text-white" : "hover:bg-gray-800 text-gray-300"}`}>
                 <div className="flex items-center gap-2">
                   <div className="w-3 h-3 rounded-full border-2 border-gray-400 shrink-0"></div>
-                  <span className="font-medium">Reflection: Reflect on what you've learned</span>
+                  <span className="font-medium">Reflection: Reflect on what you&apos;ve learned</span>
                 </div>
               </button>
             </div>
@@ -472,7 +472,7 @@ export default function Course2PlayerPage({ params }: { params: { lessonId: stri
                             <p className="text-sm font-semibold text-gray-600 uppercase tracking-wider mb-3">KNOWLEDGE CHECK</p>
                             <h1 className="text-3xl font-bold text-gray-900 mb-4">Review your knowledge of Clipboard in Excel 365 (2023)</h1>
                             <p className="text-base text-gray-600 leading-relaxed">
-                              Let's see how much you've learned about using Clipboard tools! Knowledge checks allow you to practice, and are not scored.
+                              Let&apos;s see how much you&apos;ve learned about using Clipboard tools! Knowledge checks allow you to practice, and are not scored.
                             </p>
                           </div>
                           
@@ -492,7 +492,7 @@ export default function Course2PlayerPage({ params }: { params: { lessonId: stri
                             <p className="text-sm font-semibold text-gray-600 uppercase tracking-wider mb-3">KNOWLEDGE CHECK</p>
                             <h1 className="text-3xl font-bold text-gray-900 mb-4">Review your knowledge of Filling data in Excel 365 (2023)</h1>
                             <p className="text-base text-gray-600 leading-relaxed">
-                              Let's see how much you've learned about AutoFill and Flash Fill! Knowledge checks allow you to practice, and are not scored.
+                              Let&apos;s see how much you&apos;ve learned about AutoFill and Flash Fill! Knowledge checks allow you to practice, and are not scored.
                             </p>
                           </div>
                           
@@ -512,7 +512,7 @@ export default function Course2PlayerPage({ params }: { params: { lessonId: stri
                             <p className="text-sm font-semibold text-gray-600 uppercase tracking-wider mb-3">KNOWLEDGE CHECK</p>
                             <h1 className="text-3xl font-bold text-gray-900 mb-4">Review your knowledge of Advanced data features in Excel 365 (2023)</h1>
                             <p className="text-base text-gray-600 leading-relaxed">
-                              Let's see how much you've learned about importing data and advanced features! Knowledge checks allow you to practice, and are not scored.
+                              Let&apos;s see how much you&apos;ve learned about importing data and advanced features! Knowledge checks allow you to practice, and are not scored.
                             </p>
                           </div>
                           
@@ -558,7 +558,7 @@ export default function Course2PlayerPage({ params }: { params: { lessonId: stri
                       <div className="bg-white">
                         <div className="max-w-4xl mx-auto px-8 py-12">
                           <div className="mb-8">
-                            <h1 className="text-2xl font-bold text-gray-900 mb-4">Reflect on what you've learned (optional)</h1>
+                            <h1 className="text-2xl font-bold text-gray-900 mb-4">Reflect on what you&apos;ve learned (optional)</h1>
                             <p className="text-sm text-gray-600 leading-relaxed mb-6">
                               Your private reflections show only to you and no one else. <a href="#" className="text-[#005691] hover:underline">Access them later from your Notes and Reflections page</a> keeping company proprietary information out of your reflection is recommended.
                             </p>
@@ -568,7 +568,7 @@ export default function Course2PlayerPage({ params }: { params: { lessonId: stri
                             <div className="space-y-4 text-sm text-gray-700 mb-6">
                               <p><span className="font-semibold">1.</span> What was the most important, relevant thing you learned from taking the course?</p>
                               <p><span className="font-semibold">2.</span> What are some ways you can apply what you learned?</p>
-                              <p><span className="font-semibold">3.</span> What's one thing the course inspired you to do differently moving forward?</p>
+                              <p><span className="font-semibold">3.</span> What&apos;s one thing the course inspired you to do differently moving forward?</p>
                               <p><span className="font-semibold">4.</span> How does what you learned fit in with what you already know? How is it new or different?</p>
                             </div>
 
